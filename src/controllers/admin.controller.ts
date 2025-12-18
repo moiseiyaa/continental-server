@@ -1,29 +1,24 @@
 import { Request, Response, NextFunction } from 'express';
 import {
+  getDashboardStats,
   getUserStats,
-  getTripStats,
   getBookingStats,
-  getRevenueStats,
-  getContactStats,
-  getNewsletterStats,
-  getDashboardOverview,
-  getTopTrips,
-  getRecentBookings,
-  getRecentContacts,
+  getTripStats,
+  getRevenueReports,
 } from '../services/admin.service';
 
-// @desc    Get dashboard overview
+// @desc    Get dashboard statistics
 // @route   GET /api/admin/dashboard
 // @access  Private/Admin
-export const getDashboardHandler = async (req: Request, res: Response, next: NextFunction) => {
+export const getDashboardStatsHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const overview = await getDashboardOverview();
+    const stats = await getDashboardStats();
 
     res.status(200).json({
       success: true,
-      data: overview,
+      data: stats,
     });
-  } catch (error) {
+  } catch (error: any) {
     next(error);
   }
 };
@@ -33,29 +28,14 @@ export const getDashboardHandler = async (req: Request, res: Response, next: Nex
 // @access  Private/Admin
 export const getUserStatsHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const stats = await getUserStats();
+    const period = req.query.period as string || 'all';
+    const stats = await getUserStats(period);
 
     res.status(200).json({
       success: true,
       data: stats,
     });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// @desc    Get trip statistics
-// @route   GET /api/admin/stats/trips
-// @access  Private/Admin
-export const getTripStatsHandler = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const stats = await getTripStats();
-
-    res.status(200).json({
-      success: true,
-      data: stats,
-    });
-  } catch (error) {
+  } catch (error: any) {
     next(error);
   }
 };
@@ -65,112 +45,86 @@ export const getTripStatsHandler = async (req: Request, res: Response, next: Nex
 // @access  Private/Admin
 export const getBookingStatsHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const stats = await getBookingStats();
+    const period = req.query.period as string || 'all';
+    const stats = await getBookingStats(period);
 
     res.status(200).json({
       success: true,
       data: stats,
     });
-  } catch (error) {
+  } catch (error: any) {
     next(error);
   }
 };
 
-// @desc    Get revenue statistics
-// @route   GET /api/admin/stats/revenue
+// @desc    Get trip statistics
+// @route   GET /api/admin/stats/trips
 // @access  Private/Admin
-export const getRevenueStatsHandler = async (req: Request, res: Response, next: NextFunction) => {
+export const getTripStatsHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const stats = await getRevenueStats();
+    const period = req.query.period as string || 'all';
+    const stats = await getTripStats(period);
 
     res.status(200).json({
       success: true,
       data: stats,
     });
-  } catch (error) {
+  } catch (error: any) {
     next(error);
   }
 };
 
-// @desc    Get contact statistics
-// @route   GET /api/admin/stats/contacts
+// @desc    Get revenue reports
+// @route   GET /api/admin/revenue
 // @access  Private/Admin
-export const getContactStatsHandler = async (req: Request, res: Response, next: NextFunction) => {
+export const getRevenueReportsHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const stats = await getContactStats();
+    const period = req.query.period as string || 'all';
+    const reports = await getRevenueReports(period);
 
     res.status(200).json({
       success: true,
-      data: stats,
+      data: reports,
     });
-  } catch (error) {
+  } catch (error: any) {
     next(error);
   }
 };
 
-// @desc    Get newsletter statistics
-// @route   GET /api/admin/stats/newsletter
+// @desc    Get overall system health
+// @route   GET /api/admin/health
 // @access  Private/Admin
-export const getNewsletterStatsHandler = async (req: Request, res: Response, next: NextFunction) => {
+export const getSystemHealthHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const stats = await getNewsletterStats();
+    const now = new Date();
+    const uptime = process.uptime();
+    
+    const health = {
+      status: 'healthy',
+      timestamp: now,
+      uptime: {
+        seconds: uptime,
+        human: formatUptime(uptime),
+      },
+      memory: process.memoryUsage(),
+      nodeVersion: process.version,
+      environment: process.env.NODE_ENV || 'development',
+    };
 
     res.status(200).json({
       success: true,
-      data: stats,
+      data: health,
     });
-  } catch (error) {
+  } catch (error: any) {
     next(error);
   }
 };
 
-// @desc    Get top rated trips
-// @route   GET /api/admin/top-trips
-// @access  Private/Admin
-export const getTopTripsHandler = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const limit = req.query.limit ? parseInt(req.query.limit as string) : 5;
-    const trips = await getTopTrips(limit);
+const formatUptime = (seconds: number): string => {
+  const days = Math.floor(seconds / 86400);
+  const hours = Math.floor((seconds % 86400) / 3600);
+  const minutes = Math.floor((seconds % 3600) / 60);
+  const secs = Math.floor(seconds % 60);
 
-    res.status(200).json({
-      success: true,
-      data: trips,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// @desc    Get recent bookings
-// @route   GET /api/admin/recent-bookings
-// @access  Private/Admin
-export const getRecentBookingsHandler = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
-    const bookings = await getRecentBookings(limit);
-
-    res.status(200).json({
-      success: true,
-      data: bookings,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
-
-// @desc    Get recent contacts
-// @route   GET /api/admin/recent-contacts
-// @access  Private/Admin
-export const getRecentContactsHandler = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
-    const contacts = await getRecentContacts(limit);
-
-    res.status(200).json({
-      success: true,
-      data: contacts,
-    });
-  } catch (error) {
-    next(error);
-  }
+  return `${days}d ${hours}h ${minutes}m ${secs}s`;
 };

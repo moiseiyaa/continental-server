@@ -10,7 +10,6 @@ export interface IUser extends Document {
   emailVerified: boolean;
   emailVerificationToken?: string;
   emailVerificationExpire?: Date;
-  isActive: boolean;
   matchPassword: (enteredPassword: string) => Promise<boolean>;
   getSignedJwtToken: () => string;
   getResetPasswordToken: () => string;

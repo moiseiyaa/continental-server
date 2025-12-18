@@ -1,71 +1,48 @@
 import { Router } from 'express';
 import {
-  getDashboardHandler,
+  getDashboardStatsHandler,
   getUserStatsHandler,
-  getTripStatsHandler,
   getBookingStatsHandler,
-  getRevenueStatsHandler,
-  getContactStatsHandler,
-  getNewsletterStatsHandler,
-  getTopTripsHandler,
-  getRecentBookingsHandler,
-  getRecentContactsHandler,
+  getTripStatsHandler,
+  getRevenueReportsHandler,
+  getSystemHealthHandler,
 } from '../controllers/admin.controller';
 import { protect, authorize } from '../middlewares/auth.middleware';
 
 const router = Router();
 
-// All admin routes require authentication and admin role
-router.use(protect, authorize('admin'));
+// Apply authentication and authorization to all admin routes
+router.use(protect);
+router.use(authorize('admin'));
 
 // @route   GET /api/admin/dashboard
-// @desc    Get dashboard overview with all statistics
+// @desc    Get dashboard statistics
 // @access  Private/Admin
-router.get('/dashboard', getDashboardHandler);
+router.get('/dashboard', getDashboardStatsHandler);
 
 // @route   GET /api/admin/stats/users
 // @desc    Get user statistics
 // @access  Private/Admin
 router.get('/stats/users', getUserStatsHandler);
 
-// @route   GET /api/admin/stats/trips
-// @desc    Get trip statistics
-// @access  Private/Admin
-router.get('/stats/trips', getTripStatsHandler);
-
 // @route   GET /api/admin/stats/bookings
 // @desc    Get booking statistics
 // @access  Private/Admin
 router.get('/stats/bookings', getBookingStatsHandler);
 
-// @route   GET /api/admin/stats/revenue
-// @desc    Get revenue statistics
+// @route   GET /api/admin/stats/trips
+// @desc    Get trip statistics
 // @access  Private/Admin
-router.get('/stats/revenue', getRevenueStatsHandler);
+router.get('/stats/trips', getTripStatsHandler);
 
-// @route   GET /api/admin/stats/contacts
-// @desc    Get contact statistics
+// @route   GET /api/admin/revenue
+// @desc    Get revenue reports
 // @access  Private/Admin
-router.get('/stats/contacts', getContactStatsHandler);
+router.get('/revenue', getRevenueReportsHandler);
 
-// @route   GET /api/admin/stats/newsletter
-// @desc    Get newsletter statistics
+// @route   GET /api/admin/health
+// @desc    Get system health
 // @access  Private/Admin
-router.get('/stats/newsletter', getNewsletterStatsHandler);
-
-// @route   GET /api/admin/top-trips
-// @desc    Get top rated trips
-// @access  Private/Admin
-router.get('/top-trips', getTopTripsHandler);
-
-// @route   GET /api/admin/recent-bookings
-// @desc    Get recent bookings
-// @access  Private/Admin
-router.get('/recent-bookings', getRecentBookingsHandler);
-
-// @route   GET /api/admin/recent-contacts
-// @desc    Get recent contacts
-// @access  Private/Admin
-router.get('/recent-contacts', getRecentContactsHandler);
+router.get('/health', getSystemHealthHandler);
 
 export default router;

@@ -5,201 +5,308 @@ import Review from '../models/review.model';
 import Contact from '../models/contact.model';
 import Newsletter from '../models/newsletter.model';
 
-export const getUserStats = async (): Promise<any> => {
-  const totalUsers = await User.countDocuments();
-  const adminUsers = await User.countDocuments({ role: 'admin' });
-  const regularUsers = await User.countDocuments({ role: 'user' });
-  const activeUsers = await User.countDocuments({ isActive: true });
-  const inactiveUsers = await User.countDocuments({ isActive: false });
-
-  const usersThisMonth = await User.countDocuments({
-    createdAt: {
-      $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-      $lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
-    },
-  });
+export const getDashboardStats = async (): Promise<any> => {
+  const [
+    totalUsers,
+    activeUsers,
+    totalTrips,
+    activeTrips,
+    totalBookings,
+    confirmedBookings,
+    totalReviews,
+    totalContacts,
+    totalSubscribers,
+  ] = await Promise.all([
+    User.countDocuments(),
+    User.countDocuments({ isActive: true }),
+    Trip.countDocuments(),
+    Trip.countDocuments({ status: 'active' }),
+    Booking.countDocuments(),
+    Booking.countDocuments({ status: 'confirmed' }),
+    Review.countDocuments(),
+    Contact.countDocuments(),
+    Newsletter.countDocuments({ isActive: true }),
+  ]);
 
   return {
-    totalUsers,
-    adminUsers,
-    regularUsers,
-    activeUsers,
-    inactiveUsers,
-    usersThisMonth,
+    users: {
+      total: totalUsers,
+      active: activeUsers,
+      inactive: totalUsers - activeUsers,
+    },
+    trips: {
+      total: totalTrips,
+      active: activeTrips,
+      inactive: totalTrips - activeTrips,
+    },
+    bookings: {
+      total: totalBookings,
+      confirmed: confirmedBookings,
+      pending: totalBookings - confirmedBookings,
+    },
+    reviews: {
+      total: totalReviews,
+    },
+    contacts: {
+      total: totalContacts,
+    },
+    newsletter: {
+      total: totalSubscribers,
+    },
   };
 };
 
-export const getTripStats = async (): Promise<any> => {
-  const totalTrips = await Trip.countDocuments();
-  const activeTrips = await Trip.countDocuments({ status: 'active' });
-  const inactiveTrips = await Trip.countDocuments({ status: 'inactive' });
-  const cancelledTrips = await Trip.countDocuments({ status: 'cancelled' });
+export const getUserStats = async (period: string = 'all'): Promise<any> => {
+  const dateFilter = getDateFilter(period);
+  
+  const [totalUsers, newUsers, activeUsers] = await Promise.all([
+    User.countDocuments(dateFilter ? { createdAt: dateFilter } : {}),
+    User.countDocuments(dateFilter ? { createdAt: dateFilter } : {}),
+    User.countDocuments({ 
+      ...dateFilter, 
+      isActive: true 
+    }),
+  ]);
 
-  const tripStats = await Trip.aggregate([
+  const userGrowth = await User.aggregate([
+    {
+      $match: dateFilter ? { createdAt: dateFilter } : {},
+    },
+    {
+      $group: {
+        _id: {
+          year: { $year: '$createdAt' },
+          month: { $month: '$createdAt' },
+        },
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { '_id.year': 1, '_id.month': 1 } },
+  ]);
+
+  return {
+    total: totalUsers,
+    new: newUsers,
+    active: activeUsers,
+    growth: userGrowth,
+  };
+};
+
+export const getBookingStats = async (period: string = 'all'): Promise<any> => {
+  const dateFilter = getDateFilter(period);
+  
+  const [
+    totalBookings,
+    confirmedBookings,
+    pendingBookings,
+    cancelledBookings,
+    completedBookings,
+  ] = await Promise.all([
+    Booking.countDocuments(dateFilter ? { createdAt: dateFilter } : {}),
+    Booking.countDocuments({ 
+      ...dateFilter, 
+      status: 'confirmed' 
+    }),
+    Booking.countDocuments({ 
+      ...dateFilter, 
+      status: 'pending' 
+    }),
+    Booking.countDocuments({ 
+      ...dateFilter, 
+      status: 'cancelled' 
+    }),
+    Booking.countDocuments({ 
+      ...dateFilter, 
+      status: 'completed' 
+    }),
+  ]);
+
+  const revenueData = await Booking.aggregate([
+    {
+      $match: { 
+        ...dateFilter,
+        status: 'confirmed',
+      },
+    },
+    {
+      $lookup: {
+        from: 'trips',
+        localField: 'trip',
+        foreignField: '_id',
+        as: 'tripInfo',
+      },
+    },
+    { $unwind: '$tripInfo' },
     {
       $group: {
         _id: null,
-        avgPrice: { $avg: '$price' },
-        minPrice: { $min: '$price' },
-        maxPrice: { $max: '$price' },
-        avgRating: { $avg: '$rating' },
-        totalReviews: { $sum: '$reviews' },
+        totalRevenue: { $sum: '$tripInfo.price' },
+        averageBookingValue: { $avg: '$tripInfo.price' },
       },
     },
   ]);
 
-  const stats = tripStats.length > 0 ? tripStats[0] : {};
+  const bookingTrends = await Booking.aggregate([
+    {
+      $match: dateFilter ? { createdAt: dateFilter } : {},
+    },
+    {
+      $group: {
+        _id: {
+          year: { $year: '$createdAt' },
+          month: { $month: '$createdAt' },
+        },
+        count: { $sum: 1 },
+      },
+    },
+    { $sort: { '_id.year': 1, '_id.month': 1 } },
+  ]);
 
   return {
+    total: totalBookings,
+    confirmed: confirmedBookings,
+    pending: pendingBookings,
+    cancelled: cancelledBookings,
+    completed: completedBookings,
+    revenue: revenueData[0] || { totalRevenue: 0, averageBookingValue: 0 },
+    trends: bookingTrends,
+  };
+};
+
+export const getTripStats = async (period: string = 'all'): Promise<any> => {
+  const dateFilter = getDateFilter(period);
+  
+  const [
     totalTrips,
     activeTrips,
-    inactiveTrips,
-    cancelledTrips,
-    avgPrice: Math.round(stats.avgPrice || 0),
-    minPrice: stats.minPrice || 0,
-    maxPrice: stats.maxPrice || 0,
-    avgRating: Math.round((stats.avgRating || 0) * 10) / 10,
-    totalReviews: stats.totalReviews || 0,
-  };
-};
+    popularTrips,
+  ] = await Promise.all([
+    Trip.countDocuments(dateFilter ? { createdAt: dateFilter } : {}),
+    Trip.countDocuments({ 
+      ...dateFilter, 
+      status: 'active' 
+    }),
+    Trip.find(dateFilter ? { createdAt: dateFilter } : {})
+      .sort({ rating: -1, reviews: -1 })
+      .limit(5)
+      .select('title destination rating reviews price'),
+  ]);
 
-export const getBookingStats = async (): Promise<any> => {
-  const totalBookings = await Booking.countDocuments();
-  const pendingBookings = await Booking.countDocuments({ status: 'pending' });
-  const confirmedBookings = await Booking.countDocuments({ status: 'confirmed' });
-  const cancelledBookings = await Booking.countDocuments({ status: 'cancelled' });
-  const completedBookings = await Booking.countDocuments({ status: 'completed' });
-
-  const paymentStats = await Booking.countDocuments({ paymentStatus: 'paid' });
-  const unpaidBookings = await Booking.countDocuments({ paymentStatus: 'pending' });
-
-  const bookingsThisMonth = await Booking.countDocuments({
-    createdAt: {
-      $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-      $lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
+  const tripsByDestination = await Trip.aggregate([
+    {
+      $match: dateFilter ? { createdAt: dateFilter } : {},
     },
-  });
-
-  return {
-    totalBookings,
-    pendingBookings,
-    confirmedBookings,
-    cancelledBookings,
-    completedBookings,
-    paidBookings: paymentStats,
-    unpaidBookings,
-    bookingsThisMonth,
-  };
-};
-
-export const getRevenueStats = async (): Promise<any> => {
-  const paidBookings = await Booking.find({ paymentStatus: 'paid' }).populate('trip');
-
-  let totalRevenue = 0;
-  let bookingCount = 0;
-
-  paidBookings.forEach((booking: any) => {
-    if (booking.trip && booking.trip.price) {
-      totalRevenue += booking.trip.price * (booking.numberOfParticipants || 1);
-      bookingCount++;
-    }
-  });
-
-  const avgRevenuePerBooking = bookingCount > 0 ? Math.round(totalRevenue / bookingCount) : 0;
-
-  // Revenue this month
-  const thisMonthBookings = await Booking.find({
-    paymentStatus: 'paid',
-    createdAt: {
-      $gte: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-      $lt: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 1),
+    {
+      $group: {
+        _id: '$destination',
+        count: { $sum: 1 },
+        averagePrice: { $avg: '$price' },
+      },
     },
-  }).populate('trip');
-
-  let monthlyRevenue = 0;
-  thisMonthBookings.forEach((booking: any) => {
-    if (booking.trip && booking.trip.price) {
-      monthlyRevenue += booking.trip.price * (booking.numberOfParticipants || 1);
-    }
-  });
+    { $sort: { count: -1 } },
+    { $limit: 10 },
+  ]);
 
   return {
-    totalRevenue,
-    bookingCount,
-    avgRevenuePerBooking,
-    monthlyRevenue,
+    total: totalTrips,
+    active: activeTrips,
+    popular: popularTrips,
+    byDestination: tripsByDestination,
   };
 };
 
-export const getContactStats = async (): Promise<any> => {
-  const totalContacts = await Contact.countDocuments();
-  const newContacts = await Contact.countDocuments({ status: 'new' });
-  const readContacts = await Contact.countDocuments({ status: 'read' });
-  const respondedContacts = await Contact.countDocuments({ status: 'responded' });
-  const closedContacts = await Contact.countDocuments({ status: 'closed' });
+export const getRevenueReports = async (period: string = 'all'): Promise<any> => {
+  const dateFilter = getDateFilter(period);
+  
+  const revenueData = await Booking.aggregate([
+    {
+      $match: { 
+        ...dateFilter,
+        status: 'confirmed',
+      },
+    },
+    {
+      $lookup: {
+        from: 'trips',
+        localField: 'trip',
+        foreignField: '_id',
+        as: 'tripInfo',
+      },
+    },
+    { $unwind: '$tripInfo' },
+    {
+      $group: {
+        _id: {
+          year: { $year: '$createdAt' },
+          month: { $month: '$createdAt' },
+        },
+        revenue: { $sum: '$tripInfo.price' },
+        bookings: { $sum: 1 },
+      },
+    },
+    { $sort: { '_id.year': 1, '_id.month': 1 } },
+  ]);
+
+  const topRevenueTrips = await Booking.aggregate([
+    {
+      $match: { 
+        ...dateFilter,
+        status: 'confirmed',
+      },
+    },
+    {
+      $lookup: {
+        from: 'trips',
+        localField: 'trip',
+        foreignField: '_id',
+        as: 'tripInfo',
+      },
+    },
+    { $unwind: '$tripInfo' },
+    {
+      $group: {
+        _id: '$tripInfo._id',
+        title: { $first: '$tripInfo.title' },
+        destination: { $first: '$tripInfo.destination' },
+        revenue: { $sum: '$tripInfo.price' },
+        bookings: { $sum: 1 },
+      },
+    },
+    { $sort: { revenue: -1 } },
+    { $limit: 10 },
+  ]);
 
   return {
-    totalContacts,
-    newContacts,
-    readContacts,
-    respondedContacts,
-    closedContacts,
+    monthlyRevenue: revenueData,
+    topRevenueTrips,
+    totalRevenue: revenueData.reduce((sum, item) => sum + item.revenue, 0),
+    totalBookings: revenueData.reduce((sum, item) => sum + item.bookings, 0),
   };
 };
 
-export const getNewsletterStats = async (): Promise<any> => {
-  const totalSubscribers = await Newsletter.countDocuments();
-  const activeSubscribers = await Newsletter.countDocuments({ isActive: true });
-  const unsubscribed = await Newsletter.countDocuments({ isActive: false });
+const getDateFilter = (period: string): any => {
+  const now = new Date();
+  const startDate = new Date();
 
-  return {
-    totalSubscribers,
-    activeSubscribers,
-    unsubscribed,
-    unsubscribeRate: totalSubscribers > 0 ? ((unsubscribed / totalSubscribers) * 100).toFixed(2) : 0,
-  };
-};
+  switch (period) {
+    case '7days':
+      startDate.setDate(now.getDate() - 7);
+      break;
+    case '30days':
+      startDate.setDate(now.getDate() - 30);
+      break;
+    case '90days':
+      startDate.setDate(now.getDate() - 90);
+      break;
+    case 'year':
+      startDate.setFullYear(now.getFullYear() - 1);
+      break;
+    case 'month':
+      startDate.setMonth(now.getMonth() - 1);
+      break;
+    default:
+      return null;
+  }
 
-export const getDashboardOverview = async (): Promise<any> => {
-  const [userStats, tripStats, bookingStats, revenueStats, contactStats, newsletterStats] =
-    await Promise.all([
-      getUserStats(),
-      getTripStats(),
-      getBookingStats(),
-      getRevenueStats(),
-      getContactStats(),
-      getNewsletterStats(),
-    ]);
-
-  return {
-    users: userStats,
-    trips: tripStats,
-    bookings: bookingStats,
-    revenue: revenueStats,
-    contacts: contactStats,
-    newsletter: newsletterStats,
-    timestamp: new Date(),
-  };
-};
-
-export const getTopTrips = async (limit: number = 5): Promise<any[]> => {
-  return await Trip.find()
-    .sort({ rating: -1, reviews: -1 })
-    .limit(limit)
-    .select('title destination price rating reviews');
-};
-
-export const getRecentBookings = async (limit: number = 10): Promise<any[]> => {
-  return await Booking.find()
-    .populate('user', 'name email')
-    .populate('trip', 'title destination price')
-    .sort({ createdAt: -1 })
-    .limit(limit);
-};
-
-export const getRecentContacts = async (limit: number = 10): Promise<any[]> => {
-  return await Contact.find()
-    .sort({ createdAt: -1 })
-    .limit(limit)
-    .select('name email subject status createdAt');
+  return { $gte: startDate };
 };
