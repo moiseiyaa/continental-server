@@ -10,6 +10,10 @@ import {
   cancelBooking,
   deleteBooking,
 } from '../services/booking.service';
+import {
+  notifyBookingConfirmation,
+  notifyBookingCancellation,
+} from '../services/notification.service';
 import { IBookingInput } from '../interfaces/booking.interface';
 
 // @desc    Create a new booking
@@ -24,6 +28,17 @@ export const createBookingHandler = async (req: any, res: Response, next: NextFu
 
     const bookingData: IBookingInput = req.body;
     const booking = await createBooking(bookingData, req.user.id);
+
+    // Send booking confirmation notification
+    try {
+      const tripId = booking.trip as any;
+      // Assuming trip has a title field, adjust as needed based on your Trip schema
+      const tripTitle = (tripId && tripId.title) || 'Your Booked Trip';
+      await notifyBookingConfirmation(req.user.id, tripTitle, booking._id as string);
+    } catch (notificationError) {
+      // Log notification error but don't fail the booking creation
+      console.error('Failed to send booking confirmation notification:', notificationError);
+    }
 
     res.status(201).json({
       success: true,
@@ -213,6 +228,16 @@ export const cancelBookingHandler = async (req: any, res: Response, next: NextFu
     }
 
     const cancelledBooking = await cancelBooking(req.params.id);
+
+    // Send booking cancellation notification
+    try {
+      const tripId = cancelledBooking.trip as any;
+      const tripTitle = (tripId && tripId.title) || 'Your Booked Trip';
+      await notifyBookingCancellation(req.user.id, tripTitle);
+    } catch (notificationError) {
+      // Log notification error but don't fail the cancellation
+      console.error('Failed to send booking cancellation notification:', notificationError);
+    }
 
     res.status(200).json({
       success: true,

@@ -8,6 +8,7 @@ import contactRoutes from './contact.routes';
 import userRoutes from './user.routes';
 import newsletterRoutes from './newsletter.routes';
 import adminRoutes from './admin.routes';
+import notificationRoutes from './notification.routes';
 
 const router = Router();
 
@@ -20,6 +21,4 @@ router.use('/gallery', galleryRoutes);
 router.use('/reviews', reviewRoutes);
 router.use('/contacts', contactRoutes);
 router.use('/newsletter', newsletterRoutes);
-router.use('/admin', adminRoutes);
-
-export default router;
+router.use('/notifications', notificationRoutes);

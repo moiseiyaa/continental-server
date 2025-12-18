@@ -1,8 +1,9 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
-import { register, login, getMe, forgotPassword, resetPassword, verifyEmail } from '../services/auth.service';
+import { register, login, getMe, forgotPassword, resetPassword, verifyEmail, refreshAccessToken } from '../services/auth.service';
 import { IUserInput } from '../interfaces';
-import { sendTokenResponse } from '../utils/apiResponse';
+import { sendTokenResponse, UnauthorizedError } from '../utils/apiResponse';
+import jwt from 'jsonwebtoken';
 
 // @desc    Register user
 // @route   POST /api/auth/register
@@ -121,6 +122,41 @@ export const verifyEmailHandler = async (req: Request, res: Response, next: Next
       success: true,
       message: 'Email verified successfully',
       data: user,
+    });
+  } catch (error: any) {
+    next(error);
+  }
+};
+
+// @desc    Refresh access token
+// @route   POST /api/auth/refresh-token
+// @access  Public
+export const refreshTokenHandler = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const refreshToken = req.cookies.refreshToken || req.body.refreshToken;
+
+    if (!refreshToken) {
+      return next(new UnauthorizedError('Refresh token not found'));
+    }
+
+    const user = await refreshAccessToken(refreshToken);
+
+    if (!user) {
+      return next(new UnauthorizedError('Invalid or expired refresh token'));
+    }
+
+    // Send new access token (without including new refresh token in response body)
+    res.cookie('token', user.getSignedJwtToken(), {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      expires: new Date(Date.now() + 30 * 60 * 1000), // 30 minutes
+    });
+
+    res.status(200).json({
+      success: true,
+      token: user.getSignedJwtToken(),
+      message: 'Token refreshed successfully',
     });
   } catch (error: any) {
     next(error);

@@ -9,6 +9,8 @@ import { errorHandler } from './middlewares/error.middleware';
 import { corsOptions } from './config/cors';
 import { generateCsrfToken, verifyCsrfToken } from './middlewares/csrf.middleware';
 import { apiLimiter } from './middlewares/rateLimiter.middleware';
+import { sanitizeInput } from './middlewares/sanitizer.middleware';
+import { cacheMiddleware, invalidateCache } from './middlewares/cache.middleware';
 import routes from './routes';
 
 class App {
@@ -36,6 +38,16 @@ class App {
 
     // Rate limiting on API routes
     this.app.use('/api', apiLimiter);
+
+    // Input sanitization on API routes
+    this.app.use('/api', sanitizeInput);
+
+    // Response caching on API routes (exclude auth, bookings, notifications - user specific)
+    this.app.use('/api', cacheMiddleware({ 
+      ttl: 5 * 60, // 5 minutes default
+      excludePaths: ['/auth', '/bookings', '/notifications', '/users/profile'],
+      cachePaths: ['/trips', '/gallery', '/reviews'] 
+    }));
 
     // CSRF token verification on state-changing requests (except certain public routes)
     this.app.use('/api', (req: Request, res: Response, next: NextFunction) => {

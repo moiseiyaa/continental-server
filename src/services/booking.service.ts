@@ -2,33 +2,61 @@ import { IBooking, IBookingInput } from '../interfaces/booking.interface';
 import Booking from '../models/booking.model';
 import Trip from '../models/trip.model';
 import { updateTripParticipants } from './trip.service';
+import { logError } from '../utils/logger';
+import mongoose from 'mongoose';
 
 export const createBooking = async (bookingData: IBookingInput, userId: string): Promise<IBooking> => {
-  // Get trip details
-  const trip = await Trip.findById(bookingData.trip);
-  if (!trip) {
-    throw new Error('Trip not found');
+  // Use MongoDB session for transaction support
+  const session = await mongoose.startSession();
+  session.startTransaction();
+
+  try {
+    // Get trip details with session
+    const trip = await Trip.findById(bookingData.trip).session(session);
+    if (!trip) {
+      throw new Error('Trip not found');
+    }
+
+    // Check if trip has available spots
+    if (trip.currentParticipants + bookingData.numberOfParticipants > trip.maxParticipants) {
+      throw new Error('Not enough available spots for this trip');
+    }
+
+    // Calculate total price
+    const totalPrice = trip.price * bookingData.numberOfParticipants;
+
+    // Create booking within transaction
+    const booking = await Booking.create(
+      [
+        {
+          ...bookingData,
+          user: userId,
+          totalPrice,
+        },
+      ],
+      { session }
+    );
+
+    // Update trip participants within transaction
+    await Trip.findByIdAndUpdate(
+      bookingData.trip,
+      { $inc: { currentParticipants: bookingData.numberOfParticipants } },
+      { new: true, session }
+    );
+
+    // Commit transaction
+    await session.commitTransaction();
+
+    // Return populated booking (after transaction)
+    return await booking[0].populate('user trip');
+  } catch (error: any) {
+    // Rollback transaction on error
+    await session.abortTransaction();
+    logError('Error creating booking', error);
+    throw error;
+  } finally {
+    await session.endSession();
   }
-
-  // Check if trip has available spots
-  if (trip.currentParticipants + bookingData.numberOfParticipants > trip.maxParticipants) {
-    throw new Error('Not enough available spots for this trip');
-  }
-
-  // Calculate total price
-  const totalPrice = trip.price * bookingData.numberOfParticipants;
-
-  // Create booking
-  const booking = await Booking.create({
-    ...bookingData,
-    user: userId,
-    totalPrice,
-  });
-
-  // Update trip participants
-  await updateTripParticipants(bookingData.trip, bookingData.numberOfParticipants);
-
-  return booking.populate('user trip');
 };
 
 export const getUserBookings = async (userId: string): Promise<IBooking[]> => {

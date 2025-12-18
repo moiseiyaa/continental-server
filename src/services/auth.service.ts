@@ -117,3 +117,39 @@ export const verifyEmail = async (verificationToken: string): Promise<IUser> => 
 
   return user;
 };
+export const refreshAccessToken = async (refreshToken: string): Promise<IUser | null> => {
+  try {
+    // Verify refresh token
+    const decoded: any = jwt.verify(refreshToken, JWT_SECRET);
+
+    if (decoded.type !== 'refresh') {
+      throw new Error('Invalid token type');
+    }
+
+    // Get user
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    // Verify refresh token hasn't expired
+    if (!user.refreshTokenExpire || user.refreshTokenExpire < Date.now()) {
+      throw new Error('Refresh token expired');
+    }
+
+    // Verify hash matches stored hash
+    const refreshTokenHash = crypto
+      .createHash('sha256')
+      .update(refreshToken)
+      .digest('hex');
+
+    if (user.refreshTokenHash !== refreshTokenHash) {
+      throw new Error('Invalid refresh token');
+    }
+
+    return user;
+  } catch (error: any) {
+    console.error('Refresh token validation error:', error.message);
+    return null;
+  }
+};
