@@ -7,6 +7,8 @@ import morgan from 'morgan';
 import { connectDB } from './config/db';
 import { errorHandler } from './middlewares/error.middleware';
 import { corsOptions } from './config/cors';
+import { generateCsrfToken, verifyCsrfToken } from './middlewares/csrf.middleware';
+import { apiLimiter } from './middlewares/rateLimiter.middleware';
 import routes from './routes';
 
 class App {
@@ -28,6 +30,25 @@ class App {
     this.app.use(helmet());
     this.app.use(compression());
     this.app.use(cors(corsOptions));
+
+    // CSRF token generation on GET requests
+    this.app.use(generateCsrfToken);
+
+    // Rate limiting on API routes
+    this.app.use('/api', apiLimiter);
+
+    // CSRF token verification on state-changing requests (except certain public routes)
+    this.app.use('/api', (req: Request, res: Response, next: NextFunction) => {
+      // Skip CSRF verification for public routes
+      const publicPaths = ['/auth/login', '/auth/register', '/auth/forgot-password', '/auth/reset-password', '/auth/verify-email'];
+      const isPublicPath = publicPaths.some(path => req.path.includes(path));
+      
+      if (isPublicPath && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method)) {
+        return next(); // Skip CSRF for public endpoints
+      }
+      
+      verifyCsrfToken(req, res, next);
+    });
 
     // Logging
     if (process.env.NODE_ENV === 'development') {

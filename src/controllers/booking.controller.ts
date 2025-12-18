@@ -53,11 +53,33 @@ export const getUserBookingsHandler = async (req: any, res: Response, next: Next
 // @desc    Get single booking
 // @route   GET /api/bookings/:id
 // @access  Private
-export const getBookingByIdHandler = async (req: Request, res: Response, next: NextFunction) => {
+export const getBookingByIdHandler = async (req: any, res: Response, next: NextFunction) => {
   try {
     const booking = await getBookingById(req.params.id);
 
     if (!booking) {
+      return res.status(404).json({
+        success: false,
+        message: 'Booking not found',
+      });
+    }
+
+    // Verify ownership (admin can view any booking, users only their own)
+    if (req.user.role !== 'admin' && booking.user.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: 'You are not authorized to view this booking',
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      data: booking,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
       return res.status(404).json({
         success: false,
         message: 'Booking not found',
@@ -173,7 +195,7 @@ export const updatePaymentStatusHandler = async (req: Request, res: Response, ne
 // @access  Private
 export const cancelBookingHandler = async (req: any, res: Response, next: NextFunction) => {
   try {
-    const booking = await cancelBooking(req.params.id);
+    const booking = await getBookingById(req.params.id);
 
     if (!booking) {
       return res.status(404).json({
@@ -182,10 +204,20 @@ export const cancelBookingHandler = async (req: any, res: Response, next: NextFu
       });
     }
 
+    // Verify ownership
+    if (booking.user.toString() !== req.user.id) {
+      return res.status(403).json({
+        success: false,
+        message: 'You are not authorized to cancel this booking',
+      });
+    }
+
+    const cancelledBooking = await cancelBooking(req.params.id);
+
     res.status(200).json({
       success: true,
       message: 'Booking cancelled successfully',
-      data: booking,
+      data: cancelledBooking,
     });
   } catch (error: any) {
     next(error);

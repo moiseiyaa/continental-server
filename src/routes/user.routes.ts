@@ -11,6 +11,7 @@ import {
   reactivateUserHandler,
 } from '../controllers/user.controller';
 import { protect, authorize } from '../middlewares/auth.middleware';
+import { requireRole, verifyOwnership } from '../middlewares/ownership.middleware';
 
 const router = Router();
 
@@ -40,12 +41,12 @@ router.delete('/profile', protect, deleteUserAccount);
 // @route   GET /api/users
 // @desc    Get all users (Admin)
 // @access  Private/Admin
-router.get('/', protect, authorize('admin'), getAllUsersHandler);
+router.get('/', protect, requireRole('admin'), getAllUsersHandler);
 
 // @route   GET /api/users/:id
 // @desc    Get single user (Admin)
 // @access  Private/Admin
-router.get('/:id', protect, authorize('admin'), getUserByIdHandler);
+router.get('/:id', protect, requireRole('admin'), getUserByIdHandler);
 
 // @route   PUT /api/users/:id/role
 // @desc    Update user role (Admin)
@@ -53,7 +54,7 @@ router.get('/:id', protect, authorize('admin'), getUserByIdHandler);
 router.put(
   '/:id/role',
   protect,
-  authorize('admin'),
+  requireRole('admin'),
   [body('role').notEmpty().withMessage('Role is required')],
   updateUserRoleHandler
 );
@@ -61,11 +62,11 @@ router.put(
 // @route   PUT /api/users/:id/deactivate
 // @desc    Deactivate user account (Admin)
 // @access  Private/Admin
-router.put('/:id/deactivate', protect, authorize('admin'), deactivateUserHandler);
+router.put('/:id/deactivate', protect, requireRole('admin'), deactivateUserHandler);
 
 // @route   PUT /api/users/:id/reactivate
 // @desc    Reactivate user account (Admin)
 // @access  Private/Admin
-router.put('/:id/reactivate', protect, authorize('admin'), reactivateUserHandler);
+router.put('/:id/reactivate', protect, requireRole('admin'), reactivateUserHandler);
 
 export default router;

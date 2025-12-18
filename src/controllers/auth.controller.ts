@@ -57,6 +57,26 @@ export const getCurrentUser = async (req: any, res: Response, next: NextFunction
   }
 };
 
+// @desc    Logout user
+// @route   POST /api/auth/logout
+// @access  Private
+export const logoutUser = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    res.clearCookie('token', {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+    });
+
+    res.status(200).json({
+      success: true,
+      message: 'Logged out successfully',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
 // @desc    Forgot password
 // @route   POST /api/auth/forgot-password
 // @access  Public

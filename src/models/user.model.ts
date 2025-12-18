@@ -41,6 +41,8 @@ const UserSchema = new Schema<IUser>(
     },
     emailVerificationToken: String,
     emailVerificationExpire: Date,
+    refreshTokenHash: String,
+    refreshTokenExpire: Date,
     isActive: {
       type: Boolean,
       default: true,
@@ -106,6 +108,25 @@ UserSchema.methods.getEmailVerificationToken = function (): string {
   this.emailVerificationExpire = Date.now() + 24 * 60 * 60 * 1000;
 
   return verificationToken;
+};
+
+// Generate refresh token (longer expiry for token rotation)
+UserSchema.methods.getRefreshToken = function (): string {
+  const refreshToken = jwt.sign(
+    { id: this._id.toString(), type: 'refresh' },
+    JWT_SECRET,
+    { expiresIn: '30d' }
+  );
+
+  // Hash and store in database for validation
+  this.refreshTokenHash = crypto
+    .createHash('sha256')
+    .update(refreshToken)
+    .digest('hex');
+
+  this.refreshTokenExpire = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days
+
+  return refreshToken;
 };
 
 export default model<IUser>('User', UserSchema);

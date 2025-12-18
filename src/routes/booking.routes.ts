@@ -11,6 +11,7 @@ import {
   deleteBookingHandler,
 } from '../controllers/booking.controller';
 import { protect, authorize } from '../middlewares/auth.middleware';
+import { requireRole, verifyResourceOwnership } from '../middlewares/ownership.middleware';
 
 const router = Router();
 
@@ -36,12 +37,12 @@ router.get('/user/my-bookings', protect, getUserBookingsHandler);
 // @route   GET /api/bookings
 // @desc    Get all bookings (Admin)
 // @access  Private/Admin
-router.get('/', protect, authorize('admin'), getAllBookingsHandler);
+router.get('/', protect, requireRole('admin'), getAllBookingsHandler);
 
 // @route   GET /api/bookings/:id
 // @desc    Get single booking
 // @access  Private
-router.get('/:id', protect, getBookingByIdHandler);
+router.get('/:id', protect, verifyResourceOwnership('user'), getBookingByIdHandler);
 
 // @route   PUT /api/bookings/:id/status
 // @desc    Update booking status
@@ -49,7 +50,7 @@ router.get('/:id', protect, getBookingByIdHandler);
 router.put(
   '/:id/status',
   protect,
-  authorize('admin'),
+  requireRole('admin'),
   [body('status', 'Status is required').not().isEmpty()],
   updateBookingStatusHandler
 );
@@ -60,7 +61,7 @@ router.put(
 router.put(
   '/:id/payment-status',
   protect,
-  authorize('admin'),
+  requireRole('admin'),
   [body('paymentStatus', 'Payment status is required').not().isEmpty()],
   updatePaymentStatusHandler
 );
@@ -68,11 +69,11 @@ router.put(
 // @route   PUT /api/bookings/:id/cancel
 // @desc    Cancel booking
 // @access  Private
-router.put('/:id/cancel', protect, cancelBookingHandler);
+router.put('/:id/cancel', protect, verifyResourceOwnership('user'), cancelBookingHandler);
 
 // @route   DELETE /api/bookings/:id
 // @desc    Delete booking
 // @access  Private/Admin
-router.delete('/:id', protect, authorize('admin'), deleteBookingHandler);
+router.delete('/:id', protect, requireRole('admin'), deleteBookingHandler);
 
 export default router;

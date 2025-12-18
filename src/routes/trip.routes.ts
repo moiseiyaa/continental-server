@@ -10,6 +10,7 @@ import {
   getTripsByDestinationHandler,
 } from '../controllers/trip.controller';
 import { protect, authorize } from '../middlewares/auth.middleware';
+import { requireRole } from '../middlewares/ownership.middleware';
 
 const router = Router();
 
@@ -19,7 +20,7 @@ const router = Router();
 router.post(
   '/',
   protect,
-  authorize('admin'),
+  requireRole('admin'),
   [
     body('title', 'Title is required').not().isEmpty(),
     body('description', 'Description is required').not().isEmpty(),
@@ -59,7 +60,7 @@ router.get('/:id', getTripByIdHandler);
 router.put(
   '/:id',
   protect,
-  authorize('admin'),
+  requireRole('admin'),
   [
     body('title').optional().not().isEmpty(),
     body('description').optional().not().isEmpty(),
@@ -74,6 +75,6 @@ router.put(
 // @route   DELETE /api/trips/:id
 // @desc    Delete trip
 // @access  Private/Admin
-router.delete('/:id', protect, authorize('admin'), deleteTripHandler);
+router.delete('/:id', protect, requireRole('admin'), deleteTripHandler);
 
 export default router;

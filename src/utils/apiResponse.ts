@@ -1,10 +1,19 @@
 import { Response } from 'express';
 import { JWT_COOKIE_EXPIRE, NODE_ENV } from '../config/env';
 
+interface TokenResponse {
+  success: boolean;
+  token: string;
+  refreshToken?: string;
+}
+
 // Get token from model, create cookie and send response
-export const sendTokenResponse = (user: any, statusCode: number, res: Response) => {
-  // Create token
+export const sendTokenResponse = (user: any, statusCode: number, res: Response, includeRefreshToken: boolean = true) => {
+  // Create access token
   const token = user.getSignedJwtToken();
+  
+  // Create refresh token
+  const refreshToken = includeRefreshToken ? user.getRefreshToken() : null;
 
   const options = {
     expires: new Date(
@@ -12,15 +21,30 @@ export const sendTokenResponse = (user: any, statusCode: number, res: Response) 
     ),
     httpOnly: true,
     secure: NODE_ENV === 'production',
+    sameSite: 'strict' as const,
   };
 
-  res
-    .status(statusCode)
-    .cookie('token', token, options)
-    .json({
-      success: true,
-      token,
-    });
+  // Set access token cookie (shorter expiry - 30 minutes)
+  res.cookie('token', token, {
+    ...options,
+    expires: new Date(Date.now() + 30 * 60 * 1000),
+  });
+
+  // Set refresh token cookie (longer expiry - from JWT_COOKIE_EXPIRE)
+  if (refreshToken) {
+    res.cookie('refreshToken', refreshToken, options);
+  }
+
+  const response: TokenResponse = {
+    success: true,
+    token,
+  };
+
+  if (refreshToken) {
+    response.refreshToken = refreshToken;
+  }
+
+  res.status(statusCode).json(response);
 };
 
 // Custom error class
@@ -53,3 +77,13 @@ export class NotFoundError extends ApiError {
     super(message, 404);
   }
 }
+
+export class ForbiddenError extends ApiError {
+  constructor(message: string = 'Forbidden') {
+    super(message, 403);
+  }
+}
+
+export class ConflictError extends ApiError {
+  constructor(message: string = 'Conflict') {
+    super(message, 409);
