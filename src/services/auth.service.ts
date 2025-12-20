@@ -6,6 +6,8 @@ import { sendVerificationEmail, sendPasswordResetEmail, sendWelcomeEmail } from 
 import crypto from 'crypto';
 
 export const register = async (userData: IUserInput): Promise<{ user: IUser; token: string }> => {
+  // Normalize email to lowercase
+  userData.email = userData.email.toLowerCase();
   const user = await User.create(userData);
   const token = user.getSignedJwtToken();
   
@@ -25,6 +27,8 @@ export const register = async (userData: IUserInput): Promise<{ user: IUser; tok
 };
 
 export const login = async (email: string, password: string): Promise<{ user: IUser; token: string }> => {
+  // Normalize email to lowercase
+  email = email.toLowerCase();
   // Check if user exists
   const user = await User.findOne({ email }).select('+password');
   if (!user) {
@@ -46,6 +50,8 @@ export const getMe = async (userId: string): Promise<IUser | null> => {
 };
 
 export const forgotPassword = async (email: string): Promise<string> => {
+  // Normalize email to lowercase
+  email = email.toLowerCase();
   const user = await User.findOne({ email });
   if (!user) {
     throw new Error('User not found with this email');
