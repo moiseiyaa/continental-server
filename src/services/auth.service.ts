@@ -133,7 +133,7 @@ export const refreshAccessToken = async (refreshToken: string): Promise<IUser | 
     }
 
     // Verify refresh token hasn't expired
-    if (!user.refreshTokenExpire || user.refreshTokenExpire < Date.now()) {
+    if (!user.refreshTokenExpire || new Date(user.refreshTokenExpire) < new Date()) {
       throw new Error('Refresh token expired');
     }
 

@@ -34,7 +34,7 @@ export const createBookingHandler = async (req: any, res: Response, next: NextFu
       const tripId = booking.trip as any;
       // Assuming trip has a title field, adjust as needed based on your Trip schema
       const tripTitle = (tripId && tripId.title) || 'Your Booked Trip';
-      await notifyBookingConfirmation(req.user.id, tripTitle, booking._id as string);
+      await notifyBookingConfirmation(req.user.id, tripTitle, (booking._id as any).toString());
     } catch (notificationError) {
       // Log notification error but don't fail the booking creation
       console.error('Failed to send booking confirmation notification:', notificationError);
