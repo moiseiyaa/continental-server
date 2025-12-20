@@ -1,7 +1,12 @@
 import dotenv from 'dotenv';
 import path from 'path';
 
-dotenv.config({ path: path.join(__dirname, '../../.env') });
+// Load .env file only in development (Vercel uses environment variables)
+try {
+  dotenv.config({ path: path.join(__dirname, '../../.env') });
+} catch (err) {
+  // Silently ignore if .env doesn't exist (e.g., on Vercel)
+}
 
 export const NODE_ENV = process.env.NODE_ENV || 'development';
 export const PORT = process.env.PORT ? parseInt(process.env.PORT, 10) : 5000;
