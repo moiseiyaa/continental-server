@@ -87,3 +87,5 @@ export class ForbiddenError extends ApiError {
 export class ConflictError extends ApiError {
   constructor(message: string = 'Conflict') {
     super(message, 409);
+  }
+}

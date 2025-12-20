@@ -22,3 +22,5 @@ router.use('/reviews', reviewRoutes);
 router.use('/contacts', contactRoutes);
 router.use('/newsletter', newsletterRoutes);
 router.use('/notifications', notificationRoutes);
+
+export default router;

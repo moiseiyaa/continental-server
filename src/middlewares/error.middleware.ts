@@ -35,6 +35,8 @@ export const errorHandler = (
     const message = 'Duplicate field value entered';
     error = new ApiError(message, 400);
     logSecurityEvent('Duplicate Entry Attempt', (req as any).user?.id, { field: Object.keys(err.keyValue)[0] });
+  }
+
   // Mongoose validation error
   if (err.name === 'ValidationError') {
     const message = Object.values(err.errors).map((val: any) => val.message).join(', ');

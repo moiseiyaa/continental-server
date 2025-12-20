@@ -95,20 +95,6 @@ export const getBookingByIdHandler = async (req: any, res: Response, next: NextF
     next(error);
   }
 };
-      return res.status(404).json({
-        success: false,
-        message: 'Booking not found',
-      });
-    }
-
-    res.status(200).json({
-      success: true,
-      data: booking,
-    });
-  } catch (error) {
-    next(error);
-  }
-};
 
 // @desc    Get all bookings (Admin)
 // @route   GET /api/bookings
