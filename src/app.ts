@@ -45,8 +45,7 @@ class App {
     // Response caching on API routes (exclude auth, bookings, notifications - user specific)
     this.app.use('/api', cacheMiddleware({ 
       ttl: 5 * 60, // 5 minutes default
-      excludePaths: ['/auth', '/bookings', '/notifications', '/users/profile'],
-      cachePaths: ['/trips', '/gallery', '/reviews'] 
+      excludePaths: ['/auth', '/bookings', '/notifications', '/users/profile']
     }));
 
     // CSRF token verification on state-changing requests (except certain public routes)

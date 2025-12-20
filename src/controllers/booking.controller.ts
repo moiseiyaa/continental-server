@@ -215,6 +215,13 @@ export const cancelBookingHandler = async (req: any, res: Response, next: NextFu
 
     const cancelledBooking = await cancelBooking(req.params.id);
 
+    if (!cancelledBooking) {
+      return res.status(404).json({
+        success: false,
+        message: 'Booking not found',
+      });
+    }
+
     // Send booking cancellation notification
     try {
       const tripId = cancelledBooking.trip as any;
