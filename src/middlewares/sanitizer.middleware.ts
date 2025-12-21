@@ -75,7 +75,8 @@ export const sanitizeInput = (req: Request, res: Response, next: NextFunction) =
         sanitizedQuery[sanitizedKey] = sanitizeString(String(req.query[key]));
       }
     }
-    req.query = sanitizedQuery;
+    // Use Object.assign instead of direct assignment to avoid read-only property error
+    Object.assign(req.query, sanitizedQuery);
   }
 
   // Sanitize URL parameters
@@ -87,7 +88,8 @@ export const sanitizeInput = (req: Request, res: Response, next: NextFunction) =
         sanitizedParams[sanitizedKey] = sanitizeString(req.params[key]);
       }
     }
-    req.params = sanitizedParams;
+    // Use Object.assign instead of direct assignment to avoid read-only property error
+    Object.assign(req.params, sanitizedParams);
   }
 
   next();

@@ -29,16 +29,23 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
 // @access  Public
 export const loginUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log('Login request received:', { body: req.body });
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('Validation errors:', errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
 
     const { email, password } = req.body;
+    console.log('Attempting login with email:', email);
+    
     const { user, token } = await login(email, password);
+    console.log('Login successful for user:', user.email);
     
     sendTokenResponse(user, 200, res);
   } catch (error: any) {
+    console.error('Login error:', error.message);
     next(error);
   }
 };
