@@ -2,12 +2,35 @@
   "version": 2,
   "buildCommand": "npm run build",
   "outputDirectory": "dist",
-  "nodeVersion": "18.x",
+  "nodeVersion": "24.x",
   "functions": {
     "api/index.ts": {
       "runtime": "@vercel/node@3.0.0"
     }
   },
+  "headers": [
+    {
+      "source": "/api/(.*)",
+      "headers": [
+        {
+          "key": "Access-Control-Allow-Origin",
+          "value": "https://continentaltravelsandtours.com"
+        },
+        {
+          "key": "Access-Control-Allow-Methods",
+          "value": "GET, POST, PUT, DELETE, OPTIONS"
+        },
+        {
+          "key": "Access-Control-Allow-Headers",
+          "value": "Content-Type, Authorization, X-Requested-With"
+        },
+        {
+          "key": "Access-Control-Allow-Credentials",
+          "value": "true"
+        }
+      ]
+    }
+  ],
   "routes": [
     {
       "src": "/api/(.*)",
