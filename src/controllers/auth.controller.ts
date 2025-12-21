@@ -10,16 +10,23 @@ import jwt from 'jsonwebtoken';
 // @access  Public
 export const registerUser = async (req: Request, res: Response, next: NextFunction) => {
   try {
+    console.log('Registration request received:', { body: req.body });
+    
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
+      console.log('Registration validation errors:', errors.array());
       return res.status(400).json({ errors: errors.array() });
     }
 
     const { name, email, password, role }: IUserInput = req.body;
+    console.log('Attempting to register user:', { name, email, role });
+    
     const { user, token } = await register({ name, email, password, role });
+    console.log('Registration successful for user:', user.email);
     
     sendTokenResponse(user, 201, res);
   } catch (error: any) {
+    console.error('Registration error:', error.message);
     next(error);
   }
 };

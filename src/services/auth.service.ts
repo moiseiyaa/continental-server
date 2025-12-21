@@ -6,23 +6,33 @@ import { sendVerificationEmail, sendPasswordResetEmail, sendWelcomeEmail } from 
 import crypto from 'crypto';
 
 export const register = async (userData: IUserInput): Promise<{ user: IUser; token: string }> => {
+  console.log('Auth service: Starting registration for:', userData.email);
+  
   // Normalize email to lowercase
   userData.email = userData.email.toLowerCase();
+  console.log('Auth service: Email normalized to:', userData.email);
+  
   const user = await User.create(userData);
+  console.log('Auth service: User created in database with ID:', user._id);
+  
   const token = user.getSignedJwtToken();
+  console.log('Auth service: JWT token generated successfully');
   
   // Generate email verification token
   const verificationToken = user.getEmailVerificationToken();
   await user.save();
+  console.log('Auth service: Email verification token generated');
   
   // Send verification email
   try {
     await sendVerificationEmail(user.email, verificationToken, FRONTEND_URL);
     await sendWelcomeEmail(user.email, user.name);
+    console.log('Auth service: Verification emails sent');
   } catch (error) {
     console.error('Error sending email:', error);
   }
   
+  console.log('Auth service: Registration completed successfully');
   return { user, token };
 };
 
