@@ -45,7 +45,7 @@ export const sendVerificationEmail = async (
 
   await sendEmail({
     email,
-    subject: 'Email Verification - Continental Travels& Tours',
+    subject: 'Email Verification - Continental Travels & Tours',
     message,
   });
 };
@@ -71,7 +71,7 @@ export const sendPasswordResetEmail = async (
 
   await sendEmail({
     email,
-    subject: 'Password Reset Request - Continental Travels& Tours',
+    subject: 'Password Reset Request - Continental Travels & Tours',
     message,
   });
 };
@@ -81,18 +81,18 @@ export const sendWelcomeEmail = async (
   name: string
 ): Promise<void> => {
   const message = `
-    <h2>Welcome to Continental Travels& Tours!</h2>
+    <h2>Welcome to Continental Travels & Tours!</h2>
     <p>Hi ${name},</p>
     <p>Thank you for registering with us. We're excited to have you on board!</p>
     <p>You can now explore our amazing travel packages and book your next adventure.</p>
     <p>If you have any questions, feel free to contact us.</p>
     <p>Happy travels!</p>
-    <p>Best regards,<br>Continental Travels& Tours Team</p>
+    <p>Best regards,<br>Continental Travels & Tours Team</p>
   `;
 
   await sendEmail({
     email,
-    subject: 'Welcome to Continental Travels& Tours',
+    subject: 'Welcome to Continental Travels & Tours',
     message,
   });
 };
