@@ -54,31 +54,6 @@ const UserSchema = new Schema<IUser>(
 // Import the UserRole from interfaces
 import { UserRole } from '../interfaces/user.interface';
 
-// Encrypt password using bcrypt before saving
-UserSchema.pre('save', async function() {
-  const user = this as IUser & Document;
-  
-  // Only run this function if password was modified
-  if (!user.isModified('password')) {
-    return;
-  }
-
-  try {
-    const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(user.password, salt);
-  } catch (error) {
-    throw error;
-  }
-});
-
-// Set default role to 'user' if not provided
-UserSchema.pre('save', function(this: IUser & Document, next: (err?: Error) => void) {
-  if (!this.role) {
-    this.role = 'user';
-  }
-  next();
-});
-
 // Sign JWT and return
 UserSchema.methods.getSignedJwtToken = function (): string {
   const payload = { id: this._id.toString() };

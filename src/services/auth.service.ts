@@ -4,6 +4,7 @@ import { JWT_SECRET, JWT_EXPIRE, FRONTEND_URL } from '../config/env';
 import jwt from 'jsonwebtoken';
 import { sendVerificationEmail, sendPasswordResetEmail, sendWelcomeEmail } from './email.service';
 import crypto from 'crypto';
+import bcrypt from 'bcryptjs';
 
 export const register = async (userData: IUserInput): Promise<{ user: IUser; token: string }> => {
   try {
@@ -22,6 +23,16 @@ export const register = async (userData: IUserInput): Promise<{ user: IUser; tok
     // Normalize email to lowercase
     userData.email = userData.email.toLowerCase();
     console.log('Auth service: Email normalized to:', userData.email);
+    
+    // Hash password before saving
+    const salt = await bcrypt.genSalt(10);
+    userData.password = await bcrypt.hash(userData.password, salt);
+    console.log('Auth service: Password hashed');
+    
+    // Set default role if not provided
+    if (!userData.role) {
+      userData.role = 'user';
+    }
     
     // Create user
     const user = await User.create(userData);

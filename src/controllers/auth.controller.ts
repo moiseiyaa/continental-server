@@ -1,5 +1,4 @@
 import { Request, Response, NextFunction } from 'express';
-import { validationResult } from 'express-validator';
 import { register, login, getMe, forgotPassword, resetPassword, verifyEmail, refreshAccessToken } from '../services/auth.service';
 import { IUserInput } from '../interfaces';
 import { sendTokenResponse, UnauthorizedError } from '../utils/apiResponse';
@@ -12,12 +11,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
   try {
     console.log('Registration request received:', { body: req.body });
     
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      console.log('Registration validation errors:', errors.array());
-      return res.status(400).json({ errors: errors.array() });
-    }
-
+    // Validation is already handled by the middleware
     const { name, email, password, role }: IUserInput = req.body;
     console.log('Attempting to register user:', { name, email, role });
     
