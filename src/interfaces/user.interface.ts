@@ -1,10 +1,13 @@
 import { Document } from 'mongoose';
 
+// Define user roles as a type
+export type UserRole = 'user' | 'admin' | 'guest';
+
 export interface IUser extends Document {
   name: string;
   email: string;
   password: string;
-  role: 'user' | 'admin';
+  role: UserRole;
   resetPasswordToken?: string;
   resetPasswordExpire?: Date;
   emailVerified: boolean;
@@ -24,5 +27,5 @@ export interface IUserInput {
   name: string;
   email: string;
   password: string;
-  role?: 'user' | 'admin';
+  role?: UserRole;
 }

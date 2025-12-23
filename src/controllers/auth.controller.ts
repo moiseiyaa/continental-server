@@ -26,8 +26,47 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
     
     sendTokenResponse(user, 201, res);
   } catch (error: any) {
-    console.error('Registration error:', error.message);
-    next(error);
+    console.error('Registration error details:', {
+      message: error.message,
+      name: error.name,
+      stack: error.stack,
+      code: error.code,
+      keyPattern: error.keyPattern,
+      keyValue: error.keyValue
+    });
+    
+    // Handle duplicate email error
+    if (error.code === 11000) {
+      return res.status(400).json({
+        success: false,
+        error: 'Email already exists. Please use a different email.'
+      });
+    }
+    
+    // Handle validation errors
+    if (error.name === 'ValidationError') {
+      const messages = Object.values(error.errors).map((val: any) => val.message);
+      return res.status(400).json({
+        success: false,
+        error: messages.join(', ')
+      });
+    }
+    
+    // Handle specific error messages from the service layer
+    if (error.message && error.message !== 'Registration failed. Please try again.') {
+      return res.status(400).json({
+        success: false,
+        error: error.message
+      });
+    }
+    
+    // Default error response with more detailed error in development
+    res.status(500).json({
+      success: false,
+      error: process.env.NODE_ENV === 'development' 
+        ? `Registration failed: ${error.message}` 
+        : 'Registration failed. Please try again.'
+    });
   }
 };
 

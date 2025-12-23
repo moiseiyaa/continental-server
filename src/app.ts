@@ -1,12 +1,11 @@
 import express, { Application, Request, Response, NextFunction } from 'express';
-import cors from 'cors';
-import cookieParser from 'cookie-parser';
 import helmet from 'helmet';
 import compression from 'compression';
+import cookieParser from 'cookie-parser';
 import morgan from 'morgan';
 import { connectDB } from './config/db';
 import { errorHandler } from './middlewares/error.middleware';
-import { corsOptions } from './config/cors';
+import { corsMiddleware } from './config/cors';
 import { generateCsrfToken, verifyCsrfToken } from './middlewares/csrf.middleware';
 import { apiLimiter } from './middlewares/rateLimiter.middleware';
 import { sanitizeInput } from './middlewares/sanitizer.middleware';
@@ -31,7 +30,8 @@ class App {
     this.app.use(cookieParser());
     this.app.use(helmet());
     this.app.use(compression());
-    this.app.use(cors(corsOptions));
+    // Use CORS middleware
+    this.app.use(corsMiddleware);
 
     // CSRF token generation on GET requests
     this.app.use(generateCsrfToken);

@@ -6,34 +6,80 @@ import { sendVerificationEmail, sendPasswordResetEmail, sendWelcomeEmail } from 
 import crypto from 'crypto';
 
 export const register = async (userData: IUserInput): Promise<{ user: IUser; token: string }> => {
-  console.log('Auth service: Starting registration for:', userData.email);
-  
-  // Normalize email to lowercase
-  userData.email = userData.email.toLowerCase();
-  console.log('Auth service: Email normalized to:', userData.email);
-  
-  const user = await User.create(userData);
-  console.log('Auth service: User created in database with ID:', user._id);
-  
-  const token = user.getSignedJwtToken();
-  console.log('Auth service: JWT token generated successfully');
-  
-  // Generate email verification token
-  const verificationToken = user.getEmailVerificationToken();
-  await user.save();
-  console.log('Auth service: Email verification token generated');
-  
-  // Send verification email
   try {
-    await sendVerificationEmail(user.email, verificationToken, FRONTEND_URL);
-    await sendWelcomeEmail(user.email, user.name);
-    console.log('Auth service: Verification emails sent');
-  } catch (error) {
-    console.error('Error sending email:', error);
+    console.log('Auth service: Starting registration for:', userData.email);
+    
+    if (!userData.email || !userData.password || !userData.name) {
+      throw new Error('Name, email, and password are required');
+    }
+    
+    // Check if user already exists
+    const existingUser = await User.findOne({ email: userData.email.toLowerCase() });
+    if (existingUser) {
+      throw new Error('User with this email already exists');
+    }
+    
+    // Normalize email to lowercase
+    userData.email = userData.email.toLowerCase();
+    console.log('Auth service: Email normalized to:', userData.email);
+    
+    // Create user
+    const user = await User.create(userData);
+    console.log('Auth service: User created in database with ID:', user._id);
+    
+    // Generate JWT token
+    const token = user.getSignedJwtToken();
+    console.log('Auth service: JWT token generated successfully');
+    
+    // Generate email verification token
+    const verificationToken = user.getEmailVerificationToken();
+    await user.save();
+    console.log('Auth service: Email verification token generated');
+    
+    // In development, we'll skip sending emails but log the token
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Auth service: Development mode - Email sending skipped');
+      console.log('Verification token (dev only):', verificationToken);
+    } else {
+      // In production, send verification email
+      try {
+        await sendVerificationEmail(user.email, verificationToken, FRONTEND_URL);
+        await sendWelcomeEmail(user.email, user.name);
+        console.log('Auth service: Verification emails sent');
+      } catch (emailError) {
+        console.error('Error sending verification email:', emailError);
+        // Don't fail the registration if email sending fails
+      }
+    }
+    
+    console.log('Auth service: Registration completed successfully');
+    return { user, token };
+    
+  } catch (error: any) {
+    console.error('Auth service: Registration failed:', {
+      message: error.message,
+      name: error.name,
+      code: error.code,
+      stack: error.stack
+    });
+    
+    // Re-throw with a more user-friendly message
+    if (error.code === 11000) {
+      throw new Error('This email is already registered');
+    } else if (error.name === 'ValidationError') {
+      // Format Mongoose validation errors
+      const messages = Object.values(error.errors).map((val: any) => val.message);
+      throw new Error(`Validation failed: ${messages.join(', ')}`);
+    }
+    
+    // For other errors, include the original message if it's a known error
+    if (error.message && typeof error.message === 'string') {
+      throw error; // Re-throw with original error message
+    }
+    
+    // For unknown errors, provide a generic message
+    throw new Error('Registration failed. Please try again.');
   }
-  
-  console.log('Auth service: Registration completed successfully');
-  return { user, token };
 };
 
 export const login = async (email: string, password: string): Promise<{ user: IUser; token: string }> => {

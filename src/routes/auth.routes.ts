@@ -3,6 +3,8 @@ import { body } from 'express-validator';
 import { registerUser, loginUser, getCurrentUser, forgotPasswordHandler, resetPasswordHandler, verifyEmailHandler, logoutUser, refreshTokenHandler } from '../controllers/auth.controller';
 import { protect } from '../middlewares/auth.middleware';
 import { authRateLimiter, passwordResetLimiter } from '../middlewares/rateLimiter.middleware';
+import { validate } from '../middleware/validateRequest';
+import { registerValidation } from '../validations/user.validation';
 
 const router = Router();
 
@@ -12,11 +14,7 @@ const router = Router();
 router.post(
   '/register',
   authRateLimiter,
-  [
-    body('name', 'Name is required').not().isEmpty(),
-    body('email', 'Please include a valid email').isEmail(),
-    body('password', 'Please enter a password with 6 or more characters').isLength({ min: 6 }),
-  ],
+  validate(registerValidation),
   registerUser
 );
 

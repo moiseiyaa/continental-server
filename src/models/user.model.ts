@@ -51,14 +51,31 @@ const UserSchema = new Schema<IUser>(
   { timestamps: true }
 );
 
-// Encrypt password using bcrypt
-UserSchema.pre('save', async function (next: any) {
-  if (!this.isModified('password')) {
-    return next();
+// Import the UserRole from interfaces
+import { UserRole } from '../interfaces/user.interface';
+
+// Encrypt password using bcrypt before saving
+UserSchema.pre('save', async function() {
+  const user = this as IUser & Document;
+  
+  // Only run this function if password was modified
+  if (!user.isModified('password')) {
+    return;
   }
 
-  const salt = await bcrypt.genSalt(10);
-  (this as any).password = await bcrypt.hash((this as any).password, salt);
+  try {
+    const salt = await bcrypt.genSalt(10);
+    user.password = await bcrypt.hash(user.password, salt);
+  } catch (error) {
+    throw error;
+  }
+});
+
+// Set default role to 'user' if not provided
+UserSchema.pre('save', function(this: IUser & Document, next: (err?: Error) => void) {
+  if (!this.role) {
+    this.role = 'user';
+  }
   next();
 });
 
