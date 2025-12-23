@@ -42,23 +42,23 @@ export const register = async (userData: IUserInput): Promise<{ user: IUser; tok
     const token = user.getSignedJwtToken();
     console.log('Auth service: JWT token generated successfully');
     
-    // Generate email verification token
-    const verificationToken = user.getEmailVerificationToken();
+    // Skip email verification for now - mark as verified
+    user.emailVerified = true;
+    user.emailVerificationToken = undefined;
+    user.emailVerificationExpire = undefined;
     await user.save();
-    console.log('Auth service: Email verification token generated');
+    console.log('Auth service: Email verification skipped, user marked as verified');
     
     // In development, we'll skip sending emails but log the token
     if (process.env.NODE_ENV === 'development') {
       console.log('Auth service: Development mode - Email sending skipped');
-      console.log('Verification token (dev only):', verificationToken);
     } else {
-      // In production, send verification email
+      // In production, send welcome email
       try {
-        await sendVerificationEmail(user.email, verificationToken, FRONTEND_URL);
         await sendWelcomeEmail(user.email, user.name);
-        console.log('Auth service: Verification emails sent');
+        console.log('Auth service: Welcome email sent');
       } catch (emailError) {
-        console.error('Error sending verification email:', emailError);
+        console.error('Error sending welcome email:', emailError);
         // Don't fail the registration if email sending fails
       }
     }
@@ -94,22 +94,37 @@ export const register = async (userData: IUserInput): Promise<{ user: IUser; tok
 };
 
 export const login = async (email: string, password: string): Promise<{ user: IUser; token: string }> => {
-  // Normalize email to lowercase
-  email = email.toLowerCase();
-  // Check if user exists
-  const user = await User.findOne({ email }).select('+password');
-  if (!user) {
-    throw new Error('Invalid credentials');
-  }
+  try {
+    console.log('Login service: Starting login for email:', email);
+    
+    // Normalize email to lowercase
+    email = email.toLowerCase();
+    
+    // Check if user exists
+    const user = await User.findOne({ email }).select('+password');
+    
+    if (!user) {
+      console.log('Login service: User not found');
+      throw new Error('Invalid credentials');
+    }
 
-  // Check if password matches
-  const isMatch = await user.matchPassword(password);
-  if (!isMatch) {
-    throw new Error('Invalid credentials');
-  }
+    // Check if password matches
+    const isMatch = await user.matchPassword(password);
+    
+    if (!isMatch) {
+      console.log('Login service: Password does not match');
+      throw new Error('Invalid credentials');
+    }
 
-  const token = user.getSignedJwtToken();
-  return { user, token };
+    console.log('Login service: Generating token...');
+    const token = user.getSignedJwtToken();
+    console.log('Login service: Login successful');
+    
+    return { user, token };
+  } catch (error: any) {
+    console.error('Login service error:', error.message);
+    throw error;
+  }
 };
 
 export const getMe = async (userId: string): Promise<IUser | null> => {

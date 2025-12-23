@@ -18,7 +18,17 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
     const { user, token } = await register({ name, email, password, role });
     console.log('Registration successful for user:', user.email);
     
-    sendTokenResponse(user, 201, res);
+    // Send simple token response
+    res.status(201).json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
   } catch (error: any) {
     console.error('Registration error details:', {
       message: error.message,
@@ -71,19 +81,23 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
   try {
     console.log('Login request received:', { body: req.body });
     
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      console.log('Validation errors:', errors.array());
-      return res.status(400).json({ errors: errors.array() });
-    }
-
     const { email, password } = req.body;
     console.log('Attempting login with email:', email);
     
     const { user, token } = await login(email, password);
     console.log('Login successful for user:', user.email);
     
-    sendTokenResponse(user, 200, res);
+    // Send simple token response without refresh token for now
+    res.status(200).json({
+      success: true,
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role
+      }
+    });
   } catch (error: any) {
     console.error('Login error:', error.message);
     next(error);
