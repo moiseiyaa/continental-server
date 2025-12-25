@@ -87,17 +87,8 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
     const { user, token } = await login(email, password);
     console.log('Login successful for user:', user.email);
     
-    // Send simple token response without refresh token for now
-    res.status(200).json({
-      success: true,
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role
-      }
-    });
+    // Use sendTokenResponse to create both access and refresh tokens
+    sendTokenResponse(user, 200, res);
   } catch (error: any) {
     console.error('Login error:', error.message);
     next(error);
