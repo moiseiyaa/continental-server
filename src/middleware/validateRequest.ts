@@ -21,8 +21,8 @@ export const validateRequest = (validations: ValidationChain[]) => {
       if ('param' in err) {
         return {
           message: err.msg,
-          field: err.param,
-          value: 'value' in err ? err.value : undefined,
+          field: String(err.param),
+          value: 'value' in err ? (err as ValidationError & { value: any }).value : undefined,
         };
       }
       return { message: err.msg };
@@ -44,8 +44,8 @@ export const validate = (validations: ValidationChain[]) => {
       if (!errors.isEmpty()) {
         const formattedErrors = errors.array().map((err): FormattedError => ({
           message: err.msg,
-          ...('param' in err && { field: err.param }),
-          ...('value' in err && { value: err.value })
+          ...('param' in err && { field: String(err.param) }),
+          ...('value' in err && { value: (err as ValidationError & { value: any }).value })
         }));
         
         return res.status(400).json({ 
