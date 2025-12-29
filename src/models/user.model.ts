@@ -58,7 +58,9 @@ import { UserRole } from '../interfaces/user.interface';
 UserSchema.methods.getSignedJwtToken = function (): string {
   const payload = { id: this._id.toString() };
   const secret = JWT_SECRET;
-  const options: jwt.SignOptions = { expiresIn: JWT_EXPIRE };
+  const options: jwt.SignOptions = {
+  expiresIn: JWT_EXPIRE as jwt.SignOptions['expiresIn'],
+};
   return jwt.sign(payload, secret, options);
 };
 
