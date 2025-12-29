@@ -31,23 +31,24 @@ const format = winston.format.combine(
 );
 
 // Define transports
-const transports = [
-  // Console transport
+const transports: winston.transport[] = [
   new winston.transports.Console(),
-  
-  // Error log file
-  new winston.transports.File({
-    filename: path.join(__dirname, '../../logs/error.log'),
-    level: 'error',
-    format: winston.format.uncolorize(),
-  }),
-  
-  // All logs file
-  new winston.transports.File({
-    filename: path.join(__dirname, '../../logs/all.log'),
-    format: winston.format.uncolorize(),
-  }),
 ];
+
+// In non-serverless environments add file transports
+if (!process.env.VERCEL) {
+  transports.push(
+    new winston.transports.File({
+      filename: path.join(__dirname, '../../logs/error.log'),
+      level: 'error',
+      format: winston.format.uncolorize(),
+    }),
+    new winston.transports.File({
+      filename: path.join(__dirname, '../../logs/all.log'),
+      format: winston.format.uncolorize(),
+    })
+  );
+}
 
 // Create logger
 const logger = winston.createLogger({
