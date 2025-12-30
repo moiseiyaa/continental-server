@@ -99,9 +99,9 @@ export const sendNewsletterEmail = async (
   for (const subscriber of subscribers) {
     try {
       await sendEmail({
-        email: subscriber.email,
+        to: subscriber.email,
         subject,
-        message,
+        html: message,
       });
       sent++;
     } catch (error) {
