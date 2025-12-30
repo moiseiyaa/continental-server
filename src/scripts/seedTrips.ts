@@ -4,7 +4,7 @@ import path from 'path';
 import Trip from '../models/trip.model';
 
 // Load env (works locally; Vercel uses env dashboard)
-config({ path: path.join(__dirname, '../../../.env') });
+config();
 
 const MONGODB_URI = process.env.MONGODB_URI || process.env.DATABASE_URL;
 if (!MONGODB_URI) {
@@ -46,8 +46,7 @@ async function seed() {
       rating: 5,
       reviews: 0,
       status: 'active',
-      createdBy: 'seed-script',
-    },
+          },
     {
       title: '3-Day Safari in Akagera',
       description:
@@ -71,8 +70,7 @@ async function seed() {
       rating: 4.7,
       reviews: 0,
       status: 'active',
-      createdBy: 'seed-script',
-    },
+          },
     {
       title: '2-Day Akagera Safari – Night Game Drive',
       description: 'Short safari with special night game drive to spot lions and leopards.',
@@ -95,8 +93,7 @@ async function seed() {
       rating: 4.5,
       reviews: 0,
       status: 'active',
-      createdBy: 'seed-script',
-    },
+          },
     {
       title: '2-Day Akagera Safari – Boat Ride',
       description: 'Spot hippos & crocodiles on Lake Ihema combined with classic game drives.',
@@ -118,8 +115,7 @@ async function seed() {
       rating: 4.3,
       reviews: 0,
       status: 'active',
-      createdBy: 'seed-script',
-    },
+          },
     {
       title: 'Rwanda’s Only Group Safari',
       description: 'Budget-friendly shared safari ideal for solo travellers. Departs 5:30 AM.',
@@ -138,8 +134,7 @@ async function seed() {
       rating: 4.2,
       reviews: 0,
       status: 'active',
-      createdBy: 'seed-script',
-    },
+          },
     {
       title: 'Akagera SafariShare',
       description: 'Weekend shared safari (Fri–Sun) excluding lunch & park fees.',
@@ -158,8 +153,7 @@ async function seed() {
       rating: 4.0,
       reviews: 0,
       status: 'active',
-      createdBy: 'seed-script',
-    },
+          },
     {
       title: '1-Day Private Safari',
       description: 'Personalised full-day journey through the park with private guide & vehicle.',
@@ -178,8 +172,7 @@ async function seed() {
       rating: 4.8,
       reviews: 0,
       status: 'active',
-      createdBy: 'seed-script',
-    },
+          },
     {
       title: 'Hot-Air Balloon Safari',
       description: 'Unique 3-hour balloon flight over Akagera at sunrise for spectacular aerial views.',
@@ -198,8 +191,7 @@ async function seed() {
       rating: 4.9,
       reviews: 0,
       status: 'active',
-      createdBy: 'seed-script',
-    },
+          },
     {
       title: 'Wilderness Camping Safari',
       description: 'Overnight camping at Shakani or Mutumba sites under the Rwandan stars.',
@@ -218,12 +210,11 @@ async function seed() {
       rating: 4.6,
       reviews: 0,
       status: 'active',
-      createdBy: 'seed-script',
-    },
+          },
   ];
 
   for (const trip of trips) {
-    await Trip.updateOne({ title: trip.title }, trip, { upsert: true });
+    await Trip.updateOne({ title: trip.title }, trip, { upsert: true, strict:false });
   }
 
   console.log('🚀 Trips seeded/updated');
