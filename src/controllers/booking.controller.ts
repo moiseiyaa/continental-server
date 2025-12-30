@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
+
 import {
   createBooking,
   getUserBookings,
@@ -10,10 +11,14 @@ import {
   cancelBooking,
   deleteBooking,
 } from '../services/booking.service';
+
 import {
   notifyBookingConfirmation,
   notifyBookingCancellation,
 } from '../services/notification.service';
+
+import { sendBookingConfirmation } from '../services/email.service';
+
 import { IBookingInput } from '../interfaces/booking.interface';
 
 // @desc    Create a new booking
@@ -29,12 +34,19 @@ export const createBookingHandler = async (req: any, res: Response, next: NextFu
     const bookingData: IBookingInput = req.body;
     const booking = await createBooking(bookingData, req.user.id);
 
-    // Send booking confirmation notification
+    // Send booking confirmation notification & email
     try {
       const tripId = booking.trip as any;
-      // Assuming trip has a title field, adjust as needed based on your Trip schema
       const tripTitle = (tripId && tripId.title) || 'Your Booked Trip';
       await notifyBookingConfirmation(req.user.id, tripTitle, (booking._id as any).toString());
+      // send confirmation email
+      await sendBookingConfirmation(req.user.email, req.user.name || 'Traveler', {
+        bookingId: (booking._id as any).toString(),
+        tourName: tripTitle,
+        date: booking.bookingDate.toISOString().substring(0,10),
+        travelers: booking.numberOfParticipants,
+        totalAmount: booking.totalPrice,
+      });
     } catch (notificationError) {
       // Log notification error but don't fail the booking creation
       console.error('Failed to send booking confirmation notification:', notificationError);
