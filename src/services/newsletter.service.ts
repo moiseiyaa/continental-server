@@ -20,9 +20,9 @@ export const subscribeToNewsletter = async (data: INewsletterInput): Promise<INe
   // Send welcome email
   try {
     await sendEmail({
-      email: data.email,
+      to: data.email,
       subject: 'Welcome to Continental Travels & Tours Newsletter',
-      message: `Hi ${data.name || 'there'},\n\nThank you for subscribing to our newsletter. You'll now receive updates about our latest tours, special offers, and travel tips.\n\nBest regards,\nContinental Travels & Tours Team`,
+      html: `Hi ${data.name || 'there'},<br/><br/>Thank you for subscribing to our newsletter. You'll now receive updates about our latest tours, special offers, and travel tips.<br/><br/>Best regards,<br/>Continental Travels & Tours Team`,
     });
   } catch (error) {
     console.error('Error sending welcome email:', error);

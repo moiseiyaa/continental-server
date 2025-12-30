@@ -8,9 +8,9 @@ export const createContact = async (contactData: IContactInput): Promise<IContac
   // Send confirmation email to user
   try {
     await sendEmail({
-      email: contactData.email,
+      to: contactData.email,
       subject: 'We received your message',
-      message: `Hi ${contactData.name},\n\nThank you for contacting Continental Travels & Tours. We have received your message and will get back to you as soon as possible.\n\nBest regards,\nContinental Travels & Tours Team`,
+      html: `Hi ${contactData.name},<br/><br/>Thank you for contacting Continental Travels & Tours. We have received your message and will get back to you as soon as possible.<br/><br/>Best regards,<br/>Continental Travels & Tours Team`,
     });
   } catch (error) {
     console.error('Error sending confirmation email:', error);
@@ -80,9 +80,9 @@ export const respondToContact = async (
   if (contact) {
     try {
       await sendEmail({
-        email: contact.email,
+        to: contact.email,
         subject: `Response to your inquiry: ${contact.subject}`,
-        message: `Hi ${contact.name},\n\n${responseData.response}\n\nBest regards,\nContinental Travels & Tours Team`,
+        html: `Hi ${contact.name},<br/><br/>${responseData.response}<br/><br/>Best regards,<br/>Continental Travels & Tours Team`,
       });
     } catch (error) {
       console.error('Error sending response email:', error);

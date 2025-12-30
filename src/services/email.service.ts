@@ -1,34 +1,49 @@
-import nodemailer from 'nodemailer';
+import sgMail from '@sendgrid/mail';
 
-interface EmailOptions {
-  email: string;
-  subject: string;
-  message: string;
+if (!process.env.SENDGRID_API_KEY) {
+  throw new Error('SENDGRID_API_KEY is not defined in environment variables');
 }
 
-export const sendEmail = async (options: EmailOptions): Promise<void> => {
-  const transporter = nodemailer.createTransport({
-    service: process.env.SMTP_SERVICE || 'gmail',
-    auth: {
-      user: process.env.SMTP_EMAIL,
-      pass: process.env.SMTP_PASSWORD,
-    },
-  });
+sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
-  const mailOptions = {
-    from: process.env.SMTP_FROM_EMAIL || process.env.SMTP_EMAIL,
-    to: options.email,
-    subject: options.subject,
-    html: options.message,
-  };
+interface SendEmailOptions {
+  to: string;
+  subject: string;
+  html: string;
+  text?: string;
+}
 
-  await transporter.sendMail(mailOptions);
+export const sendEmail = async (options: SendEmailOptions): Promise<void> => {
+  try {
+    const msg = {
+      to: options.to,
+      from: {
+        email: process.env.EMAIL_FROM!,
+        name: process.env.EMAIL_FROM_NAME!,
+      },
+      subject: options.subject,
+      text: options.text || options.html.replace(/<[^>]*>/g, ''),
+      html: options.html,
+    };
+
+    await sgMail.send(msg);
+    console.log('Email sent successfully');
+  } catch (error: unknown) {
+    console.error('Error sending email:');
+    if (error instanceof Error) {
+      console.error(error.message);
+      if ('response' in error) {
+        console.error('Error details:', (error as any).response?.body);
+      }
+    }
+    throw error;
+  }
 };
 
 export const sendVerificationEmail = async (
   email: string,
   verificationToken: string,
-  frontendUrl: string = 'http://localhost:3000'
+  frontendUrl: string = process.env.FRONTEND_URL || 'http://localhost:3000'
 ): Promise<void> => {
   const verificationUrl = `${frontendUrl}/auth/verify-email?token=${verificationToken}`;
 
@@ -44,16 +59,16 @@ export const sendVerificationEmail = async (
   `;
 
   await sendEmail({
-    email,
+    to: email,
     subject: 'Email Verification - Continental Travels & Tours',
-    message,
+    html: message,
   });
 };
 
 export const sendPasswordResetEmail = async (
   email: string,
   resetToken: string,
-  frontendUrl: string = 'http://localhost:3000'
+  frontendUrl: string = process.env.FRONTEND_URL || 'http://localhost:3000'
 ): Promise<void> => {
   const resetUrl = `${frontendUrl}/auth/reset-password?token=${resetToken}`;
 
@@ -70,9 +85,9 @@ export const sendPasswordResetEmail = async (
   `;
 
   await sendEmail({
-    email,
+    to: email,
     subject: 'Password Reset Request - Continental Travels & Tours',
-    message,
+    html: message,
   });
 };
 
@@ -91,8 +106,44 @@ export const sendWelcomeEmail = async (
   `;
 
   await sendEmail({
-    email,
+    to: email,
     subject: 'Welcome to Continental Travels & Tours',
-    message,
+    html: message,
+  });
+};
+
+export const sendBookingConfirmation = async (
+  email: string,
+  name: string,
+  bookingDetails: {
+    bookingId: string;
+    tourName: string;
+    date: string;
+    travelers: number;
+    totalAmount: number;
+  }
+): Promise<void> => {
+  const message = `
+    <h2>Booking Confirmation</h2>
+    <p>Dear ${name},</p>
+    <p>Thank you for booking with Continental Travels & Tours!</p>
+    
+    <h3>Booking Details:</h3>
+    <p><strong>Booking ID:</strong> ${bookingDetails.bookingId}</p>
+    <p><strong>Tour:</strong> ${bookingDetails.tourName}</p>
+    <p><strong>Date:</strong> ${bookingDetails.date}</p>
+    <p><strong>Number of Travelers:</strong> ${bookingDetails.travelers}</p>
+    <p><strong>Total Amount:</strong> $${bookingDetails.totalAmount.toFixed(2)}</p>
+    
+    <p>If you have any questions about your booking, please don't hesitate to contact us.</p>
+    <p>We look forward to welcoming you on your adventure!</p>
+    
+    <p>Best regards,<br>Continental Travels & Tours Team</p>
+  `;
+
+  await sendEmail({
+    to: email,
+    subject: `Booking Confirmation #${bookingDetails.bookingId}`,
+    html: message,
   });
 };
