@@ -1,23 +1,193 @@
-import mongoose from 'mongoose';
+import { pool } from '../config/db';
 import { config } from 'dotenv';
-import path from 'path';
-import Trip from '../models/trip.model';
 
-// Load env (works locally; Vercel uses env dashboard)
+// Load environment variables (works locally; Vercel uses env dashboard)
 config();
 
-const MONGODB_URI = process.env.MONGODB_URI || process.env.DATABASE_URL;
-if (!MONGODB_URI) {
-  console.error('❌  MONGODB_URI is not set');
-  process.exit(1);
+interface TripSeed {
+  title: string;
+  description: string;
+  destination: string;
+  duration: number; // in days
+  price: number; // USD
+  max_participants: number;
+  current_participants: number;
+  status: string;
 }
 
-async function seed() {
-  await mongoose.connect(MONGODB_URI as string);
-  console.log('✅ Connected to MongoDB');
+// NOTE: Some trips were provided without explicit prices. Those are seeded with price = 0.0; update as needed.
+const TRIPS: TripSeed[] = [
+  {
+    title: 'Akagera SafariShare (Group Tour)',
+    description: 'A budget-friendly shared game drive departing from Kigali every Friday, Saturday, and Sunday.',
+    destination: 'Akagera National Park',
+    duration: 1,
+    price: 100,
+    max_participants: 8,
+    current_participants: 0,
+    status: 'active',
+  },
+  {
+    title: 'Safari Car (Private Tour)',
+    description: 'A private day trip in a custom 4x4 safari vehicle with a pop-up roof.',
+    destination: 'Akagera National Park',
+    duration: 1,
+    price: 400,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+  },
+  {
+    title: 'Akagera Safari in Landcruiser V8',
+    description: 'A premium private day trip using a luxury V8 vehicle for maximum comfort on bumpy terrain.',
+    destination: 'Akagera National Park',
+    duration: 1,
+    price: 450,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+  },
+  {
+    title: 'Akagera Wilderness Camping Safari Adventure',
+    description: 'A 2-day immersive experience sleeping in the wild under the stars.',
+    destination: 'Akagera National Park',
+    duration: 2,
+    price: 990,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+  },
+  {
+    title: '2 Days Cultural Village & Gorilla Trekking',
+    description: 'Combines Rwanda’s royal history with the iconic gorilla trek.',
+    destination: 'Volcanoes National Park',
+    duration: 2,
+    price: 0,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+  },
+  {
+    title: '3 Days Gorilla & Golden Monkey Trekking',
+    description: 'Focuses on the two most endangered primates in the Virunga Mountains.',
+    destination: 'Volcanoes National Park',
+    duration: 3,
+    price: 3240,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+  },
+  {
+    title: '4 Days Gorilla & Golden Monkey Trekking',
+    description: 'Extended Gorilla & Golden Monkey trekking experience with additional scenic activities.',
+    destination: 'Volcanoes National Park',
+    duration: 4,
+    price: 2985,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+  },
+  {
+    title: '4 Days Akagera Safari & Gorilla Trekking',
+    description: 'Combines Akagera savannah wildlife with Volcanoes NP gorilla trekking. Luxury upgrade available (USD 3,850).',
+    destination: 'Akagera & Volcanoes NP',
+    duration: 4,
+    price: 1265,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+  },
+  {
+    title: '6 Days Rwanda Safari (5-Star Luxury)',
+    description: 'A luxury safari covering Akagera and Nyungwe National Parks with high-end lodges.',
+    destination: 'Rwanda',
+    duration: 6,
+    price: 1920,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+  },
+  {
+    title: '7 Days Kenya Classic Featuring Safari (5-Star)',
+    description: 'Experience Lake Nakuru’s rhinos & flamingos and Masai Mara’s wildlife spectacle with five-star comfort.',
+    destination: 'Kenya',
+    duration: 7,
+    price: 3315,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+  },
+  {
+    title: '8 Days Kenya Under Canvas (5-Star)',
+    description: 'An exclusive tented luxury camping safari through Amboseli, Lake Nakuru, Naivasha, and Masai Mara.',
+    destination: 'Kenya',
+    duration: 8,
+    price: 2188,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+  },
+  {
+    title: '8 Days Colobus Monkey Trekking & Safari',
+    description: 'Covers Kigali, Akagera savannah, Lake Kivu beach, Nyungwe colobus & chimps, and Volcanoes NP gorillas.',
+    destination: 'Rwanda',
+    duration: 8,
+    price: 0,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+  },
+];
 
-  const trips = [
-    {
+async function seed(): Promise<void> {
+  const client = await pool.connect();
+  try {
+    await client.query('BEGIN');
+
+    // Clear existing trips
+    await client.query('TRUNCATE TABLE trips RESTART IDENTITY CASCADE');
+    console.log('✅ Cleared existing trips');
+
+    // Insert trips
+    for (const trip of TRIPS) {
+      const startDate = new Date();
+      const endDate = new Date(startDate.getTime() + trip.duration * 24 * 60 * 60 * 1000);
+
+      await client.query(
+        `INSERT INTO trips (
+          title, description, destination, duration, price,
+          max_participants, current_participants, start_date, end_date,
+          status, created_at, updated_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW())`,
+        [
+          trip.title,
+          trip.description,
+          trip.destination,
+          trip.duration,
+          trip.price,
+          trip.max_participants,
+          trip.current_participants,
+          startDate,
+          endDate,
+          trip.status,
+        ],
+      );
+    }
+
+    await client.query('COMMIT');
+    console.log(`🚀 Seeded ${TRIPS.length} trips`);
+  } catch (error) {
+    await client.query('ROLLBACK');
+    console.error('❌ Failed to seed trips:', error);
+  } finally {
+    client.release();
+    await pool.end();
+    process.exit(0);
+  }
+}
+
+seed();
+/*{
       title: '4-Day Akagera Safari & Gorilla Trekking',
       description:
         'Experience Rwanda end-to-end: Big-Five game drives in Akagera National Park followed by an unforgettable gorilla trek in Volcanoes National Park.',
@@ -226,3 +396,4 @@ seed().catch((err) => {
   console.error(err);
   process.exit(1);
 });
+*/
