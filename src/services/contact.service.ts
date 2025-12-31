@@ -74,3 +74,31 @@ export const updateContactStatus = async (
   );
   return rows.length ? (rows[0] as IContact) : null;
 };
+
+export const respondToContact = async (
+  id: string,
+  responseData: IContactResponse,
+  respondedByUserId: number
+): Promise<IContact | null> => {
+  return updateContactStatus(id, 'responded', responseData.response, respondedByUserId);
+};
+
+export const deleteContact = async (id: string): Promise<IContact | null> => {
+  const contact = await getContactById(id);
+  if (!contact) return null;
+  
+  await pool.query('DELETE FROM contacts WHERE id = $1', [id]);
+  return contact;
+};
+
+export const getContactStats = async (): Promise<any> => {
+  const { rows } = await pool.query(
+    `SELECT status, COUNT(*) as count FROM contacts GROUP BY status`
+  );
+  const stats: any = { new: 0, read: 0, responded: 0, closed: 0, total: 0 };
+  rows.forEach((row: any) => {
+    stats[row.status] = Number(row.count);
+    stats.total += Number(row.count);
+  });
+  return stats;
+};

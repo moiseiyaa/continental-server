@@ -25,7 +25,7 @@ export const getDashboardStats = async () => {
   };
 };
 
-export const getUserStats = async () => {
+export const getUserStats = async (period?: string) => {
   const { rows } = await pool.query(
     `SELECT DATE_TRUNC('month', created_at) AS month, COUNT(*) AS count
      FROM users GROUP BY month ORDER BY month DESC LIMIT 12`
@@ -33,7 +33,7 @@ export const getUserStats = async () => {
   return rows;
 };
 
-export const getBookingStats = async () => {
+export const getBookingStats = async (period?: string) => {
   const { rows } = await pool.query(
     `SELECT DATE_TRUNC('month', created_at) AS month, COUNT(*) AS count
      FROM bookings GROUP BY month ORDER BY month DESC LIMIT 12`
@@ -41,7 +41,7 @@ export const getBookingStats = async () => {
   return rows;
 };
 
-export const getTripStats = async () => {
+export const getTripStats = async (period?: string) => {
   const { rows } = await pool.query(
     `SELECT DATE_TRUNC('month', created_at) AS month, COUNT(*) AS count
      FROM trips GROUP BY month ORDER BY month DESC LIMIT 12`
@@ -49,7 +49,7 @@ export const getTripStats = async () => {
   return rows;
 };
 
-export const getRevenueReports = async () => {
+export const getRevenueReports = async (period?: string) => {
   const { rows } = await pool.query(
     `SELECT DATE_TRUNC('month', created_at) AS month, SUM(total_price)::float AS revenue
      FROM bookings WHERE status = 'confirmed' GROUP BY month ORDER BY month DESC LIMIT 12`
