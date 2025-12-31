@@ -27,17 +27,19 @@ export const uploadImageHandler = async (req: any, res: Response, next: NextFunc
       });
     }
 
-      const galleryData: IGalleryInput = {
-        trip: req.body.trip,
-        title: req.body.title,
-        description: req.body.description,
-      };
-
       // Generate imageUrl and publicId from file (in production, would use Cloudinary)
       const imageUrl = req.file.path || `/uploads/${req.file.filename}`;
       const publicId = req.file.filename || `gallery_${Date.now()}`;
 
-      const gallery = await uploadImage(req.file, { ...galleryData, imageUrl, publicId }, req.user.id);
+      const galleryData = {
+        trip: parseInt(req.body.trip),
+        title: req.body.title,
+        description: req.body.description,
+        imageUrl,
+        publicId
+      } as IGalleryInput & { imageUrl: string; publicId: string; trip: number };
+
+      const gallery = await uploadImage(req.file, galleryData, req.user.id);
 
     res.status(201).json({
       success: true,

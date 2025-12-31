@@ -198,7 +198,12 @@ export const refreshTokenHandler = async (req: Request, res: Response, next: Nex
     }
 
     // Send new access token (without including new refresh token in response body)
-    res.cookie('token', user.getSignedJwtToken(), {
+    const token = user.getSignedJwtToken?.();
+    if (!token) {
+      return next(new UnauthorizedError('Failed to generate token'));
+    }
+    
+    res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
@@ -207,7 +212,7 @@ export const refreshTokenHandler = async (req: Request, res: Response, next: Nex
 
     res.status(200).json({
       success: true,
-      token: user.getSignedJwtToken(),
+      token,
       message: 'Token refreshed successfully',
     });
   } catch (error: any) {

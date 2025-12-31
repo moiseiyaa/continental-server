@@ -66,7 +66,7 @@ export const getReviewsByTripHandler = async (req: Request, res: Response, next:
 // @access  Public
 export const getReviewByIdHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const review = await getReviewById(req.params.id);
+    const review = await getReviewById(parseInt(req.params.id));
 
     if (!review) {
       return res.status(404).json({

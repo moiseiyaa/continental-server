@@ -211,7 +211,7 @@ export const verifyEmail = async (verificationToken: string): Promise<IUser> => 
     (user as any).email_verification_expire = null;
     await user.save();
 
-  return user as IUser;
+  return user as unknown as IUser;
 };
 export const refreshAccessToken = async (refreshToken: string): Promise<IUser | null> => {
   try {
@@ -243,7 +243,7 @@ export const refreshAccessToken = async (refreshToken: string): Promise<IUser | 
       throw new Error('Invalid refresh token');
     }
 
-    return user as IUser;
+    return user as unknown as IUser;
   } catch (error: any) {
     console.error('Refresh token validation error:', error.message);
     return null;
