@@ -1,6 +1,5 @@
-import { Document } from 'mongoose';
-
-export interface ITrip extends Document {
+export interface ITrip {
+  _id?: string;
   title: string;
   description: string;
   destination: string;

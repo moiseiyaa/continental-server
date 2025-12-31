@@ -28,7 +28,13 @@ export const protect = async (req: any, res: Response, next: NextFunction) => {
     // Verify token
     const decoded: any = jwt.verify(token, JWT_SECRET);
 
-    req.user = await User.findById(decoded.id).select('-password');
+    const user = await User.findById(decoded.id);
+    if (!user) {
+      return next(new UnauthorizedError('User not found'));
+    }
+    // Remove password from user object before attaching to request
+    const { password, ...userWithoutPassword } = user as any;
+    req.user = userWithoutPassword;
 
     next();
   } catch (err) {

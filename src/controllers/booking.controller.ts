@@ -33,20 +33,28 @@ export const createBookingHandler = async (req: any, res: Response, next: NextFu
 
     const bookingData: IBookingInput = req.body;
     const booking = await createBooking(bookingData, req.user.id);
+    
+    if (!booking) {
+      return res.status(500).json({ message: 'Failed to create booking' });
+    }
 
     // Send booking confirmation notification & email
     try {
       const tripId = booking.trip as any;
       const tripTitle = (tripId && tripId.title) || 'Your Booked Trip';
-      await notifyBookingConfirmation(req.user.id, tripTitle, (booking._id as any).toString());
-      // send confirmation email
-      await sendBookingConfirmation(req.user.email, req.user.name || 'Traveler', {
-        bookingId: (booking._id as any).toString(),
-        tourName: tripTitle,
-        date: booking.bookingDate.toISOString().substring(0,10),
-        travelers: booking.numberOfParticipants,
-        totalAmount: booking.totalPrice,
-      });
+      const bookingId = (booking as any)._id?.toString() || '';
+      
+      if (bookingId) {
+        await notifyBookingConfirmation(req.user.id, tripTitle, bookingId);
+        // send confirmation email
+        await sendBookingConfirmation(req.user.email, req.user.name || 'Traveler', {
+          bookingId: bookingId,
+          tourName: tripTitle,
+          date: booking.bookingDate ? new Date(booking.bookingDate).toISOString().substring(0,10) : new Date().toISOString().substring(0,10),
+          travelers: booking.numberOfParticipants || 1,
+          totalAmount: booking.totalPrice || 0,
+        });
+      }
     } catch (notificationError) {
       // Log notification error but don't fail the booking creation
       console.error('Failed to send booking confirmation notification:', notificationError);

@@ -1,6 +1,5 @@
-import { Document } from 'mongoose';
-
-export interface INewsletter extends Document {
+export interface INewsletter {
+  _id?: string;
   email: string;
   name?: string;
   isActive: boolean;

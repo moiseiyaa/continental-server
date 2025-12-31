@@ -1,6 +1,5 @@
-import { Document } from 'mongoose';
-
-export interface IBooking extends Document {
+export interface IBooking {
+  _id?: string;
   user: string;
   trip: string;
   numberOfParticipants: number;

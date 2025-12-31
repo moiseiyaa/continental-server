@@ -1,6 +1,5 @@
-import { Document } from 'mongoose';
-
-export interface IReview extends Document {
+export interface IReview {
+  _id?: string;
   trip: string;
   user: string;
   rating: number;

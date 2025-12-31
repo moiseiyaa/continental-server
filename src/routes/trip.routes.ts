@@ -52,6 +52,7 @@ router.get('/destination/:destination', getTripsByDestinationHandler);
 // @route   GET /api/trips/:id
 // @desc    Get single trip by ID
 // @access  Public
+// Note: This must be last to avoid conflicts with /search and /destination routes
 router.get('/:id', getTripByIdHandler);
 
 // @route   PUT /api/trips/:id

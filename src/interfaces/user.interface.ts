@@ -1,9 +1,8 @@
-import { Document } from 'mongoose';
 
 // Define user roles as a type
 export type UserRole = 'user' | 'admin' | 'guest';
 
-export interface IUser extends Document {
+export interface IUser {
   name: string;
   email: string;
   password: string;

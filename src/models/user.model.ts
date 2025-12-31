@@ -33,7 +33,21 @@ export default class User {
   refreshTokenExpire?: Date;
 
   constructor(row?: Partial<UserRow>) {
-    if (row) Object.assign(this, row);
+    if (row) {
+      this.id = row.id;
+      this.name = row.name || '';
+      this.email = row.email || '';
+      this.password = row.password || '';
+      this.role = row.role || 'user';
+      this.emailVerified = row.email_verified || false;
+      this.refreshTokenHash = row.refresh_token_hash;
+      this.refreshTokenExpire = row.refresh_token_expire;
+      // Store snake_case fields for save method
+      (this as any).reset_password_token = row.reset_password_token;
+      (this as any).reset_password_expire = row.reset_password_expire;
+      (this as any).email_verification_token = row.email_verification_token;
+      (this as any).email_verification_expire = row.email_verification_expire;
+    }
   }
 
   // ---------- Static helpers (simulate Mongoose static methods) ----------
