@@ -3,6 +3,7 @@
 export type UserRole = 'user' | 'admin' | 'guest';
 
 export interface IUser {
+  id?: number;
   name: string;
   email: string;
   password: string;
@@ -15,11 +16,11 @@ export interface IUser {
   refreshTokenHash?: string;
   refreshTokenExpire?: Date;
   isActive?: boolean;
-  matchPassword: (enteredPassword: string) => Promise<boolean>;
-  getSignedJwtToken: () => string;
-  getResetPasswordToken: () => string;
-  getEmailVerificationToken: () => string;
-  getRefreshToken: () => string;
+  matchPassword?: (enteredPassword: string) => Promise<boolean>;
+  getSignedJwtToken?: () => string;
+  getResetPasswordToken?: () => string;
+  getEmailVerificationToken?: () => string;
+  getRefreshToken?: () => string;
 }
 
 export interface IUserInput {

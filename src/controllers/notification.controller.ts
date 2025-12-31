@@ -53,8 +53,8 @@ export const getNotifications = async (req: any, res: Response, next: NextFuncti
  * Mark notification as read
  */
 export const markAsRead = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const notification = await markNotificationAsRead(req.params.id);
+    try {
+      const notification = await markNotificationAsRead(parseInt(req.params.id));
 
     if (!notification) {
       return res.status(404).json({
@@ -80,11 +80,11 @@ export const markAllAsRead = async (req: any, res: Response, next: NextFunction)
   try {
     const result = await markAllNotificationsAsRead(req.user.id);
 
-    res.status(200).json({
-      success: true,
-      message: 'All notifications marked as read',
-      modifiedCount: result.modifiedCount,
-    });
+      res.status(200).json({
+        success: true,
+        message: 'All notifications marked as read',
+        count: result,
+      });
   } catch (error) {
     next(error);
   }

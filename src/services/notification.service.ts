@@ -59,18 +59,18 @@ export const markAllNotificationsAsRead = async (userId: number): Promise<number
 
 export const notifyBookingConfirmation = async (userId: number, tripTitle: string, bookingId: number): Promise<void> => {
   await createNotification(userId, {
-    type: 'booking_confirmed',
+    type: 'booking_confirmed' as const,
     title: 'Booking Confirmed',
     message: `Your booking for ${tripTitle} has been confirmed.`,
     link: `/bookings/${bookingId}`
-  });
+  } as any);
 };
 
 export const notifyBookingCancellation = async (userId: number, tripTitle: string): Promise<void> => {
   await createNotification(userId, {
-    type: 'booking_cancelled',
+    type: 'booking_cancelled' as const,
     title: 'Booking Cancelled',
     message: `Your booking for ${tripTitle} has been cancelled.`,
     link: null
-  });
+  } as any);
 };

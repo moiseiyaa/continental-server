@@ -113,8 +113,8 @@ export const getAllReviewsHandler = async (req: Request, res: Response, next: Ne
 // @route   GET /api/reviews/user/my-reviews
 // @access  Private
 export const getUserReviewsHandler = async (req: any, res: Response, next: NextFunction) => {
-  try {
-    const reviews = await getUserReviews(req.user.id);
+    try {
+      const reviews = await getUserReviews(parseInt(req.user.id));
 
     res.status(200).json({
       success: true,
@@ -203,8 +203,8 @@ export const markReviewHelpfulHandler = async (req: Request, res: Response, next
 // @route   GET /api/reviews/stats/:tripId
 // @access  Public
 export const getReviewStatsHandler = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const stats = await getReviewStats(req.params.tripId);
+    try {
+      const stats = await getReviewStats(parseInt(req.params.tripId));
 
     res.status(200).json({
       success: true,

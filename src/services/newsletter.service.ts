@@ -72,7 +72,7 @@ export const sendNewsletterEmail = async (subject: string, message: string): Pro
   const emails = rows.map((row: any) => row.email);
   
   const results = await Promise.allSettled(
-    emails.map(email => sendEmail(email, subject, message))
+    emails.map(email => sendEmail({ to: email, subject, html: message }))
   );
   
   const successful = results.filter(r => r.status === 'fulfilled').length;
