@@ -1,123 +1,76 @@
+import { pool } from '../config/db';
 import { IContact, IContactInput, IContactResponse } from '../interfaces/contact.interface';
-import Contact from '../models/contact.model';
-import { sendEmail } from './email.service';
 
-export const createContact = async (contactData: IContactInput): Promise<IContact> => {
-  const contact = await Contact.create(contactData);
-
-  // Send confirmation email to user
-  try {
-    await sendEmail({
-      to: contactData.email,
-      subject: 'We received your message',
-      html: `Hi ${contactData.name},<br/><br/>Thank you for contacting Continental Travels & Tours. We have received your message and will get back to you as soon as possible.<br/><br/>Best regards,<br/>Continental Travels & Tours Team`,
-    });
-  } catch (error) {
-    console.error('Error sending confirmation email:', error);
-  }
-
-  return contact;
+export const createContact = async (data: IContactInput): Promise<IContact> => {
+  const { name, email, phone, subject, message } = data;
+  const { rows } = await pool.query(
+    `INSERT INTO contacts (name, email, phone, subject, message, status, created_at, updated_at)
+     VALUES ($1, $2, $3, $4, $5, 'new', NOW(), NOW()) RETURNING *`,
+    [name, email, phone || null, subject, message]
+  );
+  return rows[0] as IContact;
 };
 
-export const getContactById = async (contactId: string): Promise<IContact | null> => {
-  return await Contact.findById(contactId).populate('respondedBy', 'name email');
+export const getContactById = async (id: string): Promise<IContact | null> => {
+  const { rows } = await pool.query(
+    `SELECT c.*, u.name as responded_by_name
+     FROM contacts c
+     LEFT JOIN users u ON c.responded_by = u.id
+     WHERE c.id = $1`,
+    [id]
+  );
+  return rows.length ? (rows[0] as IContact) : null;
 };
 
-export const getAllContacts = async (
-  page: number = 1,
-  limit: number = 10,
-  filters?: { status?: string }
-): Promise<{ contacts: IContact[]; total: number; pages: number }> => {
-  const skip = (page - 1) * limit;
-  const query: any = {};
-
-  if (filters?.status) {
-    query.status = filters.status;
+export const getAllContacts = async (page=1, limit=10, filters: any = {}): Promise<{contacts: IContact[], total: number, pages: number}> => {
+  const offset = (page - 1) * limit;
+  let whereClause = '';
+  const params: any[] = [];
+  if (filters.status) {
+    params.push(filters.status);
+    whereClause = `WHERE c.status = $${params.length}`;
   }
-
-  const total = await Contact.countDocuments(query);
-  const contacts = await Contact.find(query)
-    .populate('respondedBy', 'name email')
-    .skip(skip)
-    .limit(limit)
-    .sort({ createdAt: -1 });
-
+  const { rows } = await pool.query(
+    `SELECT c.*, COUNT(*) OVER() as total_count
+     FROM contacts c
+     ${whereClause}
+     ORDER BY c.created_at DESC
+     LIMIT $${params.length+1} OFFSET $${params.length+2}`,
+    [...params, limit, offset]
+  );
+  const total = rows.length > 0 ? Number(rows[0].total_count) : 0;
+  const contacts = rows.map(({ total_count, ...c }) => c as IContact);
   return {
     contacts,
     total,
-    pages: Math.ceil(total / limit),
+    pages: Math.ceil(total / limit)
   };
 };
 
 export const updateContactStatus = async (
-  contactId: string,
-  status: 'new' | 'read' | 'responded' | 'closed'
+  id: string,
+  status: 'new' | 'read' | 'responded' | 'closed',
+  responseText?: string,
+  respondedBy?: number
 ): Promise<IContact | null> => {
-  return await Contact.findByIdAndUpdate(
-    contactId,
-    { status },
-    { new: true, runValidators: true }
-  ).populate('respondedBy', 'name email');
-};
-
-export const respondToContact = async (
-  contactId: string,
-  responseData: IContactResponse,
-  userId: string
-): Promise<IContact | null> => {
-  const contact = await Contact.findByIdAndUpdate(
-    contactId,
-    {
-      response: responseData.response,
-      status: 'responded',
-      respondedAt: new Date(),
-      respondedBy: userId,
-    },
-    { new: true, runValidators: true }
-  ).populate('respondedBy', 'name email');
-
-  // Send response email to user
-  if (contact) {
-    try {
-      await sendEmail({
-        to: contact.email,
-        subject: `Response to your inquiry: ${contact.subject}`,
-        html: `Hi ${contact.name},<br/><br/>${responseData.response}<br/><br/>Best regards,<br/>Continental Travels & Tours Team`,
-      });
-    } catch (error) {
-      console.error('Error sending response email:', error);
-    }
+  const updates: string[] = ["status = $1", "updated_at = NOW()"];
+  const values: any[] = [status];
+  let count = 2;
+  if (responseText) {
+    updates.push(`response = $${count}`);
+    values.push(responseText);
+    count++;
+    updates.push(`responded_at = NOW()`);
   }
-
-  return contact;
-};
-
-export const deleteContact = async (contactId: string): Promise<IContact | null> => {
-  return await Contact.findByIdAndDelete(contactId);
-};
-
-export const getContactStats = async (): Promise<any> => {
-  const stats = await Contact.aggregate([
-    {
-      $group: {
-        _id: '$status',
-        count: { $sum: 1 },
-      },
-    },
-  ]);
-
-  const result = {
-    total: 0,
-    new: 0,
-    read: 0,
-    responded: 0,
-    closed: 0,
-  };
-
-  stats.forEach((stat: any) => {
-    result[stat._id as keyof typeof result] = stat.count;
-    result.total += stat.count;
-  });
-
-  return result;
+  if (respondedBy) {
+    updates.push(`responded_by = $${count}`);
+    values.push(respondedBy);
+    count++;
+  }
+  values.push(id);
+  const { rows } = await pool.query(
+    `UPDATE contacts SET ${updates.join(', ')} WHERE id = $${count} RETURNING *`,
+    values
+  );
+  return rows.length ? (rows[0] as IContact) : null;
 };

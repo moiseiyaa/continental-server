@@ -1,120 +1,50 @@
+import { pool } from '../config/db';
 import { IGallery, IGalleryInput } from '../interfaces/gallery.interface';
-import Gallery from '../models/gallery.model';
-import cloudinary from '../config/cloudinary';
-import { Readable } from 'stream';
 
-export const uploadImage = async (
-  file: Express.Multer.File,
-  galleryData: IGalleryInput,
-  userId: string
-): Promise<IGallery> => {
-  try {
-    // Upload to Cloudinary
-    const result = await new Promise((resolve, reject) => {
-      const uploadStream = cloudinary.uploader.upload_stream(
-        {
-          folder: `continental-travel/trips/${galleryData.trip}`,
-          resource_type: 'auto',
-          quality: 'auto',
-        },
-        (error, result) => {
-          if (error) reject(error);
-          else resolve(result);
-        }
-      );
-
-      // Convert buffer to stream and pipe to Cloudinary
-      Readable.from(file.buffer).pipe(uploadStream);
-    });
-
-    const uploadResult = result as any;
-
-    // Save to database
-    const gallery = await Gallery.create({
-      ...galleryData,
-      imageUrl: uploadResult.secure_url,
-      publicId: uploadResult.public_id,
-      uploadedBy: userId,
-    });
-
-    return gallery.populate('trip uploadedBy');
-  } catch (error: any) {
-    throw new Error(`Image upload failed: ${error.message}`);
-  }
+// CREATE gallery image
+export const createGallery = async (userId: number, data: IGalleryInput & { imageUrl: string; publicId: string; trip: number }): Promise<IGallery> => {
+  const { trip, title, description, imageUrl, publicId } = data;
+  const { rows } = await pool.query(
+    `INSERT INTO gallery (trip_id, title, description, image_url, public_id, uploaded_by, created_at, updated_at)
+     VALUES ($1, $2, $3, $4, $5, $6, NOW(), NOW()) RETURNING *`,
+    [trip, title, description || null, imageUrl, publicId, userId]
+  );
+  return rows[0] as IGallery;
 };
 
-export const getGalleryByTrip = async (tripId: string): Promise<IGallery[]> => {
-  return await Gallery.find({ trip: tripId })
-    .populate('uploadedBy', 'name email')
-    .sort({ createdAt: -1 });
+// GET all gallery images for a trip
+export const getGalleryByTrip = async (tripId: number): Promise<IGallery[]> => {
+  const { rows } = await pool.query(
+    `SELECT g.*, u.name as uploaded_by_name FROM gallery g
+     JOIN users u ON g.uploaded_by = u.id WHERE g.trip_id = $1
+     ORDER BY g.created_at DESC`,
+    [tripId]
+  );
+  return rows as IGallery[];
 };
 
-export const getAllGallery = async (
-  page: number = 1,
-  limit: number = 12
-): Promise<{ gallery: IGallery[]; total: number; pages: number }> => {
-  const skip = (page - 1) * limit;
-  const total = await Gallery.countDocuments();
-  const gallery = await Gallery.find()
-    .populate('trip', 'title destination')
-    .populate('uploadedBy', 'name email')
-    .skip(skip)
-    .limit(limit)
-    .sort({ createdAt: -1 });
-
-  return {
-    gallery,
-    total,
-    pages: Math.ceil(total / limit),
-  };
+// GET all gallery items (paginated)
+export const getAllGallery = async (page=1, limit=20): Promise<{gallery: IGallery[], total: number, pages: number}> => {
+  const offset = (page-1)*limit;
+  const { rows } = await pool.query(
+    `SELECT g.*, t.title as trip_title, u.name as uploaded_by_name, COUNT(*) OVER() as total_count
+     FROM gallery g JOIN trips t ON g.trip_id = t.id JOIN users u ON g.uploaded_by = u.id
+     ORDER BY g.created_at DESC
+     LIMIT $1 OFFSET $2`,[limit, offset]
+  );
+  const total = rows.length ? Number(rows[0].total_count) : 0;
+  const gallery = rows.map(({ total_count, ...g }) => g as IGallery);
+  return { gallery, total, pages: Math.ceil(total/limit) };
 };
 
-export const getImageById = async (imageId: string): Promise<IGallery | null> => {
-  return await Gallery.findById(imageId)
-    .populate('trip')
-    .populate('uploadedBy', 'name email');
+// GET gallery image by ID
+export const getImageById = async (id: number): Promise<IGallery | null> => {
+  const { rows } = await pool.query('SELECT * FROM gallery WHERE id = $1', [id]);
+  return rows.length ? (rows[0] as IGallery) : null;
 };
 
-export const updateImage = async (
-  imageId: string,
-  updateData: Partial<IGalleryInput>
-): Promise<IGallery | null> => {
-  return await Gallery.findByIdAndUpdate(imageId, updateData, {
-    new: true,
-    runValidators: true,
-  }).populate('trip uploadedBy');
-};
-
-export const deleteImage = async (imageId: string): Promise<IGallery | null> => {
-  const image = await Gallery.findById(imageId);
-
-  if (!image) {
-    throw new Error('Image not found');
-  }
-
-  // Delete from Cloudinary
-  try {
-    await cloudinary.uploader.destroy(image.publicId);
-  } catch (error: any) {
-    console.error('Error deleting from Cloudinary:', error.message);
-  }
-
-  // Delete from database
-  return await Gallery.findByIdAndDelete(imageId);
-};
-
-export const deleteGalleryByTrip = async (tripId: string): Promise<void> => {
-  const images = await Gallery.find({ trip: tripId });
-
-  // Delete all images from Cloudinary
-  for (const image of images) {
-    try {
-      await cloudinary.uploader.destroy(image.publicId);
-    } catch (error: any) {
-      console.error('Error deleting from Cloudinary:', error.message);
-    }
-  }
-
-  // Delete all images from database
-  await Gallery.deleteMany({ trip: tripId });
+// DELETE image
+export const deleteGalleryImage = async (id: number): Promise<IGallery | null> => {
+  const { rows } = await pool.query('DELETE FROM gallery WHERE id=$1 RETURNING *',[id]);
+  return rows.length ? (rows[0] as IGallery) : null;
 };

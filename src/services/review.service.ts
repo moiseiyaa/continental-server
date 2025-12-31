@@ -1,179 +1,78 @@
+import { pool } from '../config/db';
 import { IReview, IReviewInput } from '../interfaces/review.interface';
-import Review from '../models/review.model';
-import Trip from '../models/trip.model';
-import Booking from '../models/booking.model';
 
-export const createReview = async (reviewData: IReviewInput, userId: string): Promise<IReview> => {
-  // Check if user has booked this trip
-  const booking = await Booking.findOne({
-    user: userId,
-    trip: reviewData.trip,
-    status: 'completed',
-  });
-
-  if (!booking) {
-    throw new Error('You can only review trips you have completed');
-  }
-
-  // Check if user already reviewed this trip
-  const existingReview = await Review.findOne({
-    trip: reviewData.trip,
-    user: userId,
-  });
-
-  if (existingReview) {
-    throw new Error('You have already reviewed this trip');
-  }
-
-  // Create review
-  const review = await Review.create({
-    ...reviewData,
-    user: userId,
-    verified: true,
-  });
-
-  // Update trip rating
-  await updateTripRating(reviewData.trip);
-
-  return review.populate('user trip');
+// CREATE review
+export const createReview = async (userId: string, data: IReviewInput): Promise<IReview> => {
+  const { trip, rating, title, comment } = data;
+  const { rows } = await pool.query(
+    `INSERT INTO reviews (trip_id, user_id, rating, title, comment, helpful, verified, created_at, updated_at)
+     VALUES ($1, $2, $3, $4, $5, 0, false, NOW(), NOW()) RETURNING *`,
+    [trip, userId, rating, title, comment]
+  );
+  return rows[0] as IReview;
 };
 
-export const getReviewsByTrip = async (
-  tripId: string,
-  page: number = 1,
-  limit: number = 10
-): Promise<{ reviews: IReview[]; total: number; pages: number; averageRating: number }> => {
-  const skip = (page - 1) * limit;
-  const total = await Review.countDocuments({ trip: tripId });
-  const reviews = await Review.find({ trip: tripId })
-    .populate('user', 'name')
-    .skip(skip)
-    .limit(limit)
-    .sort({ createdAt: -1 });
+// GET all reviews for a trip (with user info)
+export const getReviewsByTrip = async (tripId: string): Promise<IReview[]> => {
+  const { rows } = await pool.query(
+    `SELECT r.*, u.name as user_name, u.email as user_email FROM reviews r
+     JOIN users u ON r.user_id = u.id
+     WHERE trip_id = $1
+     ORDER BY created_at DESC`,
+    [tripId]
+  );
+  return rows as IReview[];
+};
 
-  // Calculate average rating
-  const ratingData = await Review.aggregate([
-    { $match: { trip: require('mongoose').Types.ObjectId(tripId) } },
-    { $group: { _id: null, averageRating: { $avg: '$rating' } } },
-  ]);
-
-  const averageRating = ratingData.length > 0 ? ratingData[0].averageRating : 0;
-
+// GET review stats for trip (average rating & count)
+export const getReviewStats = async (tripId: string): Promise<{ avg: number, count: number }> => {
+  const { rows } = await pool.query(
+    'SELECT AVG(rating)::float AS avg, COUNT(*) as count FROM reviews WHERE trip_id = $1',
+    [tripId]
+  );
   return {
-    reviews,
-    total,
-    pages: Math.ceil(total / limit),
-    averageRating: Math.round(averageRating * 10) / 10,
+    avg: Number(rows[0].avg || 0),
+    count: Number(rows[0].count || 0)
   };
 };
 
-export const getReviewById = async (reviewId: string): Promise<IReview | null> => {
-  return await Review.findById(reviewId).populate('user trip');
-};
-
-export const updateReview = async (
-  reviewId: string,
-  updateData: Partial<IReviewInput>
-): Promise<IReview | null> => {
-  const review = await Review.findByIdAndUpdate(reviewId, updateData, {
-    new: true,
-    runValidators: true,
-  }).populate('user trip');
-
-  // Update trip rating if rating was changed
-  if (updateData.rating && review) {
-    await updateTripRating(review.trip.toString());
-  }
-
-  return review;
-};
-
-export const deleteReview = async (reviewId: string): Promise<IReview | null> => {
-  const review = await Review.findByIdAndDelete(reviewId);
-
-  if (review) {
-    // Update trip rating
-    await updateTripRating(review.trip.toString());
-  }
-
-  return review;
-};
-
-export const markHelpful = async (reviewId: string): Promise<IReview | null> => {
-  return await Review.findByIdAndUpdate(
-    reviewId,
-    { $inc: { helpful: 1 } },
-    { new: true }
-  ).populate('user trip');
-};
-
+// GET all reviews by user
 export const getUserReviews = async (userId: string): Promise<IReview[]> => {
-  return await Review.find({ user: userId })
-    .populate('trip', 'title destination')
-    .sort({ createdAt: -1 });
+  const { rows } = await pool.query(
+    `SELECT r.*, t.title as trip_title, t.destination FROM reviews r
+     JOIN trips t ON r.trip_id = t.id WHERE r.user_id = $1 ORDER BY r.created_at DESC`,
+    [userId]
+  );
+  return rows as IReview[];
 };
 
-export const getAllReviews = async (
-  page: number = 1,
-  limit: number = 10
-): Promise<{ reviews: IReview[]; total: number; pages: number }> => {
-  const skip = (page - 1) * limit;
-  const total = await Review.countDocuments();
-  const reviews = await Review.find()
-    .populate('user', 'name')
-    .populate('trip', 'title destination')
-    .skip(skip)
-    .limit(limit)
-    .sort({ createdAt: -1 });
-
-  return {
-    reviews,
-    total,
-    pages: Math.ceil(total / limit),
-  };
+// MARK review as helpful
+export const markReviewHelpful = async (reviewId: string): Promise<IReview | null> => {
+  const { rows } = await pool.query(
+    'UPDATE reviews SET helpful = helpful + 1, updated_at = NOW() WHERE id = $1 RETURNING *',
+    [reviewId]
+  );
+  return rows.length ? (rows[0] as IReview) : null;
 };
 
-export const getReviewStats = async (tripId: string): Promise<any> => {
-  const stats = await Review.aggregate([
-    { $match: { trip: require('mongoose').Types.ObjectId(tripId) } },
-    {
-      $group: {
-        _id: null,
-        averageRating: { $avg: '$rating' },
-        totalReviews: { $sum: 1 },
-        ratingDistribution: {
-          $push: '$rating',
-        },
-      },
-    },
-  ]);
-
-  if (stats.length === 0) {
-    return {
-      averageRating: 0,
-      totalReviews: 0,
-      ratingBreakdown: { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 },
-    };
-  }
-
-  const stat = stats[0];
-  const ratingBreakdown = { 5: 0, 4: 0, 3: 0, 2: 0, 1: 0 };
-
-  stat.ratingDistribution.forEach((rating: number) => {
-    ratingBreakdown[rating as keyof typeof ratingBreakdown]++;
-  });
-
-  return {
-    averageRating: Math.round(stat.averageRating * 10) / 10,
-    totalReviews: stat.totalReviews,
-    ratingBreakdown,
-  };
+// GET review by ID
+export const getReviewById = async (id: string): Promise<IReview | null> => {
+  const { rows } = await pool.query('SELECT * FROM reviews WHERE id = $1', [id]);
+  return rows.length ? (rows[0] as IReview) : null;
 };
 
-const updateTripRating = async (tripId: string): Promise<void> => {
-  const stats = await getReviewStats(tripId);
-  await Trip.findByIdAndUpdate(tripId, {
-    rating: stats.averageRating,
-    reviews: stats.totalReviews,
-  });
+// ADMIN: Get all reviews paginated
+export const getAllReviews = async (page=1, limit=10): Promise<{reviews: IReview[], total: number, pages: number}> => {
+  const offset = (page - 1) * limit;
+  const { rows } = await pool.query(
+    `SELECT r.*, t.title as trip_title, u.name as user_name, u.email as user_email, COUNT(*) OVER() as total_count
+     FROM reviews r
+     JOIN trips t ON r.trip_id = t.id
+     JOIN users u ON r.user_id = u.id
+     ORDER BY r.created_at DESC
+     LIMIT $1 OFFSET $2`, [limit, offset]
+  );
+  const total = rows.length > 0 ? Number(rows[0].total_count) : 0;
+  const reviews = rows.map(({ total_count, ...r }) => r as IReview);
+  return { reviews, total, pages: Math.ceil(total/limit) };
 };
