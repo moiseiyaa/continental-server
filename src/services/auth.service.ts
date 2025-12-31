@@ -65,7 +65,7 @@ export const register = async (userData: IUserInput): Promise<{ user: IUser; tok
     }
     
     console.log('Auth service: Registration completed successfully');
-    return { user, token };
+    return { user: user as IUser, token };
     
   } catch (error: any) {
     console.error('Auth service: Registration failed:', {
