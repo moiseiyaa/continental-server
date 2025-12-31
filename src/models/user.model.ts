@@ -77,7 +77,7 @@ export default class User {
   }
 
   getSignedJwtToken(): string {
-    return jwt.sign({ id: this.id?.toString() }, JWT_SECRET!, { expiresIn: JWT_EXPIRE });
+    return jwt.sign({ id: this.id?.toString() }, JWT_SECRET as string, { expiresIn: JWT_EXPIRE });
   }
 
   async matchPassword(entered: string): Promise<boolean> {

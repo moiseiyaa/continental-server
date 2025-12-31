@@ -65,7 +65,7 @@ export const register = async (userData: IUserInput): Promise<{ user: IUser; tok
     }
     
     console.log('Auth service: Registration completed successfully');
-    return { user: user as IUser, token };
+    return { user: user as unknown as IUser, token };
     
   } catch (error: any) {
     console.error('Auth service: Registration failed:', {
@@ -121,7 +121,7 @@ export const login = async (email: string, password: string): Promise<{ user: IU
     const token = user.getSignedJwtToken();
     console.log('Login service: Login successful');
     
-    return { user: user as IUser, token };
+    return { user: user as unknown as IUser, token };
   } catch (error: any) {
     console.error('Login service error:', error.message);
     throw error;
@@ -185,7 +185,7 @@ export const resetPassword = async (resetToken: string, newPassword: string): Pr
     (user as any).reset_password_expire = null;
     await user.save();
 
-  return user as IUser;
+  return user as unknown as IUser;
 };
 
 export const verifyEmail = async (verificationToken: string): Promise<IUser> => {
