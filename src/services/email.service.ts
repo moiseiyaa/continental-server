@@ -9,11 +9,12 @@ import {
   newsletterWelcomeTemplate,
 } from '../templates/emailTemplates';
 
-if (!process.env.SENDGRID_API_KEY) {
-  throw new Error('SENDGRID_API_KEY is not defined in environment variables');
+// Make email service optional for development
+if (process.env.SENDGRID_API_KEY) {
+  sgMail.setApiKey(process.env.SENDGRID_API_KEY);
+} else {
+  console.warn('⚠️  SENDGRID_API_KEY not set - email functionality disabled');
 }
-
-sgMail.setApiKey(process.env.SENDGRID_API_KEY);
 
 interface SendEmailOptions {
   to: string;
@@ -23,12 +24,19 @@ interface SendEmailOptions {
 }
 
 export const sendEmail = async (options: SendEmailOptions): Promise<void> => {
+  // Skip email if API key not configured (development mode)
+  if (!process.env.SENDGRID_API_KEY) {
+    console.log(`📧 [DEV MODE] Email would be sent to: ${options.to}`);
+    console.log(`📧 [DEV MODE] Subject: ${options.subject}`);
+    return;
+  }
+
   try {
     const msg = {
       to: options.to,
       from: {
-        email: process.env.EMAIL_FROM!,
-        name: process.env.EMAIL_FROM_NAME!,
+        email: process.env.EMAIL_FROM || 'noreply@continental.com',
+        name: process.env.EMAIL_FROM_NAME || 'Continental Travels',
       },
       subject: options.subject,
       text: options.text || options.html.replace(/<[^>]*>/g, ''),

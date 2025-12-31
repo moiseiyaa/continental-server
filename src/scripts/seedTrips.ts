@@ -141,8 +141,39 @@ const TRIPS: TripSeed[] = [
 
 async function seed(): Promise<void> {
   const client = await pool.connect();
+  let success = false;
+  
   try {
     await client.query('BEGIN');
+
+    // Create trips table if it doesn't exist
+    await client.query(`
+      CREATE TABLE IF NOT EXISTS trips (
+        id SERIAL PRIMARY KEY,
+        title VARCHAR(255) NOT NULL,
+        description TEXT,
+        destination VARCHAR(255) NOT NULL,
+        duration INTEGER NOT NULL,
+        price NUMERIC(10, 2) NOT NULL DEFAULT 0,
+        max_participants INTEGER NOT NULL DEFAULT 6,
+        current_participants INTEGER NOT NULL DEFAULT 0,
+        start_date TIMESTAMP,
+        end_date TIMESTAMP,
+        itinerary TEXT[] DEFAULT '{}',
+        images TEXT[] DEFAULT '{}',
+        highlights TEXT[] DEFAULT '{}',
+        included TEXT[] DEFAULT '{}',
+        not_included TEXT[] DEFAULT '{}',
+        difficulty VARCHAR(50) DEFAULT 'moderate',
+        rating NUMERIC(3, 2) DEFAULT 0,
+        reviews INTEGER DEFAULT 0,
+        status VARCHAR(50) DEFAULT 'active',
+        created_by INTEGER,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+    console.log('✅ Created trips table (if it didn\'t exist)');
 
     // Clear existing trips
     await client.query('TRUNCATE TABLE trips RESTART IDENTITY CASCADE');
@@ -157,8 +188,8 @@ async function seed(): Promise<void> {
         `INSERT INTO trips (
           title, description, destination, duration, price,
           max_participants, current_participants, start_date, end_date,
-          status, created_at, updated_at
-        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, NOW(), NOW())`,
+          status, rating, reviews, difficulty, itinerary, highlights, included, images, created_at, updated_at
+        ) VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14, $15, $16, $17, NOW(), NOW())`,
         [
           trip.title,
           trip.description,
@@ -170,19 +201,32 @@ async function seed(): Promise<void> {
           startDate,
           endDate,
           trip.status,
+          4.5, // Default rating
+          0,   // Default reviews
+          'moderate', // Default difficulty
+          '{}', // Empty itinerary array
+          '{}', // Empty highlights array
+          '{}', // Empty included array
+          '{}', // Empty images array
         ],
       );
     }
 
     await client.query('COMMIT');
     console.log(`🚀 Seeded ${TRIPS.length} trips`);
-  } catch (error) {
+    console.log('✅ Database seeding completed successfully!');
+    success = true;
+  } catch (error: any) {
     await client.query('ROLLBACK');
-    console.error('❌ Failed to seed trips:', error);
+    console.error('❌ Failed to seed trips:', error.message);
+    if (error.code) {
+      console.error(`   Error code: ${error.code}`);
+    }
+    success = false;
   } finally {
     client.release();
     await pool.end();
-    process.exit(0);
+    process.exit(success ? 0 : 1);
   }
 }
 
