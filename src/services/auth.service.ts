@@ -121,7 +121,7 @@ export const login = async (email: string, password: string): Promise<{ user: IU
     const token = user.getSignedJwtToken();
     console.log('Login service: Login successful');
     
-    return { user, token };
+    return { user: user as IUser, token };
   } catch (error: any) {
     console.error('Login service error:', error.message);
     throw error;
@@ -182,10 +182,10 @@ export const resetPassword = async (resetToken: string, newPassword: string): Pr
   const salt = await bcrypt.genSalt(10);
   user.password = await bcrypt.hash(newPassword, salt);
   (user as any).reset_password_token = null;
-  (user as any).reset_password_expire = null;
-  await user.save();
+    (user as any).reset_password_expire = null;
+    await user.save();
 
-  return user;
+  return user as IUser;
 };
 
 export const verifyEmail = async (verificationToken: string): Promise<IUser> => {
@@ -207,11 +207,11 @@ export const verifyEmail = async (verificationToken: string): Promise<IUser> => 
 
   // Mark email as verified
   user.emailVerified = true;
-  (user as any).email_verification_token = null;
-  (user as any).email_verification_expire = null;
-  await user.save();
+    (user as any).email_verification_token = null;
+    (user as any).email_verification_expire = null;
+    await user.save();
 
-  return user;
+  return user as IUser;
 };
 export const refreshAccessToken = async (refreshToken: string): Promise<IUser | null> => {
   try {
@@ -243,7 +243,7 @@ export const refreshAccessToken = async (refreshToken: string): Promise<IUser | 
       throw new Error('Invalid refresh token');
     }
 
-    return user;
+    return user as IUser;
   } catch (error: any) {
     console.error('Refresh token validation error:', error.message);
     return null;
