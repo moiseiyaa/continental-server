@@ -820,6 +820,153 @@ const TRIPS: TripSeed[] = [
     current_participants: 0,
     status: 'active',
   },
+  {
+    title: '8 Days Tanzania Under Canvas (5-Star)',
+    description: 'This is a high-end, 5-star luxury safari that offers an authentic African experience by staying in premium tented camps "under canvas". The tour is designed to provide an immersive connection with nature while maintaining maximum comfort and service.',
+    destination: 'Tanzania',
+    duration: 8,
+    price: 2495,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Arrival & Transfer to Tarangire National Park',
+        description: 'Arrival in Tanzania. Transfer to Tarangire National Park. Known for its massive baobab trees and large elephant herds. Afternoon game drive. Check-in to premium tented camp.',
+        activities: [
+          'Airport arrival and transfer',
+          'Afternoon game drive in Tarangire',
+          'Elephant herd viewing',
+          'Baobab tree photography',
+          'Wildlife spotting',
+          'Premium tented camp check-in'
+        ],
+        meals: ['Lunch', 'Dinner'],
+        accommodation: 'Premium tented camp in Tarangire'
+      },
+      {
+        day: 2,
+        title: 'Full Day in Tarangire National Park',
+        description: 'Full day exploring Tarangire National Park. Known for its massive baobab trees and large elephant herds. Morning and afternoon game drives.',
+        activities: [
+          'Morning game drive',
+          'Elephant herd encounters',
+          'Baobab tree exploration',
+          'Afternoon game drive',
+          'Wildlife photography',
+          'Bird watching'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Premium tented camp in Tarangire'
+      },
+      {
+        day: 3,
+        title: 'Lake Manyara National Park',
+        description: 'Transfer to Lake Manyara National Park. A scenic park famous for its tree-climbing lions and diverse birdlife. Full day game drive.',
+        activities: [
+          'Transfer to Lake Manyara',
+          'Tree-climbing lion spotting',
+          'Diverse birdlife viewing',
+          'Scenic lake views',
+          'Game drive',
+          'Wildlife photography'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Premium tented camp at Lake Manyara'
+      },
+      {
+        day: 4,
+        title: 'Ngorongoro Crater',
+        description: 'Transfer to Ngorongoro Crater. A UNESCO World Heritage site and "natural amphitheater" providing some of the best wildlife viewing in Africa within the caldera of an extinct volcano. Full day crater exploration.',
+        activities: [
+          'Transfer to Ngorongoro Crater',
+          'Crater descent',
+          'UNESCO World Heritage site visit',
+          'Exceptional wildlife viewing',
+          'Big Five encounters',
+          'Crater rim views',
+          'Wildlife photography'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Premium tented camp on Ngorongoro Crater rim'
+      },
+      {
+        day: 5,
+        title: 'Serengeti National Park - Arrival',
+        description: 'Transfer to Serengeti National Park. Three full days dedicated to the vast plains of the Serengeti, home to the Great Migration and a high concentration of big cats. Afternoon game drive.',
+        activities: [
+          'Transfer to Serengeti',
+          'Afternoon game drive',
+          'Great Migration viewing (seasonal)',
+          'Big cat encounters',
+          'Vast plains exploration',
+          'Wildlife photography'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Premium tented camp in Serengeti'
+      },
+      {
+        day: 6,
+        title: 'Serengeti - Full Day Safari',
+        description: 'Full day in Serengeti National Park. Dedicated to the vast plains of the Serengeti, home to the Great Migration and a high concentration of big cats.',
+        activities: [
+          'Full-day game drives',
+          'Great Migration viewing (seasonal)',
+          'Big cat encounters (lions, leopards, cheetahs)',
+          'Vast plains exploration',
+          'Wildlife photography',
+          'Professional guide services'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Premium tented camp in Serengeti'
+      },
+      {
+        day: 7,
+        title: 'Serengeti - Full Day Safari',
+        description: 'Full day in Serengeti National Park. Dedicated to the vast plains of the Serengeti, home to the Great Migration and a high concentration of big cats.',
+        activities: [
+          'Full-day game drives',
+          'Great Migration viewing (seasonal)',
+          'Big cat encounters',
+          'Vast plains exploration',
+          'Wildlife photography',
+          'Professional guide services'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Premium tented camp in Serengeti'
+      },
+      {
+        day: 8,
+        title: 'Final Game Drive & Departure',
+        description: 'Final morning game drive followed by a transfer back for your outbound flight.',
+        activities: [
+          'Final morning game drive',
+          'Last wildlife viewing',
+          'Transfer to airport',
+          'Departure'
+        ],
+        meals: ['Breakfast', 'Lunch'],
+        accommodation: 'N/A (Departure)'
+      }
+    ],
+    activities: [
+      'Premium tented camp accommodation',
+      'Game drives in Tarangire National Park',
+      'Elephant herd viewing',
+      'Baobab tree exploration',
+      'Tree-climbing lion spotting at Lake Manyara',
+      'Ngorongoro Crater exploration',
+      'UNESCO World Heritage site visit',
+      'Serengeti National Park game drives',
+      'Great Migration viewing (seasonal)',
+      'Big cat encounters',
+      'Wildlife photography',
+      'Professional guide services',
+      '5-star luxury service'
+    ],
+    insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
+  },
 ];
 
 async function seed(): Promise<void> {
