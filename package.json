@@ -15,6 +15,7 @@
     "seed:trips": "ts-node src/scripts/seedTrips.ts",
     "seed:blogs": "ts-node src/scripts/seedBlogs.ts",
     "seed:users": "ts-node src/scripts/seedUsers.ts",
+    "create:bookings-table": "ts-node src/scripts/createBookingsTable.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

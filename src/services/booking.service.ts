@@ -1,8 +1,43 @@
 import { pool } from '../config/db';
 import { IBooking, IBookingInput } from '../interfaces/booking.interface';
 
+// Ensure bookings table exists
+const ensureBookingsTable = async () => {
+  try {
+    await pool.query(`
+      CREATE TABLE IF NOT EXISTS bookings (
+        id SERIAL PRIMARY KEY,
+        user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+        trip_id INTEGER NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
+        number_of_participants INTEGER NOT NULL DEFAULT 1,
+        total_price NUMERIC(10, 2) NOT NULL DEFAULT 0,
+        status VARCHAR(50) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'cancelled', 'completed')),
+        payment_status VARCHAR(50) NOT NULL DEFAULT 'pending' CHECK (payment_status IN ('pending', 'paid', 'refunded')),
+        booking_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+        special_requests TEXT,
+        participant_details JSONB DEFAULT '[]'::jsonb,
+        created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+        updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+      )
+    `);
+  } catch (error) {
+    // Table might already exist, ignore error
+    console.log('Bookings table check:', error instanceof Error ? error.message : 'unknown error');
+  }
+};
+
+// Initialize table on module load
+let tableInitialized = false;
+const initializeTable = async () => {
+  if (!tableInitialized) {
+    await ensureBookingsTable();
+    tableInitialized = true;
+  }
+};
+
 // CREATE a booking - transactional (handles booking + participant count)
 export const createBooking = async (data: IBookingInput, userId: string): Promise<IBooking | null> => {
+  await initializeTable();
   const client = await pool.connect();
   try {
     await client.query('BEGIN');
