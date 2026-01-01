@@ -967,6 +967,327 @@ const TRIPS: TripSeed[] = [
     ],
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
+  {
+    title: '3 Days Gorilla Express via Kampala',
+    description: 'This express safari is designed for those with limited time who still want a focused encounter with mountain gorillas in Bwindi Impenetrable National Park. It involves a scenic drive across the equator and through the "Switzerland of Africa" highlands.',
+    destination: 'Uganda',
+    duration: 3,
+    price: 0,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Departure from Kampala/Entebbe to Bwindi',
+        description: 'Depart from Kampala or Entebbe and drive southwest. Stop at the Equator for photos and proceed through Savannah grasslands and banana plantations to Bwindi.',
+        activities: [
+          'Scenic drive from Kampala/Entebbe',
+          'Equator crossing and photo stop',
+          'Drive through Savannah grasslands',
+          'Banana plantation views',
+          'Arrival at Bwindi Impenetrable National Park',
+          'Lodge check-in'
+        ],
+        meals: ['Lunch', 'Dinner'],
+        accommodation: 'Lodge near Bwindi Impenetrable National Park'
+      },
+      {
+        day: 2,
+        title: 'Gorilla Tracking Adventure',
+        description: 'Enter the forest at dawn for gorilla tracking after a briefing from park guides. Spend one hour observing a gorilla family in their natural habitat.',
+        activities: [
+          'Early morning briefing at park headquarters',
+          'Gorilla tracking in Bwindi Impenetrable Forest',
+          'One hour observing gorilla family',
+          'Forest trekking',
+          'Wildlife photography',
+          'Professional guide services'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Lodge near Bwindi Impenetrable National Park'
+      },
+      {
+        day: 3,
+        title: 'Return to Kampala/Entebbe',
+        description: 'After breakfast, depart Bwindi and drive back to Kampala or Entebbe for your departure or a brief city tour.',
+        activities: [
+          'Scenic drive back to Kampala/Entebbe',
+          'Optional city tour',
+          'Departure or extended stay'
+        ],
+        meals: ['Breakfast', 'Lunch'],
+        accommodation: 'N/A (Departure)'
+      }
+    ],
+    activities: [
+      'Gorilla trekking in Bwindi Impenetrable National Park',
+      'Equator crossing experience',
+      'Scenic drive through highlands',
+      'Wildlife photography',
+      'Professional guide services',
+      'Gorilla family observation'
+    ],
+    insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
+  },
+  {
+    title: '3 Days Gorilla Fly-In Express',
+    description: 'A premium, time-saving option that avoids the long 9-hour drive from Kampala by using domestic flights to reach the gorilla highlands.',
+    destination: 'Uganda',
+    duration: 3,
+    price: 2420,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Fly to Gorilla Highlands & Community Walk',
+        description: 'Fly from Entebbe International Airport to Kihihi or Kisoro Airstrip. Transfer to your lodge for lunch and enjoy an optional afternoon community walk to meet the local Batwa people.',
+        activities: [
+          'Domestic flight from Entebbe to Kihihi/Kisoro',
+          'Airport transfer to lodge',
+          'Lodge check-in',
+          'Optional Batwa community walk',
+          'Cultural interaction with local people',
+          'Forest lodge experience'
+        ],
+        meals: ['Lunch', 'Dinner'],
+        accommodation: 'Lodge in gorilla highlands'
+      },
+      {
+        day: 2,
+        title: 'Gorilla Tracking Adventure',
+        description: 'Early morning transfer to park headquarters for a briefing. Embark on your gorilla tracking adventure, which can last from 2 to 6 hours.',
+        activities: [
+          'Early morning transfer to park headquarters',
+          'Gorilla tracking briefing',
+          'Gorilla tracking adventure (2-6 hours)',
+          'Gorilla family observation',
+          'Forest trekking',
+          'Wildlife photography',
+          'Professional guide services'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Lodge in gorilla highlands'
+      },
+      {
+        day: 3,
+        title: 'Return Flight to Entebbe',
+        description: 'Enjoy a final breakfast in the forest before your return flight to Entebbe.',
+        activities: [
+          'Final breakfast at lodge',
+          'Transfer to airstrip',
+          'Return flight to Entebbe',
+          'Departure'
+        ],
+        meals: ['Breakfast'],
+        accommodation: 'N/A (Departure)'
+      }
+    ],
+    activities: [
+      'Domestic flights (Entebbe to Kihihi/Kisoro and return)',
+      'Gorilla trekking in Bwindi Impenetrable National Park',
+      'Batwa community cultural walk',
+      'Wildlife photography',
+      'Professional guide services',
+      'Time-saving express option'
+    ],
+    insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
+  },
+  {
+    title: '12 Days Gorilla, Rhinos, Chimpanzee Trekking & Water Safari',
+    description: 'The most comprehensive Ugandan expedition, covering the "Big Five," primates, and river-based adventures across the country\'s diverse national parks.',
+    destination: 'Uganda',
+    duration: 12,
+    price: 6254,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Arrival in Entebbe',
+        description: 'Arrival at Entebbe and transfer to your hotel.',
+        activities: [
+          'Airport arrival',
+          'Transfer to hotel',
+          'Rest and acclimatization'
+        ],
+        meals: ['Dinner'],
+        accommodation: 'Hotel in Entebbe'
+      },
+      {
+        day: 2,
+        title: 'White-Water Rafting on the Nile',
+        description: 'Drive to Jinja for white-water rafting on the Nile.',
+        activities: [
+          'Transfer to Jinja',
+          'White-water rafting on the Nile',
+          'Adventure water sports',
+          'Nile River experience'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Lodge in Jinja'
+      },
+      {
+        day: 3,
+        title: 'Rhino Tracking & Transfer to Murchison Falls',
+        description: 'Transfer to Ziwa Rhino Sanctuary for on-foot rhino tracking, then proceed to Murchison Falls National Park.',
+        activities: [
+          'Transfer to Ziwa Rhino Sanctuary',
+          'On-foot rhino tracking',
+          'Rhino conservation experience',
+          'Transfer to Murchison Falls National Park',
+          'Park entry and check-in'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Lodge in Murchison Falls National Park'
+      },
+      {
+        day: 4,
+        title: 'Murchison Falls Game Drive & Boat Cruise',
+        description: 'Morning game drive in Murchison Falls followed by an afternoon boat cruise to the base of the world\'s most powerful waterfall.',
+        activities: [
+          'Morning game drive',
+          'Wildlife viewing',
+          'Afternoon boat cruise',
+          'Murchison Falls viewing',
+          'World\'s most powerful waterfall experience',
+          'Wildlife photography'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Lodge in Murchison Falls National Park'
+      },
+      {
+        day: 5,
+        title: 'Transfer to Kibale Forest',
+        description: 'Drive south to Hoima or directly to Kibale Forest National Park.',
+        activities: [
+          'Scenic drive south',
+          'Transfer to Kibale Forest National Park',
+          'Park entry and check-in'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Lodge in Kibale Forest National Park'
+      },
+      {
+        day: 6,
+        title: 'Chimpanzee Tracking & Bigodi Wetland',
+        description: 'Chimpanzee tracking in Kibale Forest and a nature walk in the Bigodi Wetland Sanctuary.',
+        activities: [
+          'Chimpanzee tracking in Kibale Forest',
+          'Primate observation',
+          'Nature walk in Bigodi Wetland Sanctuary',
+          'Bird watching',
+          'Wildlife photography',
+          'Professional guide services'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Lodge in Kibale Forest National Park'
+      },
+      {
+        day: 7,
+        title: 'Transfer to Queen Elizabeth National Park',
+        description: 'Transfer to Queen Elizabeth National Park with an evening game drive.',
+        activities: [
+          'Transfer to Queen Elizabeth National Park',
+          'Park entry and check-in',
+          'Evening game drive',
+          'Wildlife viewing'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Lodge in Queen Elizabeth National Park'
+      },
+      {
+        day: 8,
+        title: 'Queen Elizabeth Game Drive & Kazinga Channel',
+        description: 'Morning game drive and an afternoon boat safari on the Kazinga Channel to see hippos and elephants.',
+        activities: [
+          'Morning game drive',
+          'Wildlife viewing',
+          'Afternoon boat safari on Kazinga Channel',
+          'Hippo and elephant viewing',
+          'Bird watching',
+          'Wildlife photography'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Lodge in Queen Elizabeth National Park'
+      },
+      {
+        day: 9,
+        title: 'Tree-Climbing Lions in Ishasha',
+        description: 'Drive to the Ishasha sector of Queen Elizabeth NP to search for unique tree-climbing lions.',
+        activities: [
+          'Transfer to Ishasha sector',
+          'Game drive searching for tree-climbing lions',
+          'Unique wildlife encounter',
+          'Wildlife photography',
+          'Professional guide services'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Lodge in Ishasha sector'
+      },
+      {
+        day: 10,
+        title: 'Transfer to Bwindi Impenetrable National Park',
+        description: 'Proceed to Bwindi Impenetrable National Park.',
+        activities: [
+          'Scenic transfer to Bwindi',
+          'Park entry and check-in',
+          'Rest and preparation for gorilla trekking'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Lodge near Bwindi Impenetrable National Park'
+      },
+      {
+        day: 11,
+        title: 'Gorilla Trekking - The Highlight',
+        description: 'Gorilla Trekking in Bwindi—the highlight of the trip.',
+        activities: [
+          'Early morning briefing at park headquarters',
+          'Gorilla trekking in Bwindi Impenetrable Forest',
+          'Gorilla family observation',
+          'Forest trekking',
+          'Wildlife photography',
+          'Professional guide services',
+          'Once-in-a-lifetime experience'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Lodge near Bwindi Impenetrable National Park'
+      },
+      {
+        day: 12,
+        title: 'Return to Entebbe & Departure',
+        description: 'Return drive to Entebbe with a stop at the Equator for souvenirs before your flight.',
+        activities: [
+          'Scenic drive back to Entebbe',
+          'Equator crossing and souvenir shopping',
+          'Airport transfer',
+          'Departure'
+        ],
+        meals: ['Breakfast', 'Lunch'],
+        accommodation: 'N/A (Departure)'
+      }
+    ],
+    activities: [
+      'White-water rafting on the Nile',
+      'Rhino tracking at Ziwa Rhino Sanctuary',
+      'Murchison Falls game drives and boat cruise',
+      'Chimpanzee tracking in Kibale Forest',
+      'Bigodi Wetland Sanctuary nature walk',
+      'Queen Elizabeth National Park game drives',
+      'Kazinga Channel boat safari',
+      'Tree-climbing lion viewing in Ishasha',
+      'Gorilla trekking in Bwindi Impenetrable National Park',
+      'Equator crossing experience',
+      'Comprehensive wildlife viewing',
+      'Wildlife photography',
+      'Professional guide services',
+      'Big Five encounters'
+    ],
+    insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
+  },
 ];
 
 async function seed(): Promise<void> {
