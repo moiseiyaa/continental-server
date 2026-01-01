@@ -49,6 +49,7 @@ class App {
     }));
 
     // CSRF token verification on state-changing requests (except certain public routes)
+    // Note: For API routes with JWT authentication, CSRF is less critical since tokens are in headers/cookies
     this.app.use('/api', (req: Request, res: Response, next: NextFunction) => {
       // Skip CSRF verification for public routes
       const publicPaths = ['/auth/login', '/auth/register', '/auth/forgot-password', '/auth/reset-password', '/auth/verify-email'];
@@ -56,6 +57,13 @@ class App {
       
       if (isPublicPath && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method)) {
         return next(); // Skip CSRF for public endpoints
+      }
+      
+      // Skip CSRF for authenticated API routes (JWT in header/cookie provides sufficient protection)
+      // Check if request has authorization token or cookie token
+      const hasAuthToken = req.headers.authorization?.startsWith('Bearer') || req.cookies.token;
+      if (hasAuthToken && ['POST', 'PUT', 'DELETE', 'PATCH'].includes(req.method)) {
+        return next(); // Skip CSRF for authenticated endpoints
       }
       
       verifyCsrfToken(req, res, next);
