@@ -77,7 +77,7 @@ const mapTrip = (row: TripRow): Trip => ({
   included: row.included || [],
   notIncluded: row.not_included || [],
   activities: row.activities || [],
-  insurance: row.insurance || null,
+  insurance: row.insurance ?? undefined,
   difficulty: row.difficulty,
   rating: Number(row.rating),
   reviews: row.reviews,
