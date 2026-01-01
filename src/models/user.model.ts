@@ -80,6 +80,33 @@ export default class User {
     return jwt.sign({ id: this.id?.toString() }, JWT_SECRET as string, { expiresIn: JWT_EXPIRE } as any);
   }
 
+  async getRefreshToken(): Promise<string> {
+    // Generate refresh token (longer expiry - 7 days)
+    const refreshToken = jwt.sign(
+      { id: this.id?.toString(), type: 'refresh' },
+      JWT_SECRET as string,
+      { expiresIn: '7d' } as any
+    );
+
+    // Hash the refresh token and store it
+    const refreshTokenHash = crypto
+      .createHash('sha256')
+      .update(refreshToken)
+      .digest('hex');
+
+    // Set expiration (7 days from now)
+    const refreshTokenExpire = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
+
+    // Update user instance
+    this.refreshTokenHash = refreshTokenHash;
+    this.refreshTokenExpire = refreshTokenExpire;
+
+    // Save to database
+    await this.save();
+
+    return refreshToken;
+  }
+
   async matchPassword(entered: string): Promise<boolean> {
     return bcrypt.compare(entered, this.password);
   }

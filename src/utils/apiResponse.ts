@@ -8,12 +8,12 @@ interface TokenResponse {
 }
 
 // Get token from model, create cookie and send response
-export const sendTokenResponse = (user: any, statusCode: number, res: Response, includeRefreshToken: boolean = true) => {
+export const sendTokenResponse = async (user: any, statusCode: number, res: Response, includeRefreshToken: boolean = true) => {
   // Create access token
   const token = user.getSignedJwtToken();
   
-  // Create refresh token
-  const refreshToken = includeRefreshToken ? user.getRefreshToken() : null;
+  // Create refresh token (async method)
+  const refreshToken = includeRefreshToken ? await user.getRefreshToken() : null;
 
   const options = {
     expires: new Date(

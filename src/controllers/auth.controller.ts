@@ -88,7 +88,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
     console.log('Login successful for user:', user.email);
     
     // Use sendTokenResponse to create both access and refresh tokens
-    sendTokenResponse(user, 200, res);
+    await sendTokenResponse(user, 200, res);
   } catch (error: any) {
     console.error('Login error:', error.message);
     next(error);
