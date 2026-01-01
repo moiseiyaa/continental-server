@@ -14,10 +14,13 @@ export interface Trip {
   startDate: Date;
   endDate: Date;
   itinerary: string[];
+  detailedItinerary?: any; // JSONB field with day-by-day details
   images: string[];
   highlights: string[];
   included: string[];
   notIncluded: string[];
+  activities?: string[];
+  insurance?: string;
   difficulty: string;
   rating: number;
   reviews: number;
@@ -39,10 +42,13 @@ interface TripRow {
   start_date: Date;
   end_date: Date;
   itinerary: string[] | null;
+  detailed_itinerary: any; // JSONB field
   images: string[] | null;
   highlights: string[] | null;
   included: string[] | null;
   not_included: string[] | null;
+  activities: string[] | null;
+  insurance: string | null;
   difficulty: string;
   rating: number;
   reviews: number;
@@ -65,10 +71,13 @@ const mapTrip = (row: TripRow): Trip => ({
   startDate: row.start_date,
   endDate: row.end_date,
   itinerary: row.itinerary || [],
+  detailedItinerary: row.detailed_itinerary || null,
   images: row.images || [],
   highlights: row.highlights || [],
   included: row.included || [],
   notIncluded: row.not_included || [],
+  activities: row.activities || [],
+  insurance: row.insurance || null,
   difficulty: row.difficulty,
   rating: Number(row.rating),
   reviews: row.reviews,
