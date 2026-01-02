@@ -114,3 +114,87 @@ export const reactivateUser = async (userId: string): Promise<IUser | null> => {
   const { password, ...userWithoutPassword } = user as any;
   return userWithoutPassword as IUser;
 };
+
+export const getUserDashboard = async (userId: string): Promise<any> => {
+  try {
+    // Get user info
+    const user = await getUserById(userId);
+    if (!user) throw new Error('User not found');
+
+    // Get user's bookings with trip details
+    const bookingsQuery = `
+      SELECT
+        b.id,
+        b.trip_id,
+        b.number_of_participants,
+        b.total_price,
+        b.status,
+        b.booking_date,
+        t.title as trip_title,
+        t.destination,
+        t.start_date,
+        t.end_date,
+        t.images[1] as image
+      FROM bookings b
+      JOIN trips t ON b.trip_id = t.id
+      WHERE b.user_id = $1
+      ORDER BY b.created_at DESC
+    `;
+
+    const bookingsResult = await pool.query(bookingsQuery, [userId]);
+
+    // Calculate stats
+    const allBookings = bookingsResult.rows;
+    const upcomingBookings = allBookings.filter(b => b.status === 'confirmed' || b.status === 'pending');
+    const completedBookings = allBookings.filter(b => b.status === 'completed');
+
+    // Get unique countries visited from completed bookings
+    const countriesVisited = [...new Set(completedBookings.map(b => b.destination.split(',')[0].trim()))].length;
+
+    // Format upcoming trips
+    const upcomingTrips = upcomingBookings.slice(0, 3).map(booking => ({
+      id: booking.id,
+      destination: booking.trip_title,
+      date: booking.start_date || booking.booking_date,
+      status: booking.status,
+      amount: parseFloat(booking.total_price),
+      travelers: booking.number_of_participants,
+      startDate: booking.start_date,
+      endDate: booking.end_date,
+      image: booking.image || '/images/placeholder.jpg'
+    }));
+
+    // Format recent bookings
+    const recentBookings = allBookings.slice(0, 3).map(booking => ({
+      id: booking.id,
+      trip: booking.trip_title,
+      date: booking.booking_date,
+      status: booking.status,
+      amount: parseFloat(booking.total_price)
+    }));
+
+    // Calculate loyalty points (simplified: 10 points per completed trip)
+    const loyaltyPoints = completedBookings.length * 10;
+
+    const dashboardData = {
+      user: {
+        name: user.name,
+        email: user.email,
+        memberSince: user.createdAt ? new Date(user.createdAt).toISOString().split('T')[0] : new Date().toISOString().split('T')[0]
+      },
+      stats: {
+        totalTrips: completedBookings.length,
+        countriesVisited,
+        loyaltyPoints,
+        upcomingBookings: upcomingBookings.length
+      },
+      upcomingTrips,
+      recentBookings
+    };
+
+    return dashboardData;
+  } catch (error) {
+    console.error('Error fetching user dashboard:', error);
+    throw error;
+  }
+};

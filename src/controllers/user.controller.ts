@@ -9,6 +9,7 @@ import {
   updateUserRole,
   deactivateUser,
   reactivateUser,
+  getUserDashboard,
 } from '../services/user.service';
 
 // @desc    Get user profile
@@ -20,6 +21,21 @@ export const getUserProfile = async (req: any, res: Response, next: NextFunction
     res.status(200).json({
       success: true,
       data: user,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Get user dashboard data
+// @route   GET /api/users/dashboard
+// @access  Private
+export const getUserDashboardHandler = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const dashboardData = await getUserDashboard(req.user.id);
+    res.status(200).json({
+      success: true,
+      data: dashboardData,
     });
   } catch (error) {
     next(error);

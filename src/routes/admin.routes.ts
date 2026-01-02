@@ -7,6 +7,7 @@ import {
   getRevenueReportsHandler,
   getSystemHealthHandler,
 } from '../controllers/admin.controller';
+import { authenticate, authorize } from '../middleware/auth.middleware';
 import { protect, authorize } from '../middlewares/auth.middleware';
 
 const router = Router();
