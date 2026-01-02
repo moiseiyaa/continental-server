@@ -1,4 +1,5 @@
 import { Router } from 'express';
+import paymentRoutes from './payment.routes';
 import authRoutes from './auth.routes';
 import tripRoutes from './trip.routes';
 import bookingRoutes from './booking.routes';
@@ -24,5 +25,6 @@ router.use('/contacts', contactRoutes);
 router.use('/newsletter', newsletterRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/blogs', blogRoutes);
+router.use('/payments', paymentRoutes);
 
 export default router;
