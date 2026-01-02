@@ -2,6 +2,7 @@
 // Define user roles as a type
 export type UserRole = 'user' | 'admin' | 'guest';
 
+export interface IUser {
   id?: number;
   name: string;
   email: string;
