@@ -2,7 +2,6 @@
 // Define user roles as a type
 export type UserRole = 'user' | 'admin' | 'guest';
 
-export interface IUser {
   id?: number;
   name: string;
   email: string;
@@ -16,6 +15,7 @@ export interface IUser {
   refreshTokenHash?: string;
   refreshTokenExpire?: Date;
   isActive?: boolean;
+  createdAt?: Date;
   matchPassword?: (enteredPassword: string) => Promise<boolean>;
   getSignedJwtToken?: () => string;
   getResetPasswordToken?: () => string;
