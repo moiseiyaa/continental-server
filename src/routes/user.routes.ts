@@ -1,8 +1,4 @@
 import { getUserDashboardHandler } from '../controllers/user.controller';
-// @route   GET /api/users/dashboard
-// @desc    Get user dashboard data
-// @access  Private
-router.get('/dashboard', protect, getUserDashboardHandler);
 import { Router } from 'express';
 import { body } from 'express-validator';
 import {
@@ -19,6 +15,11 @@ import { protect, authorize } from '../middlewares/auth.middleware';
 import { requireRole, verifyOwnership } from '../middlewares/ownership.middleware';
 
 const router = Router();
+
+// @route   GET /api/users/dashboard
+// @desc    Get user dashboard data
+// @access  Private
+router.get('/dashboard', protect, getUserDashboardHandler);
 
 // @route   GET /api/users/profile
 // @desc    Get user profile
