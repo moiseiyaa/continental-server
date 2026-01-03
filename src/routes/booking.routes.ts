@@ -20,7 +20,6 @@ const router = Router();
 // @access  Private
 router.post(
   '/',
-  protect,
   [
     body('trip', 'Trip ID is required').not().isEmpty(),
     body('numberOfParticipants', 'Number of participants must be a number').isNumeric(),

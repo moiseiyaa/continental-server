@@ -30,36 +30,58 @@ export const createBookingHandler = async (req: any, res: Response, next: NextFu
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
-
     const bookingData: IBookingInput = req.body;
-    const booking = await createBooking(bookingData, req.user.id);
-    
+    const paymentInfo = req.body.payment;
+    // Step 1: Handle user or guest
+    let userId;
+    let userEmail = req.user?.email;
+    let userName = req.user?.name || 'Traveler';
+    if (req.user && req.user.id) {
+      userId = req.user.id;
+    } else if (
+      bookingData.participantDetails && bookingData.participantDetails.length > 0 && bookingData.participantDetails[0].email
+    ) {
+      // GUEST: lookup or create a new user by email (stub logic for now)
+      // TODO: Replace with db find-or-create logic
+      userEmail = bookingData.participantDetails[0].email;
+      userName = bookingData.participantDetails[0].name || 'Traveler';
+      userId = null; // In a real implementation, save the result user id
+    } else {
+      return res.status(400).json({ message: 'User email is required for booking.' });
+    }
+    // Step 2: Take payment (mock - always success for now)
+    // Integrate with Stripe or payment gateway here if paymentInfo exists
+    if (paymentInfo) {
+      // Example stub: if (!paymentInfo.cardNumber) ...
+      // Simulate payment succeeded
+    } else {
+      // Optionally, you could require payment for bookings
+    }
+    // Step 3: Create booking (use userId or fallback to mock id: 0 for guests)
+    const booking = await createBooking(bookingData, userId || 0);
     if (!booking) {
       return res.status(500).json({ message: 'Failed to create booking' });
     }
-
-    // Send booking confirmation notification & email
+    // Send booking confirmation notification & email if email known
     try {
       const tripId = booking.trip as any;
       const tripTitle = (tripId && tripId.title) || 'Your Booked Trip';
       const bookingId = (booking as any)._id?.toString() || '';
-      
-      if (bookingId) {
-        await notifyBookingConfirmation(req.user.id, tripTitle, bookingId);
-        // send confirmation email
-        await sendBookingConfirmation(req.user.email, req.user.name || 'Traveler', {
+      if (bookingId && userEmail) {
+        // Do not fail booking if these fail
+        await notifyBookingConfirmation(userId, tripTitle, bookingId).catch(() => {});
+        await sendBookingConfirmation(userEmail, userName, {
           bookingId: bookingId,
           tourName: tripTitle,
           date: booking.bookingDate ? new Date(booking.bookingDate).toISOString().substring(0,10) : new Date().toISOString().substring(0,10),
           travelers: booking.numberOfParticipants || 1,
           totalAmount: booking.totalPrice || 0,
-        });
+        }).catch(() => {});
       }
     } catch (notificationError) {
       // Log notification error but don't fail the booking creation
       console.error('Failed to send booking confirmation notification:', notificationError);
     }
-
     res.status(201).json({
       success: true,
       data: booking,
