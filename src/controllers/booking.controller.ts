@@ -30,19 +30,49 @@ export const createBookingHandler = async (req: any, res: Response, next: NextFu
     if (!errors.isEmpty()) {
       return res.status(400).json({ errors: errors.array() });
     }
+
     const bookingData: IBookingInput = req.body;
     const paymentInfo = req.body.payment;
+
+    // Validate required fields
+    if (!bookingData.trip) {
+      return res.status(400).json({ message: 'Trip ID is required.' });
+    }
+    if (!bookingData.numberOfParticipants || bookingData.numberOfParticipants < 1) {
+      return res.status(400).json({ message: 'Number of participants must be at least 1.' });
+    }
+    if (!bookingData.participantDetails || bookingData.participantDetails.length === 0) {
+      return res.status(400).json({ message: 'At least one participant is required.' });
+    }
+
+    // Validate participant details
+    for (let i = 0; i < bookingData.participantDetails.length; i++) {
+      const p = bookingData.participantDetails[i];
+      if (!p.name || !p.name.trim()) {
+        return res.status(400).json({ message: `Participant ${i + 1}: Name is required.` });
+      }
+      if (!p.email || !p.email.trim()) {
+        return res.status(400).json({ message: `Participant ${i + 1}: Email is required.` });
+      }
+      if (!p.phone || !p.phone.trim()) {
+        return res.status(400).json({ message: `Participant ${i + 1}: Phone is required.` });
+      }
+      // Basic email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(p.email)) {
+        return res.status(400).json({ message: `Participant ${i + 1}: Invalid email address.` });
+      }
+    }
+
     // Step 1: Handle user or guest
     let userId;
     let userEmail = req.user?.email;
     let userName = req.user?.name || 'Traveler';
+    
     if (req.user && req.user.id) {
       userId = req.user.id;
-    } else if (
-      bookingData.participantDetails && bookingData.participantDetails.length > 0 && bookingData.participantDetails[0].email
-    ) {
-      // GUEST: lookup or create a new user by email (stub logic for now)
-      // TODO: Replace with db find-or-create logic
+    } else if (bookingData.participantDetails && bookingData.participantDetails.length > 0) {
+      // GUEST: use first participant email and name
       userEmail = bookingData.participantDetails[0].email;
       userName = bookingData.participantDetails[0].name || 'Traveler';
       userId = null; // In a real implementation, save the result user id
