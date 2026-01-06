@@ -12,6 +12,8 @@ import {
   deleteBooking,
 } from '../services/booking.service';
 
+import { verifyPayment } from '../services/payment.service';
+
 import {
   notifyBookingConfirmation,
   notifyBookingCancellation,
@@ -336,3 +338,46 @@ export const deleteBookingHandler = async (req: Request, res: Response, next: Ne
     next(error);
   }
 };
+
+// @desc    Process booking with optional direct payment verification
+// @route   POST /api/bookings/process
+// @access  Private (expects auth or guest flow)
+export const processBookingHandler = async (req: any, res: Response, next: NextFunction) => {
+  const { userData, tourId, paymentIntentId, isDirectPayment } = req.body;
+  // userData: { id?, email?, guests? }
+  try {
+    // Create booking as PENDING inside createBooking (which is transactional)
+    const bookingInput = {
+      trip: tourId || req.body.trip || req.body.tripId,
+      numberOfParticipants: (userData && userData.guests) || req.body.numberOfParticipants || 1,
+      participantDetails: req.body.participantDetails || [],
+      specialRequests: req.body.specialRequests || null,
+    };
+
+    const userId = (req.user && req.user.id) || (userData && userData.id) || 0;
+    const booking = await createBooking(bookingInput as any, userId || 0);
+
+    if (!booking) return res.status(500).json({ success: false, message: 'Failed to create booking' });
+
+    // If direct payment requested, verify payment and update booking statuses in service
+    if (isDirectPayment) {
+      const ok = await verifyPayment(paymentIntentId);
+      if (!ok) {
+        // mark payment as pending and return failure
+        await updatePaymentStatus((booking as any).id || (booking as any)._id, 'pending');
+        return res.status(400).json({ success: false, message: 'Payment verification failed' });
+      }
+      // mark as paid and confirmed
+      await updatePaymentStatus((booking as any).id || (booking as any)._id, 'paid');
+      await updateBookingStatus((booking as any).id || (booking as any)._id, 'confirmed');
+    } else {
+      // Reserve only
+      await updateBookingStatus((booking as any).id || (booking as any)._id, 'pending');
+      await updatePaymentStatus((booking as any).id || (booking as any)._id, 'pending');
+    }
+
+    return res.status(200).json({ success: true, booking });
+  } catch (err) {
+    next(err);
+  }
+}

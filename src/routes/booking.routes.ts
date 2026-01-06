@@ -9,6 +9,7 @@ import {
   updatePaymentStatusHandler,
   cancelBookingHandler,
   deleteBookingHandler,
+  processBookingHandler,
 } from '../controllers/booking.controller';
 import { protect, authorize } from '../middlewares/auth.middleware';
 import { requireRole, verifyResourceOwnership } from '../middlewares/ownership.middleware';
@@ -27,6 +28,11 @@ router.post(
   ],
   createBookingHandler
 );
+
+// @route   POST /api/bookings/process
+// @desc    Create a booking and optionally verify direct payment
+// @access  Public/Private depending on client
+router.post('/process', processBookingHandler);
 
 // @route   GET /api/bookings/user/my-bookings
 // @desc    Get user bookings
