@@ -1439,7 +1439,7 @@ async function seed(): Promise<void> {
           '{}', // Empty itinerary array
           '{}', // Empty highlights array
           '{}', // Empty included array
-          '{}', // Empty images array
+          trip.images || [], // Use trip images array from seed data
           detailedItineraryJson, // Detailed itinerary as JSONB
           trip.activities || [], // Activities array
           trip.insurance || null, // Insurance text
