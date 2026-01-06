@@ -24,6 +24,7 @@ interface TripSeed {
   status: string;
   detailed_itinerary?: DayItinerary[];
   activities?: string[];
+  images?: string[];
   insurance?: string;
 }
 
@@ -61,6 +62,13 @@ const TRIPS: TripSeed[] = [
       'Photography sessions',
       'Professional guide services'
     ],
+    images: [
+      '/images/trips/akagera-safarishare-hero.jpg',
+      '/images/trips/akagera-safarishare-1.jpg',
+      '/images/trips/akagera-safarishare-2.jpg',
+      '/images/trips/akagera-safarishare-3.jpg',
+      '/images/trips/akagera-safarishare-4.jpg'
+    ],
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
   {
@@ -97,6 +105,13 @@ const TRIPS: TripSeed[] = [
       'Personalized wildlife tracking',
       'Professional guide'
     ],
+    images: [
+      '/images/trips/safari-car-private-hero.jpg',
+      '/images/trips/safari-car-private-1.jpg',
+      '/images/trips/safari-car-private-2.jpg',
+      '/images/trips/safari-car-private-3.jpg',
+      '/images/trips/safari-car-private-4.jpg'
+    ],
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
   {
@@ -132,6 +147,13 @@ const TRIPS: TripSeed[] = [
       'Diverse ecosystem exploration',
       'Professional guide',
       'Premium comfort experience'
+    ],
+    images: [
+      '/images/trips/akagera-landcruiser-v8-hero.jpg',
+      '/images/trips/akagera-landcruiser-v8-1.jpg',
+      '/images/trips/akagera-landcruiser-v8-2.jpg',
+      '/images/trips/akagera-landcruiser-v8-3.jpg',
+      '/images/trips/akagera-landcruiser-v8-4.jpg'
     ],
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
@@ -183,6 +205,13 @@ const TRIPS: TripSeed[] = [
       'Northern plains exploration',
       'Campfire experience'
     ],
+    images: [
+      '/images/trips/akagera-camping-hero.jpg',
+      '/images/trips/akagera-camping-1.jpg',
+      '/images/trips/akagera-camping-2.jpg',
+      '/images/trips/akagera-camping-3.jpg',
+      '/images/trips/akagera-camping-4.jpg'
+    ],
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
   {
@@ -230,6 +259,13 @@ const TRIPS: TripSeed[] = [
       'Gorilla Guardians Cultural Village',
       'Cultural performances',
       'Professional guide services'
+    ],
+    images: [
+      '/images/trips/cultural-gorilla-trek-hero.jpg',
+      '/images/trips/cultural-gorilla-trek-1.jpg',
+      '/images/trips/cultural-gorilla-trek-2.jpg',
+      '/images/trips/cultural-gorilla-trek-3.jpg',
+      '/images/trips/cultural-gorilla-trek-4.jpg'
     ],
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
@@ -292,6 +328,13 @@ const TRIPS: TripSeed[] = [
       'Cultural experiences',
       'Wildlife photography',
       'Professional guide services'
+    ],
+    images: [
+      '/images/trips/gorilla-golden-monkey-hero.jpg',
+      '/images/trips/gorilla-golden-monkey-1.jpg',
+      '/images/trips/gorilla-golden-monkey-2.jpg',
+      '/images/trips/gorilla-golden-monkey-3.jpg',
+      '/images/trips/gorilla-golden-monkey-4.jpg'
     ],
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
@@ -371,6 +414,13 @@ const TRIPS: TripSeed[] = [
       'Wildlife photography',
       'Professional guide services'
     ],
+    images: [
+      '/images/trips/gorilla-golden-monkey-4days-hero.jpg',
+      '/images/trips/gorilla-golden-monkey-4days-1.jpg',
+      '/images/trips/gorilla-golden-monkey-4days-2.jpg',
+      '/images/trips/gorilla-golden-monkey-4days-3.jpg',
+      '/images/trips/gorilla-golden-monkey-4days-4.jpg'
+    ],
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
   {
@@ -446,6 +496,13 @@ const TRIPS: TripSeed[] = [
       'Cross-country transfer',
       'Wildlife photography',
       'Professional guide services'
+    ],
+    images: [
+      '/images/trips/akagera-gorilla-combo-hero.jpg',
+      '/images/trips/akagera-gorilla-combo-1.jpg',
+      '/images/trips/akagera-gorilla-combo-2.jpg',
+      '/images/trips/akagera-gorilla-combo-3.jpg',
+      '/images/trips/akagera-gorilla-combo-4.jpg'
     ],
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
