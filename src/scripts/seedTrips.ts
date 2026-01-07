@@ -31,6 +31,190 @@ interface TripSeed {
 // NOTE: Some trips were provided without explicit prices. Those are seeded with price = 0.0; update as needed.
 const TRIPS: TripSeed[] = [
   {
+    title: '10-Day Discounted Rwanda Gorilla & Chimpanzee Trek Safari',
+    description: 'Experience Rwanda from wildlife safaris in Akagera, sunset boat cruises, and city tours to chimpanzee and gorilla trekking, tea and coffee experiences, cultural immersion, and more. This private safari is unmatched in authenticity and price, available at this rate from November to May only.',
+    destination: 'Rwanda',
+    duration: 10,
+    price: 4518,
+    max_participants: 8,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Arrival in Kigali',
+        description: 'Arrive at Kigali International Airport. Meet your safari guide, exchange currency, transfer to hotel, enjoy amenities, dinner, and rest.',
+        activities: [
+          'Airport arrival',
+          'Meet and greet',
+          'Currency exchange',
+          'Hotel check-in',
+          'Welcome dinner'
+        ],
+        meals: ['Dinner (hotel)'],
+        accommodation: 'One Click Hotel (Bed & Breakfast)'
+      },
+      {
+        day: 2,
+        title: 'Transfer to Akagera National Park - Sunset Cruise',
+        description: 'Early hotel breakfast, drive to Akagera through scenic Eastern Province. En-route stopovers, check in at lodge, lunch, and sunset boat ride on Lake Ihema. Dinner and rest at lodge.',
+        activities: [
+          'Scenic transfer to Kayonza district',
+          'Planned stopovers',
+          'Check-in at safari lodge',
+          'Sunset boat cruise on Lake Ihema',
+          'Aquatic wildlife observation'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Mantis Akagera Game Lodge (Dinner, Bed & Breakfast)'
+      },
+      {
+        day: 3,
+        title: 'Full Game Drive in Akagera - Back to Kigali',
+        description: 'Full-day game drive to see the Big Five, birds, picnic, and evening transfer back to Kigali. Dinner and rest.',
+        activities: [
+          'Full-day safari game drive',
+          'Big Five and antelope sightings',
+          'Birdwatching (500+ species)',
+          'Picnic lunch in the park',
+          'Evening transfer to Kigali'
+        ],
+        meals: ['Breakfast', 'Packed lunch', 'Dinner'],
+        accommodation: 'One Click Hotel (Bed & Breakfast)'
+      },
+      {
+        day: 4,
+        title: 'Kigali City Tour & Transfer to Nyungwe via Nyanza',
+        description: 'Visit the Kigali Genocide Memorial, drive to Nyungwe Forest with a stop at Nyanza King’s palace, learn Rwandan history. Evening arrival and check-in at guest house, relax till dinner.',
+        activities: [
+          'Breakfast at hotel',
+          'Kigali Genocide Memorial Tour',
+          'Drive via terraced hills of Rwanda',
+          'Stop at Nyanza King’s Palace',
+          'Arrival at Nyungwe'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Ken Barham Guest House (Bed & Breakfast)'
+      },
+      {
+        day: 5,
+        title: 'Nyungwe Chimpanzee Trek & Canopy Walk',
+        description: 'Early breakfast, chimpanzee hiking, spot migratory birds and wildlife, lunch, then an afternoon canopy walk adventure over Nyungwe forest. Evening rest.',
+        activities: [
+          'Chimpanzee trekking in Nyungwe',
+          'Birdwatching (Ross’ turaco, sunbird, hornbill, hawk)',
+          'Forest hike',
+          'Lunch at guest house',
+          'Canopy walk over forest',
+          'Optional property amenities'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Ken Barham Guest House (Bed & Breakfast)'
+      },
+      {
+        day: 6,
+        title: 'Tea Plantation & Transfer to Lake Kivu',
+        description: 'Morning at tea plantation for picking and photo ops, interact with locals, then transfer to Lake Kivu (Kibuye side), evening leisure, dinner, rest.',
+        activities: [
+          'Breakfast at lodge',
+          'Tea plantation experience',
+          'Skill demonstration (tea picking)',
+          'Photography in plantations',
+          'Transfer to Lake Kivu',
+          'Evening leisure, amenities'
+        ],
+        meals: ['Breakfast', 'Dinner'],
+        accommodation: 'Rwiza Cultural Village (Bed & Breakfast)'
+      },
+      {
+        day: 7,
+        title: 'Lake Kivu Boat Cruise, Coffee Experience & Transfer to Volcanoes NP',
+        description: 'Morning boat cruise to explore islands, continue with coffee experience at Kopakaki Cooperative, drive to Volcanoes National Park, check-in and rest.',
+        activities: [
+          'Breakfast at hotel',
+          'Lake Kivu boat safari',
+          'Explore local islands',
+          'Coffee (crop-to-cup) experience',
+          'Transfer to Volcanoes National Park'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Home Inn Hotel (Bed & Breakfast)'
+      },
+      {
+        day: 8,
+        title: 'Gorilla Trekking & Cultural Experience',
+        description: 'Pre-trek briefing at park HQ, guided trek to gorillas, one hour with them, return for lunch, afternoon cultural tour at Gorilla Guardians Village. Dinner & rest.',
+        activities: [
+          'Early breakfast',
+          'Pre-trek briefing (park HQ)',
+          'Mountain Gorilla trekking',
+          'One hour observing gorillas',
+          'Lunch',
+          'Visit Gorilla Guardians Village (Iby’iwacu)',
+          'Cultural activities'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Home Inn Hotel (Bed & Breakfast)'
+      },
+      {
+        day: 9,
+        title: 'Bisoke Volcano Hike',
+        description: 'Briefing, join group, 4hr hike to Bisoke summit, see crater lake, picnic on top, 2hr descent, return to lodge, rest and evening at leisure.',
+        activities: [
+          'Breakfast at lodge',
+          'Pre-hike briefing (HQ)',
+          'Hike to Bisoke summit',
+          'Crater lake viewing',
+          'Picnic lunch on mountain',
+          'Descent & return',
+          'Evening leisure'
+        ],
+        meals: ['Breakfast', 'Picnic lunch', 'Dinner'],
+        accommodation: 'Home Inn Hotel (Bed & Breakfast)'
+      },
+      {
+        day: 10,
+        title: 'Golden Monkey Trekking & Return to Kigali',
+        description: 'Pre-trek HQ briefing, golden monkey trek in bamboo forest, one hour with monkeys, finish and transfer/drive to Kigali hotel or airport. End of tour.',
+        activities: [
+          'Breakfast at lodge',
+          'Pre-trek briefing',
+          'Golden monkey trekking',
+          'One hour with monkeys',
+          'Scenic transfer to Kigali',
+          'Drop off at hotel or airport'
+        ],
+        meals: ['Breakfast'],
+        accommodation: 'End of tour/drop off in Kigali or airport'
+      }
+    ],
+    activities: [
+      'Wildlife safari (Akagera)',
+      'Game drive (Big Five)',
+      'Chimpanzee trekking & Canopy walk (Nyungwe)',
+      'Tea picking and plantation experience',
+      'Lake Kivu boat cruise',
+      'Coffee experience at Kopakaki Cooperative',
+      'Gorilla trekking (Volcanoes NP)',
+      'Cultural immersion at Gorilla Guardians Village',
+      'Bisoke volcano hiking',
+      'Golden monkey trekking',
+      'Kigali Genocide Memorial visit',
+      'Rwandan historical and cultural exploration',
+      'Professional guide services',
+      'Luxury & eco-lodge stays',
+      'Photography and birdwatching opportunities'
+    ],
+    images: [
+      '/images/trips/gorilla-chimpanzee-hero.jpg',
+      '/images/trips/gorilla-chimpanzee-nyungwe.jpg',
+      '/images/trips/gorilla-chimpanzee-akagera.jpg',
+      '/images/trips/gorilla-chimpanzee-volcanoes.jpg',
+      '/images/trips/gorilla-chimpanzee-lakekivu.jpg'
+    ],
+    insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
+  },
+  {
     title: 'Akagera SafariShare (Group Tour)',
     description: 'A budget-friendly, social safari designed for solo travelers or small groups. It utilizes shared transport to keep costs low while exploring Rwanda\'s only Big Five park.',
     destination: 'Akagera National Park',
