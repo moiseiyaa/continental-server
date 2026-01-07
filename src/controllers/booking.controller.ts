@@ -144,10 +144,10 @@ export const finalizeBookingHandler = async (req: any, res: Response, next: Next
     // 2. create booking with RESERVED or PENDING status
     const { createBooking } = await import('../services/booking.service');
     const { createMagicLink } = await import('../services/magiclink.service');
-    const { sendEmail } = await import('../services/email.service');
 
-    const status = bookingPrefs?.selectedPaymentType === 'RESERVE' ? 'RESERVED' : 'PENDING';
-    const reservationExpiry = bookingPrefs?.selectedPaymentType === 'RESERVE' ? new Date(Date.now() + 48 * 60 * 60 * 1000) : null;
+    const bookingType = bookingPrefs?.selectedPaymentType === 'RESERVE' ? 'RESERVE' : 'PAY_NOW';
+    const status = bookingType === 'RESERVE' ? 'RESERVED' : 'PENDING';
+    const reservationExpiry = bookingType === 'RESERVE' ? new Date(Date.now() + 48 * 60 * 60 * 1000) : null;
 
     const bookingInput: any = {
       tripId: bookingPrefs.tripId || bookingPrefs.trip,
@@ -161,18 +161,38 @@ export const finalizeBookingHandler = async (req: any, res: Response, next: Next
 
     const createdBooking = await createBooking(bookingInput, String((user as any).id || (user as any)._id || 0));
 
-    // 3. create magic link and email
+    // 3. create magic link BEFORE sending response (so it's in inbox when UI loads)
     const magic = await createMagicLink(Number((user as any).id || (user as any)._id || 0));
     const frontend = process.env.FRONTEND_URL || 'http://localhost:3000';
-    const link = `${frontend}/auth/verify?token=${magic.token}&booking=${createdBooking && (createdBooking as any).id || (createdBooking as any)._id}`;
+    const magicLinkUrl = `${frontend}/auth/verify?token=${magic.token}&booking=${(createdBooking as any).id || (createdBooking as any)._id}`;
 
-    await sendEmail({
+    // 4. Email the magic link asynchronously (don't block response)
+    const { sendEmail } = await import('../services/email.service');
+    sendEmail({
       to: userData.email,
-      subject: 'Access your booking',
-      html: `<p>Hello ${userData.fullName || 'Traveler'},</p><p>Access your booking here: <a href="${link}">${link}</a></p>`,
-    }).catch(() => {});
+      subject: 'Access your booking confirmation',
+      html: `
+        <p>Hello ${(userData.fullName || 'Traveler').split(' ')[0]},</p>
+        <p>Your booking is confirmed! Access your dashboard anytime with this secure link:</p>
+        <p><a href="${magicLinkUrl}" style="color: #2563eb; font-weight: bold;">${magicLinkUrl}</a></p>
+        <p style="color: #666; font-size: 12px;">This link expires in 24 hours and works without a password.</p>
+      `,
+    }).catch((err) => console.error('Magic link email failed (non-blocking):', err));
 
-    res.status(201).json({ success: true, booking: createdBooking, magicLink: magic.token });
+    // 5. Return success with SuccessHub data
+    res.status(201).json({
+      success: true,
+      booking: {
+        id: (createdBooking as any).id || (createdBooking as any)._id,
+        status: status,
+      },
+      user: {
+        name: userData.fullName || 'Traveler',
+      },
+      bookingType,
+      magicLink: magic.token,
+      magicLinkUrl,
+    });
   } catch (err) {
     next(err);
   }
