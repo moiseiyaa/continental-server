@@ -9,6 +9,16 @@ export const getUserById = async (userId: string): Promise<IUser | null> => {
   return userWithoutPassword as IUser;
 };
 
+export const createOrFindGhostUser = async (email: string, fullName?: string, phone?: string, country?: string) => {
+  // Look up by email
+  const existing = await User.findOne({ email });
+  if (existing) return existing;
+
+  // Create ghost user (no password)
+  const created = await User.create({ name: fullName || 'Guest', email, password: '', role: 'user' });
+  return created;
+};
+
 export const updateUser = async (userId: string, userData: Partial<IUser>): Promise<IUser | null> => {
   const updates: string[] = [];
   const values: any[] = [];

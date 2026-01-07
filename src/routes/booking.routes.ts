@@ -10,6 +10,7 @@ import {
   cancelBookingHandler,
   deleteBookingHandler,
   processBookingHandler,
+  finalizeBookingHandler,
 } from '../controllers/booking.controller';
 import { protect, authorize } from '../middlewares/auth.middleware';
 import { requireRole, verifyResourceOwnership } from '../middlewares/ownership.middleware';
@@ -33,6 +34,11 @@ router.post(
 // @desc    Create a booking and optionally verify direct payment
 // @access  Public/Private depending on client
 router.post('/process', processBookingHandler);
+
+// @route   POST /api/bookings/finalize
+// @desc    Finalize a booking with ghost user + magic link
+// @access  Public
+router.post('/finalize', finalizeBookingHandler);
 
 // @route   GET /api/bookings/user/my-bookings
 // @desc    Get user bookings

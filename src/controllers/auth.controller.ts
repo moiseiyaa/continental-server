@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { register, login, getMe, forgotPassword, resetPassword, verifyEmail, refreshAccessToken } from '../services/auth.service';
+import { findMagicLink, markMagicLinkUsed } from '../services/magiclink.service';
+import User from '../models/user.model';
 import { IUserInput } from '../interfaces';
 import { sendTokenResponse, UnauthorizedError } from '../utils/apiResponse';
 import jwt from 'jsonwebtoken';
@@ -177,6 +179,43 @@ export const verifyEmailHandler = async (req: Request, res: Response, next: Next
     });
   } catch (error: any) {
     next(error);
+  }
+};
+
+// @desc    Verify magic link token and set auth cookie, then redirect
+// @route   GET /api/auth/verify
+// @access  Public
+export const verifyMagicLinkHandler = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = (req.query.token as string) || req.body.token;
+    const bookingId = (req.query.booking as string) || req.body.booking;
+    if (!token) return res.status(400).send('Missing token');
+
+    const record = await findMagicLink(token);
+    if (!record) return res.status(400).send('Invalid link');
+    if (record.used) return res.status(400).send('Link already used');
+    const expiresAt = new Date(record.expires_at || record.expiresAt);
+    if (expiresAt.getTime() < Date.now()) return res.status(400).send('Link expired');
+
+    // mark used
+    await markMagicLinkUsed(token);
+
+    // find user and create JWT
+    const user = await User.findById(String(record.user_id || record.userId));
+    if (!user) return res.status(404).send('User not found');
+    const jwtToken = user.getSignedJwtToken();
+    res.cookie('token', jwtToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    });
+
+    // redirect to dashboard booking page if booking id provided
+    const redirectTo = bookingId ? `${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard/${bookingId}` : (process.env.FRONTEND_URL || 'http://localhost:3000');
+    return res.redirect(302, redirectTo);
+  } catch (err) {
+    next(err);
   }
 };
 

@@ -1,16 +1,29 @@
 
 // Define user roles as a type
+// Define user roles as a type (legacy)
 export type UserRole = 'user' | 'admin' | 'guest';
 
+// New Ghost/Verified user model
+export interface User {
+  id: string;
+  email: string; // Unique identifier
+  fullName: string;
+  phone: string;
+  country: string;
+  hasPassword: boolean; // false = Ghost Account
+  createdAt: Date;
+}
+
+// Legacy IUser shape (many services/controllers expect this)
 export interface IUser {
-  id?: number;
-  name: string;
+  id?: number | string;
+  name?: string;
   email: string;
-  password: string;
-  role: UserRole;
+  password?: string;
+  role?: UserRole;
   resetPasswordToken?: string;
   resetPasswordExpire?: Date;
-  emailVerified: boolean;
+  emailVerified?: boolean;
   emailVerificationToken?: string;
   emailVerificationExpire?: Date;
   refreshTokenHash?: string;
@@ -25,8 +38,13 @@ export interface IUser {
 }
 
 export interface IUserInput {
-  name: string;
+  // keep both name and fullName to be flexible
+  name?: string;
+  fullName?: string;
   email: string;
-  password: string;
+  password?: string;
   role?: UserRole;
+  phone?: string;
+  country?: string;
 }
+

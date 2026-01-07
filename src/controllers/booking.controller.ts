@@ -123,6 +123,61 @@ export const createBookingHandler = async (req: any, res: Response, next: NextFu
   }
 };
 
+// @desc    Finalize booking (creates/updates ghost user, booking, and sends magic link)
+// @route   POST /api/bookings/finalize
+// @access  Public
+export const finalizeBookingHandler = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const { user: userData, booking: bookingPrefs } = req.body;
+    // userData: { email, fullName, phone, country }
+    // bookingPrefs: { tripId, guests, participants, addAccommodation, selectedPaymentType }
+
+    if (!userData || !userData.email) {
+      return res.status(400).json({ success: false, message: 'User email is required' });
+    }
+
+    // 1. create or find ghost user
+    const { createOrFindGhostUser } = await import('../services/user.service');
+    const user = await createOrFindGhostUser(userData.email, userData.fullName, userData.phone, userData.country);
+    if (!user) throw new Error('Failed to create/find user');
+
+    // 2. create booking with RESERVED or PENDING status
+    const { createBooking } = await import('../services/booking.service');
+    const { createMagicLink } = await import('../services/magiclink.service');
+    const { sendEmail } = await import('../services/email.service');
+
+    const status = bookingPrefs?.selectedPaymentType === 'RESERVE' ? 'RESERVED' : 'PENDING';
+    const reservationExpiry = bookingPrefs?.selectedPaymentType === 'RESERVE' ? new Date(Date.now() + 48 * 60 * 60 * 1000) : null;
+
+    const bookingInput: any = {
+      tripId: bookingPrefs.tripId || bookingPrefs.trip,
+      guests: bookingPrefs.guests || bookingPrefs.numberOfParticipants || 1,
+      participantDetails: bookingPrefs.participants || bookingPrefs.participantDetails || [],
+      addAccommodation: bookingPrefs.addAccommodation || false,
+      status,
+      reservationExpiry,
+      paymentStatus: 'PENDING',
+    };
+
+    const createdBooking = await createBooking(bookingInput, String((user as any).id || (user as any)._id || 0));
+
+    // 3. create magic link and email
+    const magic = await createMagicLink(Number((user as any).id || (user as any)._id || 0));
+    const frontend = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const link = `${frontend}/auth/verify?token=${magic.token}&booking=${createdBooking && (createdBooking as any).id || (createdBooking as any)._id}`;
+
+    await sendEmail({
+      to: userData.email,
+      subject: 'Access your booking',
+      html: `<p>Hello ${userData.fullName || 'Traveler'},</p><p>Access your booking here: <a href="${link}">${link}</a></p>`,
+    }).catch(() => {});
+
+    res.status(201).json({ success: true, booking: createdBooking, magicLink: magic.token });
+  } catch (err) {
+    next(err);
+  }
+};
+
 // @desc    Get user bookings
 // @route   GET /api/bookings/user/my-bookings
 // @access  Private

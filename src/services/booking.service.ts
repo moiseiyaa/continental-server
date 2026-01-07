@@ -11,11 +11,14 @@ const ensureBookingsTable = async () => {
         trip_id INTEGER NOT NULL REFERENCES trips(id) ON DELETE CASCADE,
         number_of_participants INTEGER NOT NULL DEFAULT 1,
         total_price NUMERIC(10, 2) NOT NULL DEFAULT 0,
-        status VARCHAR(50) NOT NULL DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'cancelled', 'completed')),
-        payment_status VARCHAR(50) NOT NULL DEFAULT 'pending' CHECK (payment_status IN ('pending', 'paid', 'refunded')),
+        status VARCHAR(50) NOT NULL DEFAULT 'PENDING' CHECK (status IN ('PENDING','RESERVED','CONFIRMED','CANCELLED')),
+        payment_status VARCHAR(50) NOT NULL DEFAULT 'PENDING' CHECK (payment_status IN ('PENDING','PAID','REFUNDED')),
         booking_date TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
         special_requests TEXT,
         participant_details JSONB DEFAULT '[]'::jsonb,
+        add_accommodation BOOLEAN NOT NULL DEFAULT false,
+        reservation_expiry TIMESTAMP NULL,
+        payment_id VARCHAR(255) NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
@@ -42,24 +45,27 @@ export const createBooking = async (data: IBookingInput, userId: string): Promis
   try {
     await client.query('BEGIN');
     // 1. Fetch trip to ensure participant limits
-    const tripRes = await client.query('SELECT * FROM trips WHERE id = $1 FOR UPDATE', [data.trip]);
+    const tripId = (data as any).tripId || (data as any).trip;
+    const numberOfParticipants = (data as any).guests || (data as any).numberOfParticipants || 1;
+    const tripRes = await client.query('SELECT * FROM trips WHERE id = $1 FOR UPDATE', [tripId]);
     if (!tripRes.rows.length) throw new Error('Trip not found');
     const trip = tripRes.rows[0];
-    if (trip.current_participants + data.numberOfParticipants > trip.max_participants) {
+    if (trip.current_participants + numberOfParticipants > trip.max_participants) {
       throw new Error('Not enough spots available for this trip');
     }
     // 2. Insert into bookings
-    const totalPrice = parseFloat(trip.price) * data.numberOfParticipants;
+    const totalPrice = parseFloat(trip.price) * numberOfParticipants;
+    // support new columns: add_accommodation, reservation_expiry, payment_id
     const insertRes = await client.query(
-      `INSERT INTO bookings (user_id, trip_id, number_of_participants, total_price, status, payment_status, booking_date, special_requests, participant_details)
-      VALUES ($1, $2, $3, $4, $5, $6, NOW(), $7, $8)
+      `INSERT INTO bookings (user_id, trip_id, number_of_participants, total_price, status, payment_status, booking_date, special_requests, participant_details, add_accommodation, reservation_expiry, payment_id)
+      VALUES ($1, $2, $3, $4, $5, $6, NOW(), $7, $8, $9, $10, $11)
       RETURNING *`,
-      [userId, data.trip, data.numberOfParticipants, totalPrice, 'pending', 'pending', data.specialRequests || null, JSON.stringify(data.participantDetails || [])]
+      [userId, tripId, numberOfParticipants, totalPrice, (data as any).status || 'PENDING', (data as any).paymentStatus || 'PENDING', (data as any).specialRequests || null, JSON.stringify((data as any).participantDetails || []), (data as any).addAccommodation || false, (data as any).reservationExpiry || null, (data as any).paymentId || null]
     );
     // 3. Update trip participant count
     await client.query(
       'UPDATE trips SET current_participants = current_participants + $1 WHERE id = $2',
-      [data.numberOfParticipants, data.trip]
+      [numberOfParticipants, tripId]
     );
     await client.query('COMMIT');
     return insertRes.rows[0] as IBooking;

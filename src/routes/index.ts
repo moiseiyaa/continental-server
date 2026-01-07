@@ -7,6 +7,7 @@ import galleryRoutes from './gallery.routes';
 import reviewRoutes from './review.routes';
 import contactRoutes from './contact.routes';
 import userRoutes from './user.routes';
+import userUpgradeRoutes from './user.upgrade.routes';
 import newsletterRoutes from './newsletter.routes';
 import adminRoutes from './admin.routes';
 import notificationRoutes from './notification.routes';
@@ -17,6 +18,7 @@ const router = Router();
 // API routes
 router.use('/auth', authRoutes);
 router.use('/users', userRoutes);
+router.use('/users', userUpgradeRoutes);
 router.use('/trips', tripRoutes);
 router.use('/bookings', bookingRoutes);
 router.use('/gallery', galleryRoutes);
