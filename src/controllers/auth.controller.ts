@@ -212,7 +212,10 @@ export const verifyMagicLinkHandler = async (req: Request, res: Response, next: 
     });
 
     // redirect to dashboard booking page if booking id provided
-    const redirectTo = bookingId ? `${process.env.FRONTEND_URL || 'http://localhost:3000'}/dashboard/${bookingId}` : (process.env.FRONTEND_URL || 'http://localhost:3000');
+    // Frontend user dashboard is at /user/dashboard, not /dashboard
+    const redirectTo = bookingId 
+      ? `${process.env.FRONTEND_URL || 'http://localhost:3000'}/user/dashboard` 
+      : `${process.env.FRONTEND_URL || 'http://localhost:3000'}/user/dashboard`;
     return res.redirect(302, redirectTo);
   } catch (err) {
     next(err);
