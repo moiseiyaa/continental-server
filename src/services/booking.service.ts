@@ -19,9 +19,14 @@ const ensureBookingsTable = async () => {
         add_accommodation BOOLEAN NOT NULL DEFAULT false,
         reservation_expiry TIMESTAMP NULL,
         payment_id VARCHAR(255) NULL,
+        idempotency_key VARCHAR(255) NULL,
         created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
+    `);
+    // Ensure index for idempotency checks exists
+    await pool.query(`
+      CREATE INDEX IF NOT EXISTS idx_bookings_idempotency ON bookings(user_id, trip_id, idempotency_key);
     `);
   } catch (error) {
     // Table might already exist, ignore error
@@ -57,10 +62,10 @@ export const createBooking = async (data: IBookingInput, userId: string): Promis
     const totalPrice = parseFloat(trip.price) * numberOfParticipants;
     // support new columns: add_accommodation, reservation_expiry, payment_id
     const insertRes = await client.query(
-      `INSERT INTO bookings (user_id, trip_id, number_of_participants, total_price, status, payment_status, booking_date, special_requests, participant_details, add_accommodation, reservation_expiry, payment_id)
-      VALUES ($1, $2, $3, $4, $5, $6, NOW(), $7, $8, $9, $10, $11)
+      `INSERT INTO bookings (user_id, trip_id, number_of_participants, total_price, status, payment_status, booking_date, special_requests, participant_details, add_accommodation, reservation_expiry, payment_id, idempotency_key)
+      VALUES ($1, $2, $3, $4, $5, $6, NOW(), $7, $8, $9, $10, $11, $12)
       RETURNING *`,
-      [userId, tripId, numberOfParticipants, totalPrice, (data as any).status || 'PENDING', (data as any).paymentStatus || 'PENDING', (data as any).specialRequests || null, JSON.stringify((data as any).participantDetails || []), (data as any).addAccommodation || false, (data as any).reservationExpiry || null, (data as any).paymentId || null]
+      [userId, tripId, numberOfParticipants, totalPrice, (data as any).status || 'PENDING', (data as any).paymentStatus || 'PENDING', (data as any).specialRequests || null, JSON.stringify((data as any).participantDetails || []), (data as any).addAccommodation || false, (data as any).reservationExpiry || null, (data as any).paymentId || null, (data as any).idempotencyKey || null]
     );
     // 3. Update trip participant count
     await client.query(
@@ -183,4 +188,18 @@ export const deleteBooking = async (id: string): Promise<IBooking | null> => {
     [id]
   );
   return rows.length ? (rows[0] as IBooking) : null;
+};
+// Check for duplicate booking using idempotency key within a time window (24 hours)
+export const checkDuplicateBooking = async (userId: string, tripId: string, idempotencyKey: string): Promise<{ exists: boolean; bookingId?: string }> => {
+  try {
+    const { rows } = await pool.query(
+      `SELECT id FROM bookings WHERE user_id = $1 AND trip_id = $2 AND idempotency_key = $3 AND created_at > NOW() - INTERVAL '24 hours' LIMIT 1`,
+      [userId, tripId, idempotencyKey]
+    );
+    if (rows.length > 0) return { exists: true, bookingId: String(rows[0].id) };
+    return { exists: false };
+  } catch (error) {
+    console.error('checkDuplicateBooking error:', error instanceof Error ? error.message : error);
+    return { exists: false };
+  }
 };
