@@ -129,19 +129,34 @@ export const createBookingHandler = async (req: any, res: Response, next: NextFu
 export const finalizeBookingHandler = async (req: any, res: Response, next: NextFunction) => {
   try {
     const { user: userData, booking: bookingPrefs } = req.body;
-    // userData: { email, fullName, phone, country }
-    // bookingPrefs: { tripId, guests, participants, addAccommodation, selectedPaymentType }
-
+    const idempotencyKey = req.headers['idempotency-key'] as string;
+    
     if (!userData || !userData.email) {
       return res.status(400).json({ success: false, message: 'User email is required' });
     }
 
-    // 1. create or find ghost user
+    // 1. Create or find ghost user
     const { createOrFindGhostUser } = await import('../services/user.service');
     const user = await createOrFindGhostUser(userData.email, userData.fullName, userData.phone, userData.country);
     if (!user) throw new Error('Failed to create/find user');
 
-    // 2. create booking with RESERVED or PENDING status
+    const userId = String((user as any).id || (user as any)._id || 0);
+    const tripId = bookingPrefs.tripId || bookingPrefs.trip;
+
+    // 2. Check for duplicate booking (NEW: idempotency check)
+    if (idempotencyKey) {
+      const { checkDuplicateBooking } = await import('../services/booking.service');
+      const duplicate = await checkDuplicateBooking(userId, tripId, idempotencyKey);
+      if (duplicate.exists) {
+        return res.status(409).json({
+          success: false,
+          message: 'Booking already exists',
+          bookingId: duplicate.bookingId,
+        });
+      }
+    }
+
+    // 3. Create booking with RESERVED or PENDING status
     const { createBooking } = await import('../services/booking.service');
     const { createMagicLink } = await import('../services/magiclink.service');
 
@@ -157,16 +172,17 @@ export const finalizeBookingHandler = async (req: any, res: Response, next: Next
       status,
       reservationExpiry,
       paymentStatus: 'PENDING',
+      idempotencyKey: idempotencyKey || null,
     };
 
-    const createdBooking = await createBooking(bookingInput, String((user as any).id || (user as any)._id || 0));
+    const createdBooking = await createBooking(bookingInput, userId);
 
-    // 3. create magic link BEFORE sending response (so it's in inbox when UI loads)
+    // 4. Create magic link BEFORE sending response (so it's in inbox when UI loads)
     const magic = await createMagicLink(Number((user as any).id || (user as any)._id || 0));
     const frontend = process.env.FRONTEND_URL || 'http://localhost:3000';
     const magicLinkUrl = `${frontend}/auth/verify?token=${magic.token}&booking=${(createdBooking as any).id || (createdBooking as any)._id}`;
 
-    // 4. Email the magic link asynchronously (don't block response)
+    // 5. Email the magic link asynchronously (don't block response)
     const { sendEmail } = await import('../services/email.service');
     sendEmail({
       to: userData.email,
@@ -179,7 +195,7 @@ export const finalizeBookingHandler = async (req: any, res: Response, next: Next
       `,
     }).catch((err) => console.error('Magic link email failed (non-blocking):', err));
 
-    // 5. Return success with SuccessHub data
+    // 6. Return success with SuccessHub data
     res.status(201).json({
       success: true,
       booking: {
