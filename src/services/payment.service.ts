@@ -1,9 +1,19 @@
-// Minimal payment service stub — replace with real provider integration (Stripe, etc.)
-export const verifyPayment = async (paymentIntentId?: string): Promise<boolean> => {
-  // In a real implementation you'd call Stripe's API to verify the payment intent status.
-  // For now, consider any non-empty id as successful verification.
-  if (!paymentIntentId) return false
-  return true
-}
+import Stripe from 'stripe';
 
-export default { verifyPayment }
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY as string, {
+  apiVersion: '2022-11-15',
+});
+
+export const verifyPayment = async (paymentIntentId?: string): Promise<boolean> => {
+  if (!paymentIntentId) return false;
+
+  try {
+    const paymentIntent = await stripe.paymentIntents.retrieve(paymentIntentId);
+    return paymentIntent.status === 'succeeded';
+  } catch (error) {
+    console.error('Error verifying payment:', error);
+    return false;
+  }
+};
+
+export default { verifyPayment };

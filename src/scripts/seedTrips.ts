@@ -1529,6 +1529,396 @@ const TRIPS: TripSeed[] = [
     ],
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
+  {
+    title: '4 Days Chimpanzee Trekking and Lake Kivu Adventure',
+    description: 'This immersive 4-day private safari takes you through the heart of Rwanda\'s natural and cultural wonders. Journey to Nyungwe Forest National Park—one of the oldest rainforests in Africa—to trek wild chimpanzees and walk above the canopy on a thrilling 70-meter high walkway. The adventure concludes with a serene escape to Lake Kivu, where you\'ll experience the unique "singing fishermen" tradition and explore a local coffee plantation. This carefully curated experience combines primate encounters, breathtaking forest views, cultural immersion, and lakeside relaxation in one unforgettable journey.',
+    destination: 'Rwanda',
+    duration: 4,
+    price: 1393,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Kigali City Tour & Transfer to Nyungwe',
+        description: 'Begin your adventure with a comprehensive morning tour of Kigali, including a visit to the Genocide Memorial—a place of remembrance and learning. Afterward, embark on a scenic 5-hour drive through Rwanda\'s beautiful terraced hillsides to Nyungwe Forest. En route, stop at the King\'s Palace in Nyanza to learn about Rwanda\'s rich royal history and traditional culture. Arrive at your lodge in the late afternoon, check in, and enjoy a relaxing evening surrounded by the sounds of the ancient forest.',
+        activities: [
+          'Kigali city tour',
+          'Genocide Memorial visit',
+          'Scenic drive through terraced hillsides',
+          'King\'s Palace visit in Nyanza',
+          'Learn about Rwandan royal history',
+          'Arrival at Nyungwe Forest lodge'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Nyungwe Forest Lodge or similar (Full Board)'
+      },
+      {
+        day: 2,
+        title: 'Chimpanzee Trekking & Canopy Walkway',
+        description: 'Rise early at 5:00 AM for an unforgettable chimpanzee trekking experience in Nyungwe Forest. Follow your expert guide through the dense rainforest in search of habituated chimpanzee families. Listen for their distinctive pant-hoots echoing through the forest before you spot them. Spend time observing these fascinating primates in their natural habitat. After lunch, take to the skies on the spectacular 70-meter high Canopy Walkway—one of only three in East Africa. Walk above the ancient forest canopy for breathtaking bird\'s eye views and the chance to spot rare birds and monkeys from above.',
+        activities: [
+          'Early morning chimpanzee trekking (5:00 AM start)',
+          'Forest hiking and wildlife observation',
+          'Chimpanzee family encounter',
+          'Birdwatching (Ross\' turaco, grey-cheeked hornbill, sunbirds)',
+          '70-meter high Canopy Walkway experience',
+          'Aerial views of ancient rainforest',
+          'Photography opportunities'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Nyungwe Forest Lodge or similar (Full Board)'
+      },
+      {
+        day: 3,
+        title: 'Kamiranzovu Trail & Lake Kivu',
+        description: 'After breakfast, hike the Kamiranzovu Marsh trail through pristine forest to discover rare orchids, cascading waterfalls, and diverse birdlife. This peaceful walk offers a different perspective of Nyungwe\'s biodiversity. In the afternoon, drive to the stunning shores of Lake Kivu—one of Africa\'s Great Lakes. Check into your lakeside accommodation and relax. As evening falls, experience the unique tradition of night fishing with local "singing fishermen" who use traditional methods and songs while fishing on the lake—a cultural experience you won\'t find anywhere else.',
+        activities: [
+          'Kamiranzovu Marsh trail hike',
+          'Rare orchid and waterfall viewing',
+          'Forest birdwatching',
+          'Scenic transfer to Lake Kivu',
+          'Lakeside accommodation check-in',
+          'Traditional night fishing experience',
+          'Cultural interaction with singing fishermen'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Lake Kivu resort or similar (Full Board)'
+      },
+      {
+        day: 4,
+        title: 'Tea Plantation Tour & Return to Kigali',
+        description: 'Visit a lush tea plantation to see how Rwanda\'s world-famous tea is harvested and processed. Learn about the tea-making process from leaf to cup, interact with local workers, and enjoy fresh tea tasting. Take stunning photos of the emerald-green tea fields against the backdrop of rolling hills. Enjoy a final lakeside lunch with beautiful views before beginning the scenic 3-hour drive back to Kigali. Arrive in the capital in time for your departure or extend your stay to explore more of Rwanda.',
+        activities: [
+          'Tea plantation tour and education',
+          'Tea harvesting demonstration',
+          'Tea processing observation',
+          'Fresh tea tasting',
+          'Photography in tea fields',
+          'Lakeside lunch',
+          'Scenic return drive to Kigali',
+          'Airport or hotel drop-off'
+        ],
+        meals: ['Breakfast', 'Lunch'],
+        accommodation: 'N/A (Departure)'
+      }
+    ],
+    activities: [
+      'Chimpanzee trekking in Nyungwe Forest',
+      '70-meter high Canopy Walkway experience',
+      'Kigali city tour and Genocide Memorial',
+      'King\'s Palace cultural visit',
+      'Kamiranzovu Marsh trail hike',
+      'Lake Kivu night fishing with singing fishermen',
+      'Tea plantation tour and tasting',
+      'Birdwatching and wildlife observation',
+      'Cultural immersion experiences'
+    ],
+    images: [
+      '/images/trips/chimpanzee-trek-hero.jpg',
+      '/images/trips/chimpanzee-trek-1.jpg',
+      '/images/trips/chimpanzee-trek-2.jpg',
+      '/images/trips/chimpanzee-trek-3.jpg',
+      '/images/trips/chimpanzee-trek-4.jpg'
+    ],
+    insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
+  },
+  {
+    title: '4 Days Queen Elizabeth Wildlife Safari and Lake Relaxation',
+    description: 'Cross the border from Rwanda into Uganda for an extraordinary safari that blends high-octane wildlife viewing with deep relaxation. Explore Queen Elizabeth National Park, famous for its unique tree-climbing lions and the Kazinga Channel—home to the world\'s highest concentration of hippos. Experience thrilling game drives in search of elephants, buffalo, and big cats, then enjoy a boat cruise teeming with wildlife. The adventure concludes with a peaceful retreat to Lake Bunyonyi—one of the deepest and most beautiful lakes in Africa—where you\'ll island-hop and unwind in stunning natural surroundings. This cross-border safari offers the perfect balance of adventure and tranquility.',
+    destination: 'Uganda',
+    duration: 4,
+    price: 1741,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Kigali to Queen Elizabeth National Park',
+        description: 'Early morning pickup from your Kigali hotel or airport. Begin the scenic journey across the border into Uganda through the Cyanika or Gatuna border crossing. Your guide will assist with all border formalities. Continue through the beautiful landscapes of southwestern Uganda, passing through rolling hills and rural villages. Arrive at Queen Elizabeth National Park in the late afternoon and check into your lodge. After a brief rest, embark on an evening game drive to spot elephants, buffalo, and other wildlife as they become active in the cooler temperatures. Return to the lodge for dinner and overnight.',
+        activities: [
+          'Border crossing from Rwanda to Uganda',
+          'Scenic drive through Ugandan countryside',
+          'Lodge check-in at Queen Elizabeth National Park',
+          'Evening game drive',
+          'Wildlife spotting (elephants, buffalo)',
+          'Sunset photography'
+        ],
+        meals: ['Lunch', 'Dinner'],
+        accommodation: 'Mweya Safari Lodge or similar (Full Board)'
+      },
+      {
+        day: 2,
+        title: 'Morning Game Drive & Kazinga Channel Cruise',
+        description: 'Rise early for a morning game drive in the Kasenyi plains—prime territory for spotting lions, leopards, and other predators. The early hours offer the best wildlife viewing opportunities as animals are most active. Search for the park\'s famous tree-climbing lions and watch for herds of elephants, Uganda kob, and other antelope species. Return to the lodge for breakfast and relaxation. In the afternoon, embark on a boat cruise along the Kazinga Channel, a natural waterway connecting Lake George and Lake Edward. This is home to the world\'s highest concentration of hippos, and you\'ll also see massive Nile crocodiles, elephants bathing, and countless water birds including pelicans, cormorants, and kingfishers.',
+        activities: [
+          'Early morning game drive in Kasenyi plains',
+          'Lion and leopard spotting',
+          'Elephant and antelope viewing',
+          'Wildlife photography',
+          'Kazinga Channel boat cruise',
+          'Hippo and crocodile observation',
+          'Birdwatching (pelicans, cormorants, kingfishers)',
+          'Elephant bathing viewing'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Mweya Safari Lodge or similar (Full Board)'
+      },
+      {
+        day: 3,
+        title: 'Ishasha Sector & Lake Bunyonyi',
+        description: 'After breakfast, drive through the Ishasha sector of Queen Elizabeth National Park, keeping a sharp eye out for the famous tree-climbing lions—a unique behavior found in only a few places in Africa. These magnificent cats can often be seen lounging in the branches of fig trees. Continue your journey through the beautiful highlands of southwestern Uganda, passing through terraced hillsides and traditional villages. Arrive at Lake Bunyonyi in the late afternoon—a stunning, deep crater lake surrounded by terraced hills. Check into your lakeside accommodation and enjoy a relaxing evening by the fire, taking in the peaceful atmosphere and breathtaking views of the 29 islands dotting the lake.',
+        activities: [
+          'Ishasha sector game drive',
+          'Tree-climbing lion viewing',
+          'Scenic drive through Ugandan highlands',
+          'Arrival at Lake Bunyonyi',
+          'Lakeside accommodation check-in',
+          'Evening relaxation by the fire',
+          'Island viewing and photography'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Lake Bunyonyi resort or similar (Full Board)'
+      },
+      {
+        day: 4,
+        title: 'Canoe Ride & Return to Kigali',
+        description: 'Wake up to stunning views of Lake Bunyonyi and its islands. After breakfast, take a morning dugout canoe ride or motorized boat tour to explore the 29 islands of Lake Bunyonyi. Learn about the local culture, visit some of the inhabited islands, and enjoy the serene beauty of this deep, clear lake. The lake is known for being bilharzia-free, making it safe for swimming. After a lakeside lunch, begin the scenic drive back across the border into Rwanda. Your guide will assist with border formalities. Arrive in Kigali in the late afternoon for your departure or hotel drop-off.',
+        activities: [
+          'Lake Bunyonyi boat excursion',
+          'Island-hopping tour',
+          'Cultural interaction with local communities',
+          'Swimming in the lake (bilharzia-free)',
+          'Lakeside lunch',
+          'Border crossing back to Rwanda',
+          'Return to Kigali',
+          'Airport or hotel drop-off'
+        ],
+        meals: ['Breakfast', 'Lunch'],
+        accommodation: 'N/A (Departure)'
+      }
+    ],
+    activities: [
+      'Cross-border safari (Rwanda to Uganda)',
+      'Queen Elizabeth National Park game drives',
+      'Tree-climbing lion viewing in Ishasha',
+      'Kazinga Channel boat cruise',
+      'Hippo and crocodile viewing',
+      'Lake Bunyonyi island-hopping',
+      'Wildlife photography',
+      'Birdwatching',
+      'Cultural experiences'
+    ],
+    images: [
+      '/images/trips/queen-elizabeth-hero.jpg',
+      '/images/trips/queen-elizabeth-1.jpg',
+      '/images/trips/queen-elizabeth-2.jpg',
+      '/images/trips/queen-elizabeth-3.jpg',
+      '/images/trips/queen-elizabeth-4.jpg'
+    ],
+    insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
+  },
+  {
+    title: '3 Days Chimpanzee Trekking and Lake Kivu Adventure',
+    description: 'Designed for travelers with limited time, this 3-day "Primate and Lake" circuit packs the best of Southwest Rwanda into one unforgettable trip. You\'ll encounter the fascinating primates of Nyungwe Forest—one of Africa\'s oldest rainforests—and experience the relaxing atmosphere of Rubavu (Gisenyi) on the pristine shores of Lake Kivu. This compact adventure combines thrilling chimpanzee trekking, a spectacular canopy walk above the forest, and lakeside relaxation with unique experiences like visiting Napoleon Island\'s fruit bat colony and exploring natural hot springs. Perfect for those who want maximum adventure in minimum time.',
+    destination: 'Rwanda',
+    duration: 3,
+    price: 1134,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Transfer to Nyungwe via Huye',
+        description: 'Depart from Kigali in the morning and begin your journey to Nyungwe Forest. En route, stop at the Ethnographic Museum in Huye (formerly Butare)—Rwanda\'s oldest and most comprehensive museum. Explore exhibits showcasing traditional Rwandan culture, history, and artifacts. Continue through the beautiful terraced hillsides that characterize much of Rwanda\'s landscape. Arrive at Nyungwe Forest in the late afternoon and check into your lodge nestled in the ancient rainforest. Enjoy a relaxing evening surrounded by the sounds of the forest, preparing for tomorrow\'s adventure.',
+        activities: [
+          'Departure from Kigali',
+          'Ethnographic Museum visit in Huye',
+          'Cultural and historical education',
+          'Scenic drive through terraced hills',
+          'Arrival at Nyungwe Forest',
+          'Lodge check-in',
+          'Evening forest relaxation'
+        ],
+        meals: ['Lunch', 'Dinner'],
+        accommodation: 'Nyungwe Forest Lodge or similar (Full Board)'
+      },
+      {
+        day: 2,
+        title: 'Chimpanzee Trek & Canopy Walk',
+        description: 'Rise early for an adventurous trek into Nyungwe Forest in search of habituated chimpanzee families. Follow your expert guide through the dense rainforest, listening for the distinctive pant-hoots that signal chimpanzee presence. Once you locate a family, spend time observing these intelligent primates as they feed, play, and interact in their natural habitat. The experience is both thrilling and educational. After a forest lunch, prepare for the highlight: walking the 160-meter long canopy bridge suspended high above the forest floor. This exhilarating walk offers unparalleled views of the ancient forest and opportunities to spot birds and monkeys from above. In the late afternoon, transfer to Lake Kivu and check into your lakeside accommodation in Rubavu (Gisenyi).',
+        activities: [
+          'Early morning chimpanzee trekking',
+          'Forest hiking and wildlife tracking',
+          'Chimpanzee family observation',
+          'Birdwatching (migratory and forest species)',
+          'Forest lunch',
+          '160-meter Canopy Walkway experience',
+          'Aerial forest views',
+          'Transfer to Lake Kivu',
+          'Lakeside accommodation check-in'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Lake Kivu resort or similar (Full Board)'
+      },
+      {
+        day: 3,
+        title: 'Lake Kivu Boat Cruise & Kigali Return',
+        description: 'After breakfast, embark on a morning boat cruise on Lake Kivu to Napoleon Island—famous for its massive colony of fruit bats. Watch in awe as thousands of bats take flight or observe them roosting in the trees. The island offers unique photography opportunities and a chance to see this remarkable natural phenomenon. Continue to explore the lake\'s beautiful surroundings before visiting the natural hot springs in Gisenyi, where you can learn about the area\'s volcanic activity. Enjoy a final lakeside lunch with stunning views of the lake and surrounding hills. In the afternoon, begin the scenic drive back to Kigali, arriving in time for your departure or to extend your stay in Rwanda.',
+        activities: [
+          'Lake Kivu boat cruise',
+          'Napoleon Island visit',
+          'Fruit bat colony observation',
+          'Photography opportunities',
+          'Natural hot springs exploration',
+          'Volcanic activity education',
+          'Lakeside lunch',
+          'Scenic return drive to Kigali',
+          'Airport or hotel drop-off'
+        ],
+        meals: ['Breakfast', 'Lunch'],
+        accommodation: 'N/A (Departure)'
+      }
+    ],
+    activities: [
+      'Chimpanzee trekking in Nyungwe Forest',
+      '160-meter Canopy Walkway experience',
+      'Ethnographic Museum cultural visit',
+      'Lake Kivu boat cruise',
+      'Napoleon Island fruit bat colony',
+      'Natural hot springs exploration',
+      'Birdwatching and wildlife observation',
+      'Forest and lakeside photography'
+    ],
+    images: [
+      '/images/trips/chimpanzee-lake-3day-hero.jpg',
+      '/images/trips/chimpanzee-lake-3day-1.jpg',
+      '/images/trips/chimpanzee-lake-3day-2.jpg',
+      '/images/trips/chimpanzee-lake-3day-3.jpg',
+      '/images/trips/chimpanzee-lake-3day-4.jpg'
+    ],
+    insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
+  },
+  {
+    title: '5 Days Gorilla Trekking (Uganda) and Golden Monkey Experience',
+    description: 'The ultimate primate odyssey awaits on this extraordinary 5-day adventure that takes you to the misty mountains of Uganda\'s Bwindi Impenetrable or Mgahinga Gorilla National Park for a face-to-face encounter with Mountain Gorillas—one of the world\'s most endangered and magnificent creatures. You\'ll also trek the rare and endangered Golden Monkeys, known for their striking fur and playful antics. Immerse yourself in the rich culture of the Batwa Pygmies, the original "Keepers of the Forest," through traditional performances and storytelling. This comprehensive safari combines the best of Uganda\'s primate experiences with cultural immersion, stunning mountain scenery, and the adventure of a lifetime. Includes the valuable Uganda Gorilla Permit ($800 value) in the package price.',
+    destination: 'Uganda',
+    duration: 5,
+    price: 2656,
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Arrival & Kigali City Tour',
+        description: 'Welcome at Kigali International Airport where you\'ll be met by your professional guide. Begin with a comprehensive city tour of Kigali, one of Africa\'s cleanest and safest capitals. Visit the Kigali Genocide Memorial—a place of remembrance and learning dedicated to the victims of the 1994 genocide. This powerful experience provides important context about Rwanda\'s history and remarkable journey of reconciliation. Explore the city\'s vibrant markets and modern developments. Check into your hotel and enjoy an evening at leisure, preparing for the adventure ahead. Overnight in Kigali.',
+        activities: [
+          'Airport arrival and meet & greet',
+          'Kigali city tour',
+          'Kigali Genocide Memorial visit',
+          'Learn about Rwanda\'s history and resilience',
+          'City exploration',
+          'Hotel check-in',
+          'Evening at leisure'
+        ],
+        meals: ['Dinner'],
+        accommodation: 'Kigali hotel (Bed & Breakfast)'
+      },
+      {
+        day: 2,
+        title: 'Transfer to Bwindi/Mgahinga (Uganda)',
+        description: 'After breakfast, begin the scenic drive through the "Little Switzerland of Africa"—the beautiful highlands of southwestern Uganda. The journey takes you through rolling hills, terraced farmland, and traditional villages. Cross the border into Uganda (your guide will assist with all formalities) and continue to Bwindi Impenetrable or Mgahinga Gorilla National Park. The drive offers spectacular views of the Virunga volcanic mountain range. Arrive at your lodge in the late afternoon, strategically located to offer stunning views of the misty mountains. Check in, relax, and attend a pre-trek briefing about tomorrow\'s gorilla trekking experience. Enjoy dinner and rest in preparation for the adventure of a lifetime.',
+        activities: [
+          'Scenic drive through "Little Switzerland of Africa"',
+          'Border crossing to Uganda',
+          'Mountain range viewing',
+          'Lodge check-in with mountain views',
+          'Pre-trek briefing',
+          'Gorilla trekking preparation',
+          'Evening relaxation'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Bwindi/Mgahinga lodge (Full Board)'
+      },
+      {
+        day: 3,
+        title: 'Gorilla Trekking & Batwa Cultural Experience',
+        description: 'The highlight of your adventure: gorilla trekking day! After an early breakfast, proceed to the park headquarters for a comprehensive briefing about gorilla behavior, trekking guidelines, and safety precautions. You\'ll be assigned to a gorilla family group and join experienced trackers and guides. Trek into the dense, misty forest in search of mountain gorillas—this can take anywhere from 1 to 6 hours depending on the gorillas\' location. Once you find them, you\'ll spend a magical hour observing these gentle giants as they feed, play, and interact. The experience is truly life-changing. Return to the lodge for lunch and rest. In the afternoon, meet the Batwa Pygmies—the original forest inhabitants—for an authentic cultural experience including traditional performances, storytelling, and demonstrations of their ancient forest knowledge.',
+        activities: [
+          'Early breakfast',
+          'Pre-trek briefing at park headquarters',
+          'Mountain gorilla trekking (1-6 hours)',
+          'One hour with gorilla family',
+          'Gorilla observation and photography',
+          'Forest hiking',
+          'Return to lodge',
+          'Batwa Pygmy cultural experience',
+          'Traditional performances',
+          'Storytelling and cultural education'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Bwindi/Mgahinga lodge (Full Board)'
+      },
+      {
+        day: 4,
+        title: 'Golden Monkey Trekking',
+        description: 'After breakfast, head back into the bamboo forests of Mgahinga or the surrounding areas to track the endangered Golden Monkeys. These beautiful primates, with their striking golden-orange fur, are fast-moving and playful, making the trek both challenging and rewarding. Your guide will help you locate a troop, and once found, you\'ll spend time observing their fascinating behavior as they leap through the bamboo. The Golden Monkey trek is typically easier and shorter than gorilla trekking, making it perfect for the day after your gorilla adventure. Return to the lodge for lunch. Spend the afternoon relaxing at the lodge, taking a community walk to interact with local people, or simply enjoying the stunning mountain views and reflecting on your incredible primate encounters.',
+        activities: [
+          'Breakfast at lodge',
+          'Golden Monkey trekking',
+          'Bamboo forest exploration',
+          'Golden Monkey troop observation',
+          'Wildlife photography',
+          'Community walk (optional)',
+          'Local interaction',
+          'Lodge relaxation',
+          'Mountain views'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'Bwindi/Mgahinga lodge (Full Board)'
+      },
+      {
+        day: 5,
+        title: 'Return to Kigali',
+        description: 'Enjoy a final Ugandan breakfast with views of the misty mountains. Begin the scenic drive back across the border into Rwanda. Your guide will assist with border formalities. The journey takes you through beautiful landscapes, and you\'ll have opportunities for last-minute photography and souvenir shopping. Arrive in Kigali in the late afternoon. Depending on your flight schedule, you may have time for some last-minute shopping or a final meal in the city. Transfer to Kigali International Airport for your departure flight, or extend your stay to explore more of Rwanda. End of tour.',
+        activities: [
+          'Final breakfast with mountain views',
+          'Scenic drive back to Rwanda',
+          'Border crossing',
+          'Last-minute photography',
+          'Souvenir shopping (optional)',
+          'Arrival in Kigali',
+          'Airport transfer',
+          'Departure'
+        ],
+        meals: ['Breakfast', 'Lunch'],
+        accommodation: 'N/A (Departure)'
+      }
+    ],
+    activities: [
+      'Mountain gorilla trekking in Uganda (permit included)',
+      'Golden Monkey trekking',
+      'Batwa Pygmy cultural experience',
+      'Kigali city tour and Genocide Memorial',
+      'Cross-border safari (Rwanda to Uganda)',
+      'Mountain range viewing',
+      'Community walks and local interaction',
+      'Wildlife photography',
+      'Cultural performances and storytelling'
+    ],
+    images: [
+      '/images/trips/gorilla-golden-monkey-hero.jpg',
+      '/images/trips/gorilla-golden-monkey-1.jpg',
+      '/images/trips/gorilla-golden-monkey-2.jpg',
+      '/images/trips/gorilla-golden-monkey-3.jpg',
+      '/images/trips/gorilla-golden-monkey-4.jpg'
+    ],
+    insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
+  },
 ];
 
 async function seed(): Promise<void> {

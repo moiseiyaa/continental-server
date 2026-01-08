@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getPaymentsHandler } from '../controllers/payment.controller';
+import { createPaymentHandler, getPaymentsHandler, verifyPaymentHandler } from '../controllers/payment.controller';
 
 const router = Router();
 
@@ -7,5 +7,15 @@ const router = Router();
 // @desc    Get payments (stub)
 // @access  Private
 router.get('/', getPaymentsHandler);
+
+// @route   POST /api/payments
+// @desc    Create a payment intent
+// @access  Private
+router.post('/', createPaymentHandler);
+
+// @route   GET /api/payments/:id
+// @desc    Verify a payment intent
+// @access  Private
+router.get('/:id', verifyPaymentHandler);
 
 export default router;
