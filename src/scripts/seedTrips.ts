@@ -38,6 +38,360 @@ interface TripSeed {
 // NOTE: Some trips were provided without explicit prices. Those are seeded with price = 0.0; update as needed.
 const TRIPS: TripSeed[] = [
   {
+    title: '2-Day Trek: Mount Manengouba & Twin Lakes',
+    description: 'Mount Manengouba, standing at 2,411 meters above sea level, is an ancient volcano located in western Cameroon on the border between the French-speaking and English-speaking regions. This majestic mountain is renowned for its stunning twin crater lakes - the Male Lake (Lac Mâle) and Female Lake (Lac Femelle) - each with distinct colors and characteristics. The mountain is home to the Peules people, who live in small, remote villages and maintain traditional lifestyles centered around agriculture and animal husbandry.\n\nThis two-day adventure takes you through lush tropical forests, past traditional villages, and up to the breathtaking summit where you\'ll be rewarded with panoramic views and the unique experience of camping between the two legendary lakes. The mountain is part of the Cameroon Line and is a biodiversity hotspot, home to numerous endemic species including the long-fingered frog and over 270 bird species.\n\nThe journey begins with an early morning departure from Douala, followed by a scenic drive to the trailhead. The 5-hour ascent takes you through diverse ecosystems, from dense forests to alpine meadows, before reaching the stunning twin lakes at the summit. After a night of camping under the stars, you\'ll descend the next morning, taking in the spectacular views one last time before returning to Douala.',
+    destination: 'Mount Manengouba, Cameroon',
+    duration: 2,
+    price: 899, // Base price for 1 person
+    max_participants: 8,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Ascent to Mount Manengouba',
+        description: 'Early morning departure from Douala and trek to the summit of Mount Manengouba.',
+        activities: [
+          '6:00 AM - Departure from Douala',
+          'Scenic drive to the trailhead',
+          'Begin the 5-hour ascent through tropical forest',
+          'Picnic lunch en route',
+          'Arrive at the twin lakes in the afternoon',
+          'Explore the Male and Female Lakes',
+          'Set up camp and enjoy dinner under the stars'
+        ],
+        meals: ['Lunch', 'Dinner'],
+        accommodation: 'Camping at the summit'
+      },
+      {
+        day: 2,
+        title: 'Summit Exploration & Descent',
+        description: 'Morning exploration of the summit area and descent back to Douala.',
+        activities: [
+          'Sunrise at the summit',
+          'Breakfast with panoramic views',
+          'Explore the Elengoum caldera',
+          'Begin descent through different trails',
+          'Lunch at a local village',
+          'Return to Douala in the evening'
+        ],
+        meals: ['Breakfast', 'Lunch'],
+        accommodation: 'N/A'
+      }
+    ],
+    activities: [
+      'Mountain trekking',
+      'Wildlife spotting',
+      'Camping',
+      'Nature photography',
+      'Cultural interaction',
+      'Scenic hikes'
+    ],
+    images: [
+      '/images/trips/mount-manengouba-1.jpg',
+      '/images/trips/mount-manengouba-2.jpg',
+      '/images/trips/mount-manengouba-3.jpg',
+      '/images/trips/mount-manengouba-4.jpg'
+    ],
+    included: [
+      'Round-trip transportation from Douala',
+      'Professional mountain guide',
+      'All camping equipment (tent, sleeping bag, mat)',
+      'All meals as specified in the itinerary',
+      'Drinking water during the trek',
+      'All park entrance fees',
+      'Camping fees',
+      'First aid kit'
+    ],
+    notIncluded: [
+      'Personal expenses and souvenirs',
+      'Tips and gratuities',
+      'Travel insurance',
+      'Alcoholic beverages',
+      'Optional horse rental (available on request)'
+    ],
+    highlights: [
+      'Trek to the summit of Mount Manengouba (2,411m)', 
+      'Visit the stunning Male and Female crater lakes',
+      'Camp overnight between the twin lakes',
+      'Witness breathtaking sunrises and sunsets',
+      'Explore the unique biodiversity of the Cameroon Line',
+      'Experience local Peules culture and traditions',
+      'Opportunity to see endemic wildlife and bird species'
+    ],
+    difficulty: 'moderate',
+    rating: 4.8,
+    reviews: 12,
+    product_code: 'P0A8LH',
+    pricing: {
+      base_price: 899,
+      group_discounts: [
+        { people: 2, price_pp: 495 },
+        { people: 3, price_pp: 370 },
+        { people: 4, price_pp: 299 }
+      ]
+    }
+  },
+  {
+    title: 'Douala Day Tour: Jébalé Island',
+    description: 'Just fifteen minutes by canoe from the port of Bonassama in Bonabéri, the enchanting island of Jébalé awaits. This hidden gem in the Wouri River is not only a place of exceptional natural beauty but also a site of deep cultural significance. The island is renowned as a training ground for initiates of the Ngondo festival, the annual water festival that celebrates the rich cultural heritage of the Sawa people along the Wouri River.\n\nAs you step onto Jébalé Island, you\'ll be transported to a world of tranquility, far removed from the hustle and bustle of Douala. The island is home to two traditional villages where time seems to stand still, offering a rare glimpse into the authentic way of life of the local communities. The island\'s commitment to sustainability is evident in its solar power plant, which provides clean energy to the residents.\n\nThe journey to Jébalé is an adventure in itself, with a scenic 15-minute motorized canoe ride from Bonassama port, offering stunning views of the Wouri River. Once on the island, you\'ll be immersed in the peaceful rhythm of island life, where the only sounds are the gentle lapping of water against the shore and the calls of tropical birds in the mangroves.\n\nThis tour is perfect for those seeking a blend of cultural immersion, natural beauty, and a peaceful retreat from city life. Whether you\'re interested in traditional Cameroonian culture, sustainable living, or simply want to experience the serene beauty of a river island, Jébalé offers an unforgettable experience.',
+    destination: 'Douala, Cameroon',
+    duration: 1,
+    price: 199,
+    max_participants: 8,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Jébalé Island Discovery',
+        description: 'Full day tour to Jébalé Island with cultural immersion and exploration of local villages.',
+        activities: [
+          'Morning departure from Bonassama port',
+          '15-minute scenic canoe ride to Jébalé Island',
+          'Visit to the two traditional villages on the island',
+          'Exploration of the solar power plant',
+          'Lunch with local specialties',
+          'Free time to enjoy the peaceful surroundings',
+          'Return to Douala in the afternoon'
+        ],
+        meals: ['Lunch included'],
+        accommodation: 'N/A'
+      }
+    ],
+    activities: [
+      'Island exploration',
+      'Cultural immersion',
+      'Village visits',
+      'Sustainable energy tour',
+      'Boat tour',
+      'Nature observation'
+    ],
+    images: [
+      '/images/trips/jebale-island-1.jpg',
+      '/images/trips/jebale-island-2.jpg',
+      '/images/trips/jebale-island-3.jpg'
+    ],
+    included: [
+      'Round-trip canoe transfer to Jébalé Island',
+      'Knowledgeable local guide',
+      'All necessary visit permits',
+      'Traditional Cameroonian lunch',
+      'Bottled water'
+    ],
+    notIncluded: [
+      'Personal expenses and souvenirs',
+      'Tips and gratuities',
+      'Travel insurance',
+      'Accommodation before/after tour',
+      'Alcoholic beverages'
+    ],
+    highlights: [
+      'Experience the cultural significance of Ngondo festival training grounds',
+      'Visit two traditional villages and interact with local communities',
+      'Learn about sustainable energy at the island\'s solar power plant',
+      'Enjoy a peaceful retreat just minutes from Douala',
+      'Scenic canoe ride through the Wouri River',
+      'Taste authentic Cameroonian cuisine'
+    ],
+    difficulty: 'easy',
+    rating: 4.6,
+    reviews: 5,
+    product_code: 'PGVFP1'
+  },
+  {
+    title: 'Douala Day Tour: Manoka Island',
+    description: 'Not far from the small fishing port of Youpwé, near Douala, Manoka Island is the sixth district municipality of the Urban Community of Douala and is native to the Malimba people. The island offers a perfect day of escape and a change of scenery far from the bustle of Douala, with its colonial vestiges, including the prison of Douala Manga Bell, and its population that lives mainly from fishing and fish smoking.',
+    destination: 'Douala, Cameroon',
+    duration: 1,
+    price: 249,
+    max_participants: 10,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Manoka Island Day Tour',
+        description: 'Full day tour to Manoka Island with exploration of local villages, colonial sites, and beach time.',
+        activities: [
+          'Morning departure from Youpwé fishing port',
+          'Private canoe trip to Manoka Island',
+          'Explore local fishing villages',
+          'Visit Douala Manga Bell prison ruins',
+          'Lunch with local specialties',
+          'Beach time and wildlife spotting',
+          'Return to Douala in the evening'
+        ],
+        meals: ['Lunch included'],
+        accommodation: 'N/A'
+      }
+    ],
+    activities: [
+      'Island exploration',
+      'Cultural immersion',
+      'Beach visit',
+      'Historical site visits',
+      'Boat tour',
+      'Wildlife spotting'
+    ],
+    images: [
+      '/images/trips/manoka-island-1.jpg',
+      '/images/trips/manoka-island-2.jpg',
+      '/images/trips/manoka-island-3.jpg'
+    ],
+    included: [
+      'Round-trip boat transfer to Manoka Island',
+      'Professional English/French speaking guide',
+      'All necessary permits',
+      'Lunch with local specialties',
+      'Bottled water'
+    ],
+    notIncluded: [
+      'Personal expenses and souvenirs',
+      'Tips and gratuities',
+      'Travel insurance',
+      'Accommodation before/after tour',
+      'Alcoholic beverages'
+    ],
+    highlights: [
+      'Explore the largest island in Cameroon',
+      'Visit the historic Douala Manga Bell prison ruins',
+      'Experience the unique culture of the Malimba people',
+      'Observe traditional fishing and fish smoking techniques',
+      'Relax on pristine, uncrowded beaches',
+      'Spot local wildlife including monkeys'
+    ],
+    difficulty: 'easy',
+    rating: 4.5,
+    reviews: 6,
+    product_code: 'PU72NZ'
+  },
+  {
+    title: 'Douala Day Tour: Douala-Edéa Wildlife Reserve',
+    description: 'The Douala Edéa wildlife reserve (réserve de faune de Douala) is a vast wild expanse made up largely of mangroves and penetrated by numerous swamps and waterways. The Douala Edéa wildlife reserve is a refuge to rare and endangered species such as the manatee, forest elephants, chimpanzees, and dolphins. On the beaches of the coast, sea turtles come to lay their eggs, with the high season between November and January. The reserve features rich tropical coastal vegetation including rattan palms, raffias, and mangroves, along with beautiful yellow sand beaches at the end of the Wouri delta.',
+    destination: 'Douala, Cameroon',
+    duration: 1,
+    price: 319,
+    max_participants: 12,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Douala-Edéa Wildlife Reserve Day Tour',
+        description: 'Full day tour to Douala-Edéa Wildlife Reserve with visits to Monkey Island, Marienberg Church, and Tissongo Beach.',
+        activities: [
+          'Pickup from Douala at 8am',
+          'Visit Monkey Island',
+          'Explore Marienberg Church',
+          'Lunch at a local restaurant',
+          'Relax at Tissongo Beach',
+          'Return to Douala around 4pm'
+        ],
+        meals: ['Lunch included'],
+        accommodation: 'N/A'
+      }
+    ],
+    activities: [
+      'Wildlife viewing',
+      'Mangrove exploration',
+      'Beach visit',
+      'Cultural site visits',
+      'Boat tour'
+    ],
+    images: [
+      '/images/trips/douala-edea-1.jpg',
+      '/images/trips/douala-edea-2.jpg',
+      '/images/trips/douala-edea-3.jpg'
+    ],
+    included: [
+      'Transport by motorized canoe round trip from Douala',
+      'Professional English/French speaking guide',
+      'Entrance fees to all sites',
+      'Lunch and drinks',
+      'Bottled water'
+    ],
+    notIncluded: [
+      'Personal expenses and souvenirs',
+      'Tips and gratuities',
+      'Travel insurance',
+      'Accommodation before/after tour',
+      'Alcoholic beverages'
+    ],
+    highlights: [
+      'Explore the vast mangrove forests and swamps',
+      'Spot rare wildlife including manatees and forest elephants',
+      'Visit Monkey Island and observe primates in their natural habitat',
+      'Relax on the beautiful Tissongo Beach',
+      'Learn about the local ecosystem and conservation efforts'
+    ],
+    difficulty: 'easy',
+    rating: 4.7,
+    reviews: 8,
+    product_code: 'PFW0TF'
+  },
+  {
+    title: 'Douala Day Tour: Ekom Nkam Falls',
+    description: 'The Ekom Nkam falls (Chutes d\'Ekom) are one of the most beautiful waterfalls in Cameroon. They are 80 meters in height and consist of two different falls: a "male", which is continuously fed, and a "female", which is only fed during the rainy season. The name Ekom Nkam is derived from two different words: Ekom which is the name of the village where we find the waterfalls, and Nkam which is the name of the river from which the falls originate. In 1982 a scene from the movie "Greystoke the legend of Tarzan" with Christophe Lambert was filmed in this place. Ekom Nkam Falls is a great destination for those who love to be in nature and especially hikers, who can enjoy the nine km hiking trail if desired, although the falls can be reached by car as well.',
+    destination: 'Douala, Cameroon',
+    duration: 1,
+    price: 129,
+    max_participants: 15,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Ekom Nkam Falls Day Tour',
+        description: 'Full day tour to Ekom Nkam Falls with guided exploration and lunch at the site.',
+        activities: [
+          'Scenic drive from Douala to Ekom village',
+          'Guided tour of Ekom Nkam Falls',
+          'Optional hiking on the 9km trail',
+          'Lunch at a local restaurant near the falls'
+        ],
+        meals: ['Lunch included'],
+        accommodation: 'N/A'
+      }
+    ],
+    activities: [
+      'Waterfall exploration',
+      'Nature photography',
+      'Hiking (optional)',
+      'Scenic drives through Cameroonian countryside'
+    ],
+    images: [
+      '/images/trips/ekom-nkam-falls-1.jpg',
+      '/images/trips/ekom-nkam-falls-2.jpg',
+      '/images/trips/ekom-nkam-falls-3.jpg'
+    ],
+    included: [
+      'Round-trip transportation from Douala',
+      'Professional English/French speaking guide',
+      'Entrance fees to Ekom Nkam Falls',
+      'Lunch at a local restaurant',
+      'Bottled water'
+    ],
+    notIncluded: [
+      'Personal expenses and souvenirs',
+      'Tips and gratuities',
+      'Travel insurance',
+      'Accommodation before/after tour',
+      'Alcoholic beverages'
+    ],
+    highlights: [
+      'Marvel at the stunning 80-meter high Ekom Nkam Falls',
+      'Visit the filming location from "Greystoke: The Legend of Tarzan"',
+      'Optional 9km hiking trail through beautiful scenery',
+      'Experience the local culture in Ekom village',
+      'Enjoy a delicious local lunch with views of the falls'
+    ],
+    difficulty: 'moderate',
+    rating: 4.5,
+    reviews: 5,
+    product_code: 'PEXVWX'
+  },
+  {
     title: 'Douala Day Tour: Douala-Edéa Wildlife Reserve',
     description: 'The Douala Edéa wildlife reserve (réserve de faune de Douala) is a vast wild expanse made up largely of mangroves and penetrated by numerous swamps and waterways. The Douala Edéa wildlife reserve is a refuge to a rare and endangered species such as the manatee, a large herbivorous marine mammal, forest elephants, chimpanzees, dolphins and more. On the beaches of the coast, sea turtles come to lay their eggs, with the high season between November and January. It is also possible to come on an excursion to Douala-Edéa Wildlife Reserve to see sea turtles hatch their eggs.',
     destination: 'Douala, Cameroon',
