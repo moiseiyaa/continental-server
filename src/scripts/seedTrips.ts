@@ -42,6 +42,7 @@ interface TripSeed {
   reviews?: number;
   product_code?: string;
   pricing?: TripPricing;
+  important_notes?: string[]; // Added important_notes as an optional property
 }
 
 // NOTE: Some trips were provided without explicit prices. Those are seeded with price = 0.0; update as needed.
