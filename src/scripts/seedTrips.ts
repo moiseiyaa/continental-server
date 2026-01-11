@@ -47,6 +47,129 @@ interface TripSeed {
 // NOTE: Some trips were provided without explicit prices. Those are seeded with price = 0.0; update as needed.
 const TRIPS: TripSeed[] = [
   {
+    title: '3-Days Exclusive Rwanda Luxury Mountain Gorilla Trekking',
+    description: 'Experience the ultimate luxury wildlife adventure with this exclusive 3-day gorilla trekking experience in Rwanda. This high-end private trip takes you to Kinigi, home of the famous mountain gorillas, where you\'ll enjoy VIP treatment throughout your journey. Stay at the luxurious One&Only Gorilla Nest lodge and embark on a once-in-a-lifetime gorilla trekking experience in the Volcanoes National Park. The package includes private helicopter transfers, ensuring maximum comfort and stunning aerial views of Rwanda\'s breathtaking landscapes. This is a truly exclusive experience, limited to discerning travelers seeking the very best in wildlife encounters and luxury accommodations.',
+    destination: 'Volcanoes National Park, Rwanda',
+    duration: 3,
+    price: 25577, // Starting price per person
+    max_participants: 6,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Helicopter Transfer to Volcanoes National Park',
+        description: 'Arrive at Kigali International Airport where you\'ll receive VIP meet and greet services with fast-track customs clearance. Board a private helicopter for a scenic 30-minute flight to Musanze, the gateway to the mountain gorillas. Transfer to the luxurious One&Only Gorilla Nest lodge for check-in. Enjoy the exclusive amenities of this world-class property before dinner and a restful evening.',
+        activities: [
+          'VIP meet and greet at Kigali International Airport',
+          'Fast-track customs clearance',
+          'Scenic 30-minute helicopter transfer to Musanze',
+          'Luxury transfer to One&Only Gorilla Nest',
+          'Leisure time at the lodge',
+          'Gourmet dinner at the lodge'
+        ],
+        meals: ['Lunch', 'Dinner'],
+        accommodation: 'One&Only Gorilla Nest'
+      },
+      {
+        day: 2,
+        title: 'Exclusive Gorilla Trekking Experience',
+        description: 'Start your day with a gourmet breakfast before heading to the Volcanoes National Park headquarters in Kinigi. Meet your expert guides and receive a briefing about gorilla trekking etiquette. Embark on a once-in-a-lifetime trek through the lush rainforest to observe a family of mountain gorillas in their natural habitat. Spend a magical hour watching these magnificent creatures. Return to the lodge for a well-deserved lunch and spend the afternoon relaxing or enjoying an optional spa treatment.',
+        activities: [
+          'Early morning breakfast',
+          'Transfer to Volcanoes National Park headquarters',
+          'Gorilla trekking briefing',
+          'Guided gorilla trek (3-6 hours depending on gorilla location)',
+          'One hour with the gorilla family',
+          'Return to lodge for lunch',
+          'Afternoon at leisure or optional spa treatment',
+          'Gourmet dinner at the lodge'
+        ],
+        meals: ['Breakfast', 'Lunch', 'Dinner'],
+        accommodation: 'One&Only Gorilla Nest'
+      },
+      {
+        day: 3,
+        title: 'Helicopter Return to Kigali',
+        description: 'After a leisurely breakfast and check-out, board your private helicopter for the return flight to Kigali. Enjoy stunning aerial views of Rwanda\'s landscape one last time before your international departure or transfer to your next destination.',
+        activities: [
+          'Leisurely breakfast at the lodge',
+          'Check-out from One&Only Gorilla Nest',
+          'Private helicopter transfer to Kigali',
+          'Transfer to Kigali International Airport or city hotel'
+        ],
+        meals: ['Breakfast'],
+        accommodation: 'N/A'
+      }
+    ],
+    activities: [
+      'Luxury helicopter transfers',
+      'Mountain gorilla trekking',
+      'VIP meet and greet services',
+      'Luxury accommodation',
+      'Gourmet dining',
+      'Optional spa treatments'
+    ],
+    images: [
+      '/images/trips/rwanda-gorilla-luxury-1.jpg',
+      '/images/trips/rwanda-gorilla-luxury-2.jpg',
+      '/images/trips/rwanda-gorilla-luxury-3.jpg',
+      '/images/trips/rwanda-gorilla-luxury-4.jpg',
+      '/images/trips/one-only-gorilla-nest-1.jpg'
+    ],
+    included: [
+      'VIP airport meet and greet with fast-track clearance',
+      'Round-trip private helicopter transfers (Kigali-Musanze-Kigali)',
+      'Gorilla trekking permit ($15,000 value)',
+      '2 nights luxury accommodation at One&Only Gorilla Nest',
+      'All meals as specified in the itinerary',
+      'Private transportation in a luxury safari vehicle',
+      'Services of an English-speaking driver-guide',
+      'Bottled drinking water during activities',
+      'All park fees and government taxes',
+      '24/7 dedicated support'
+    ],
+    notIncluded: [
+      'International airfare',
+      'Rwanda visa fees',
+      'Travel insurance',
+      'Optional spa treatments',
+      'Premium alcoholic beverages',
+      'Gratuities and personal expenses',
+      'Any items not mentioned as included'
+    ],
+    highlights: [
+      'Exclusive private helicopter transfers',
+      'Once-in-a-lifetime mountain gorilla encounter',
+      'Luxury accommodation at One&Only Gorilla Nest',
+      'VIP treatment throughout the journey',
+      'Personalized service with expert guides',
+      'Breathtaking views of the Virunga Volcanoes',
+      'Gourmet dining experiences'
+    ],
+    difficulty: 'moderate',
+    rating: 5.0,
+    reviews: 12,
+    product_code: 'RLGT-001',
+    pricing: {
+      base_price: 25577,
+      group_discounts: [
+        { people: 2, price_pp: 24000 },
+        { people: 4, price_pp: 23000 },
+        { people: 6, price_pp: 22000 }
+      ]
+    },
+    important_notes: [
+      'Passport must be valid for at least 6 months from date of departure',
+      'Gorilla trekking requires moderate physical fitness',
+      'Minimum age for gorilla trekking is 15 years',
+      'Vaccinations including Yellow Fever are recommended',
+      'Booking confirmation is subject to gorilla permit availability',
+      'A minimum of 60 days advance booking is recommended',
+      'Cancellation policy: Strict - 90 days for full refund'
+    ]
+  },
+  {
     title: 'Douala City Tour: Explore the Economic Capital',
     description: 'Discover the vibrant energy of Douala, Cameroon\'s largest city and economic hub, on this comprehensive city tour. With over two million inhabitants spread across 120 districts, Douala is a city that never sleeps, pulsating with life, culture, and history.\n\nThis immersive tour takes you through the heart of this dynamic metropolis, where colonial heritage meets modern African urban life. You\'ll explore historic landmarks, bustling markets, and cultural institutions that tell the story of Douala\'s past, present, and future.\n\nHighlights include the stunning Saint Peter and Paul Cathedral, the fascinating Maritime Museum, and the vibrant Youpwé fish market. You\'ll also visit local art galleries like Doual\'art and Annie Kadji, showcasing the city\'s thriving contemporary art scene. The tour offers a perfect introduction to Douala\'s unique character, from its architectural landmarks to its lively street life and cultural diversity.',
     destination: 'Douala, Cameroon',
