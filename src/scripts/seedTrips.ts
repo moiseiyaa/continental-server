@@ -13,6 +13,14 @@ interface DayItinerary {
   accommodation: string;
 }
 
+interface TripPricing {
+  base_price: number;
+  group_discounts: Array<{
+    people: number;
+    price_pp: number;
+  }>;
+}
+
 interface TripSeed {
   title: string;
   description: string;
@@ -33,6 +41,7 @@ interface TripSeed {
   rating?: number;
   reviews?: number;
   product_code?: string;
+  pricing?: TripPricing;
 }
 
 // NOTE: Some trips were provided without explicit prices. Those are seeded with price = 0.0; update as needed.
