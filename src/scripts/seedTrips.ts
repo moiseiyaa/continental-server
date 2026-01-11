@@ -47,6 +47,84 @@ interface TripSeed {
 // NOTE: Some trips were provided without explicit prices. Those are seeded with price = 0.0; update as needed.
 const TRIPS: TripSeed[] = [
   {
+    title: 'Douala City Tour: Explore the Economic Capital',
+    description: 'Discover the vibrant energy of Douala, Cameroon\'s largest city and economic hub, on this comprehensive city tour. With over two million inhabitants spread across 120 districts, Douala is a city that never sleeps, pulsating with life, culture, and history.\n\nThis immersive tour takes you through the heart of this dynamic metropolis, where colonial heritage meets modern African urban life. You\'ll explore historic landmarks, bustling markets, and cultural institutions that tell the story of Douala\'s past, present, and future.\n\nHighlights include the stunning Saint Peter and Paul Cathedral, the fascinating Maritime Museum, and the vibrant Youpwé fish market. You\'ll also visit local art galleries like Doual\'art and Annie Kadji, showcasing the city\'s thriving contemporary art scene. The tour offers a perfect introduction to Douala\'s unique character, from its architectural landmarks to its lively street life and cultural diversity.',
+    destination: 'Douala, Cameroon',
+    duration: 1,
+    price: 450, // Base price for 1 person
+    max_participants: 8,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Exploring Douala\'s Heritage and Culture',
+        description: 'Full-day tour of Douala\'s most significant landmarks and cultural sites.',
+        activities: [
+          'Morning pickup from your hotel in Douala',
+          'Visit the historic Saint Peter and Paul Cathedral',
+          'Explore the colorful flower market',
+          'Tour the bustling Youpwé fish market',
+          'Lunch at a local restaurant (not included)',
+          'Afternoon visit to the Maritime Museum',
+          'Explore Doual\'art and Annie Kadji art galleries',
+          'Return to your hotel in the evening'
+        ],
+        meals: [],
+        accommodation: 'N/A'
+      }
+    ],
+    activities: [
+      'City sightseeing',
+      'Cultural immersion',
+      'Market visits',
+      'Museum tours',
+      'Architectural exploration',
+      'Local art appreciation'
+    ],
+    images: [
+      '/images/trips/douala-city-1.jpg',
+      '/images/trips/douala-city-2.jpg',
+      '/images/trips/douala-city-3.jpg',
+      '/images/trips/douala-city-4.jpg'
+    ],
+    included: [
+      'Private transportation with driver',
+      'Professional English/French speaking guide',
+      'All entrance fees to listed attractions',
+      'Bottled water in the vehicle',
+      'Hotel pickup and drop-off within Douala'
+    ],
+    notIncluded: [
+      'Meals and drinks',
+      'Personal expenses and souvenirs',
+      'Tips and gratuities',
+      'Travel insurance',
+      'Accommodation before/after the tour'
+    ],
+    highlights: [
+      'Visit the iconic Saint Peter and Paul Cathedral',
+      'Experience the vibrant atmosphere of Youpwé fish market',
+      'Admire the beautiful displays at the flower market',
+      'Discover Cameroon\'s maritime history at the Maritime Museum',
+      'Explore contemporary African art at Doual\'art and Annie Kadji galleries',
+      'See the contrast between colonial architecture and modern developments',
+      'Experience the dynamic energy of Cameroon\'s economic capital'
+    ],
+    difficulty: 'easy',
+    rating: 4.5,
+    reviews: 18,
+    product_code: 'PASELM',
+    pricing: {
+      base_price: 450,
+      group_discounts: [
+        { people: 2, price_pp: 230 },
+        { people: 3, price_pp: 170 },
+        { people: 4, price_pp: 130 }
+      ]
+    }
+  },
+  {
     title: '2-Day Trek: Mount Manengouba & Twin Lakes',
     description: 'Mount Manengouba, standing at 2,411 meters above sea level, is an ancient volcano located in western Cameroon on the border between the French-speaking and English-speaking regions. This majestic mountain is renowned for its stunning twin crater lakes - the Male Lake (Lac Mâle) and Female Lake (Lac Femelle) - each with distinct colors and characteristics. The mountain is home to the Peules people, who live in small, remote villages and maintain traditional lifestyles centered around agriculture and animal husbandry.\n\nThis two-day adventure takes you through lush tropical forests, past traditional villages, and up to the breathtaking summit where you\'ll be rewarded with panoramic views and the unique experience of camping between the two legendary lakes. The mountain is part of the Cameroon Line and is a biodiversity hotspot, home to numerous endemic species including the long-fingered frog and over 270 bird species.\n\nThe journey begins with an early morning departure from Douala, followed by a scenic drive to the trailhead. The 5-hour ascent takes you through diverse ecosystems, from dense forests to alpine meadows, before reaching the stunning twin lakes at the summit. After a night of camping under the stars, you\'ll descend the next morning, taking in the spectacular views one last time before returning to Douala.',
     destination: 'Mount Manengouba, Cameroon',
