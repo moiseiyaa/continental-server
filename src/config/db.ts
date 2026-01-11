@@ -12,7 +12,7 @@ export const pool = new Pool({
     : undefined,
   max: 20, // Maximum number of clients in the pool
   idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
-  connectionTimeoutMillis: 10000, // Increased from 2000ms to 10000ms for Neon
+  connectionTimeoutMillis: 30000, // Increased to 30s to avoid Neon cold-start timeout
   statement_timeout: 10000,
   query_timeout: 10000,
 });

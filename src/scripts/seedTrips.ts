@@ -26,10 +26,76 @@ interface TripSeed {
   activities?: string[];
   images?: string[];
   insurance?: string;
+  included?: string[];
+  notIncluded?: string[];
+  highlights?: string[];
+  difficulty?: string;
+  rating?: number;
+  reviews?: number;
+  product_code?: string;
 }
 
 // NOTE: Some trips were provided without explicit prices. Those are seeded with price = 0.0; update as needed.
 const TRIPS: TripSeed[] = [
+  {
+    title: 'Douala Day Tour: Douala-Edéa Wildlife Reserve',
+    description: 'The Douala Edéa wildlife reserve (réserve de faune de Douala) is a vast wild expanse made up largely of mangroves and penetrated by numerous swamps and waterways. The Douala Edéa wildlife reserve is a refuge to a rare and endangered species such as the manatee, a large herbivorous marine mammal, forest elephants, chimpanzees, dolphins and more. On the beaches of the coast, sea turtles come to lay their eggs, with the high season between November and January. It is also possible to come on an excursion to Douala-Edéa Wildlife Reserve to see sea turtles hatch their eggs.',
+    destination: 'Douala, Cameroon',
+    duration: 1,
+    price: 319,
+    max_participants: 12,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Douala Day Tour',
+        description: 'Full day tour of Douala-Edéa Wildlife Reserve with visits to Monkey Island, Marienberg Church, and Tissongo Beach.',
+        activities: [
+          'Monkey Island visit',
+          'Marienberg Church visit',
+          'Tissongo Beach visit'
+        ],
+        meals: ['Lunch included'],
+        accommodation: 'N/A'
+      }
+    ],
+    activities: [
+      'Wildlife viewing (manatees, dolphins, sea turtles in season)',
+      'Mangrove exploration',
+      'Beach visit',
+      'Cultural and historical site visits'
+    ],
+    images: [
+      '/images/trips/douala-edea-1.jpg',
+      '/images/trips/douala-edea-2.jpg',
+      '/images/trips/douala-edea-3.jpg'
+    ],
+    included: [
+      'Transport by motorized canoe round trip from Douala',
+      'Professional guide',
+      'Entrance fees and activities',
+      'Lunch and drinks',
+      'All taxes and service charges'
+    ],
+    notIncluded: [
+      'Personal expenses',
+      'Tips and gratuities',
+      'Travel insurance',
+      'Accommodation before/after tour'
+    ],
+    highlights: [
+      'Explore the diverse ecosystems of Douala-Edéa Wildlife Reserve',
+      'Chance to spot manatees, dolphins, and other wildlife',
+      'Visit the historic Marienberg Church',
+      'Relax on the beautiful Tissongo Beach',
+      'Experience the unique mangrove forests'
+    ],
+    difficulty: 'easy',
+    rating: 4.8,
+    reviews: 28,
+    product_code: 'PFW0TF'
+  },
   {
     title: '10-Day Discounted Rwanda Gorilla & Chimpanzee Trek Safari',
     description: 'Experience Rwanda from wildlife safaris in Akagera, sunset boat cruises, and city tours to chimpanzee and gorilla trekking, tea and coffee experiences, cultural immersion, and more. This private safari is unmatched in authenticity and price, available at this rate from November to May only.',
@@ -1919,6 +1985,66 @@ const TRIPS: TripSeed[] = [
     ],
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
+  {
+    title: 'Lobéké National Park Expedition',
+    description: `Integrated into the Congo Basin, Lobéké National Park (part of the tri-national UNESCO World-Heritage landscape) is famed for its forest clearings that attract elephants, gorillas, chimpanzees and a vast array of birdlife. This six-day over-land adventure runs from Yaoundé to the heart of the park, combining wildlife viewing with cultural encounters in remote villages.`,
+    destination: 'Cameroon – Lobéké National Park',
+    duration: 6,
+    price: 0,
+    max_participants: 12,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      { day: 1, title: 'Yaoundé → Bertoua → Batouri', description: 'Drive 440 km on tarred road (≈7 h). Overnight in Batouri motel.', activities: [], meals: [], accommodation: 'Batouri motel' },
+      { day: 2, title: 'Batouri → Yokadouma → Mambélé', description: '360 km dirt road (≈7 h). Overnight in Mambélé motel.', activities: [], meals: [], accommodation: 'Mambélé motel' },
+      { day: 3, title: 'Enter Lobéké National Park', description: 'Morning transfer, first forest “bai” wildlife viewing, set up tents, overnight camping.', activities: [], meals: [], accommodation: 'Tented camp' },
+      { day: 4, title: 'Full-day Safari in Lobéké', description: 'Explore multiple bais for elephants, gorillas & birdlife. Overnight camping.', activities: [], meals: [], accommodation: 'Tented camp' },
+      { day: 5, title: 'Lobéké → Yokadouma', description: 'Morning safari then drive back; overnight in Yokadouma motel.', activities: [], meals: [], accommodation: 'Yokadouma motel' },
+      { day: 6, title: 'Yokadouma → Yaoundé', description: 'Return drive via Bertoua. End of tour.', activities: [], meals: [], accommodation: 'N/A' }
+    ],
+    activities: [
+      'Forest bai wildlife observation',
+      'Gorilla & chimpanzee tracking',
+      'Elephant & buffalo viewing',
+      'Bird-watching',
+      'Rain-forest camping',
+      'Over-land cultural travel'
+    ],
+    images: ['/images/trips/lobeke-hero.jpg']
+  },
+  {
+    title: 'Nki National Park Wilderness Expedition',
+    description: `Often called the last true wilderness of Cameroon, Nki National Park protects more than 300,000 ha of pristine Congo-Basin rainforest harbouring ~6,000 Western lowland gorillas, forest elephants, rare birds and the semi-nomadic Baka people. This 12-day expedition combines long river cruises on the Ngoko, deep-forest camping and authentic encounters with the local communities.`,
+    destination: 'Cameroon – Nki National Park',
+    duration: 12,
+    price: 0,
+    max_participants: 12,
+    current_participants: 0,
+    status: 'active',
+    detailed_itinerary: [
+      { day: 1, title: 'Arrival in Yaoundé', description: 'Airport meet-and-greet, transfer to Hôtel Franco, dinner & overnight.', activities: [], meals: ['Dinner'], accommodation: 'Hôtel Franco (Yaoundé)' },
+      { day: 2, title: 'Yaoundé → Bertoua → Batouri', description: 'Drive 440 km on tarred road (≈7 h). Overnight in Batouri motel.', activities: [], meals: ['Breakfast','Lunch','Dinner'], accommodation: 'Batouri motel' },
+      { day: 3, title: 'Batouri → Yokadouma → Mambélé → Mouloundou', description: '420 km untarred road (≈9 h) through forest towns to river port of Mouloundou. Overnight motel.', activities: [], meals: ['Breakfast','Lunch','Dinner'], accommodation: 'Mouloundou motel' },
+      { day: 4, title: 'Ngoko River Cruise (Day 1)', description: 'Board motorised canoe; begin 240 km upstream journey. Village visit en-route. Camp on riverbank (Cameroon or Congo side).', activities: ['River navigation','Village interaction'], meals: ['Breakfast','Lunch','Dinner'], accommodation: 'Tented camp' },
+      { day: 5, title: 'Ngoko River Cruise (Day 2)', description: 'Continue cruise to Nki NP boundary; wildlife spotting from boat. Overnight riverside camp.', activities: ['Birdwatching','Photography'], meals: ['Breakfast','Lunch','Dinner'], accommodation: 'Tented camp' },
+      { day: 6, title: 'Into Nki National Park', description: 'Establish base camp near Ibambe Bai; afternoon forest walk with trackers.', activities: ['Forest hike','Gorilla & elephant tracking'], meals: ['Breakfast','Lunch','Dinner'], accommodation: 'Tented camp' },
+      { day: 7, title: 'Exploring Bais & Wildlife', description: 'Full-day safari visiting mineral licks frequented by wildlife; camera-trap checks.', activities: ['Wildlife viewing','Camera-trap inspection'], meals: ['Breakfast','Lunch','Dinner'], accommodation: 'Tented camp' },
+      { day: 8, title: 'Cultural Exchange with Baka', description: 'Spend the day with Baka Pygmies: learn hunting songs, medicinal plants & net-making.', activities: ['Cultural immersion','Ethnobotany'], meals: ['Breakfast','Lunch','Dinner'], accommodation: 'Tented camp' },
+      { day: 9, title: 'Return Cruise (Day 1)', description: 'Break camp, begin downstream voyage, overnight in riverside village.', activities: ['River navigation'], meals: ['Breakfast','Lunch','Dinner'], accommodation: 'Tented camp / village homestay' },
+      { day: 10, title: 'Return Cruise (Day 2)', description: 'Continue to Mouloundou, arrive late afternoon, motel overnight.', activities: [], meals: ['Breakfast','Lunch','Dinner'], accommodation: 'Mouloundou motel' },
+      { day: 11, title: 'Mouloundou → Batouri', description: 'Road journey north-west, overnight Batouri motel.', activities: [], meals: ['Breakfast','Lunch','Dinner'], accommodation: 'Batouri motel' },
+      { day: 12, title: 'Batouri → Yaoundé', description: 'Final drive back to Yaoundé; tour ends.', activities: [], meals: ['Breakfast','Lunch'], accommodation: 'N/A' }
+    ],
+    activities: [
+      'Motorised canoe expedition on Ngoko River',
+      'Deep-forest wildlife observation',
+      'Gorilla & elephant tracking',
+      'Birdwatching (250+ species)',
+      'Camping in pristine rainforest',
+      'Cultural immersion with Baka Pygmies'
+    ],
+    images: ['/images/trips/nki-hero.jpg']
+  }
 ];
 
 async function seed(): Promise<void> {
