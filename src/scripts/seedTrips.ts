@@ -2589,7 +2589,12 @@ const TRIPS: TripSeed[] = [
       'Rain-forest camping',
       'Over-land cultural travel'
     ],
-    images: ['/images/trips/lobeke-hero.jpg']
+    images: ['/images/trips/lobeke-hero.jpg',
+              '/images/trips/lobeke-1.jpg',
+              '/images/trips/lobeke-2.jpg',
+              '/images/trips/lobeke-3.jpg',
+              '/images/trips/lobeke-4.jpg',
+    ]
   },
   {
     title: 'Nki National Park Wilderness Expedition',
