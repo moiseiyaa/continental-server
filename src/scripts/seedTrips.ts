@@ -2663,13 +2663,94 @@ images: [
       'Camping in pristine rainforest',
       'Cultural immersion with Baka Pygmies'
     ],
-    images: ['/images/trips/nki-hero.jpg',
-      '/images/trips/nki-1.jpg',
-    '/images/trips/nki-2.jpg',
-  '/images/trips/nki-3.jpg',
-'/images/trips/nki-4.jpg']
-  }
-];
+    images: [
+      '/images/trips/chimpanzee-uganda-hero.jpg',
+      '/images/trips/chimpanzee-uganda-1.jpg',
+      '/images/trips/chimpanzee-uganda-2.jpg',
+      '/images/trips/chimpanzee-uganda-4.jpg',
+      '/images/trips/chimpanzee-trek-3.jpg'
+    ],
+    highlights: [
+      'Visit a world-class primate sanctuary and rehabilitation center',
+      'Observe gorillas, chimpanzees, and various monkey species in naturalistic enclosures',
+      'Learn about primate conservation efforts in Cameroon',
+      'Walk through beautiful forest trails with knowledgeable guides',
+      'Support ethical wildlife tourism and conservation initiatives',
+      'Perfect for families and wildlife enthusiasts of all ages',
+      'Convenient day trip from Yaoundé'
+    ],
+    included: [
+      'English/French speaking guide',
+      'Private transportation from Yaoundé',
+      'Park entrance and conservation fees',
+      'Guided walking tour of the sanctuary',
+      'Bottled water',
+      'All government taxes and service charges'
+    ],
+    excluded: [
+      'Travel and medical insurance',
+      'Tips for guides and staff',
+      'Additional meals and drinks',
+      'Personal expenses and souvenirs',
+      'Any items not mentioned as included'
+    ],
+    price: 240,
+    pricePer: 'person',
+    priceDetails: {
+      adults: 240,
+      children: 120,
+      childrenAgeRange: '2-6 years',
+      infants: 'Free (under 2 years)'
+    },
+    difficulty: 'Easy',
+    maxGroupSize: 12,
+    minGroupSize: 1,
+    rating: 4.8,
+    numReviews: 42,
+    startDate: new Date(),
+    endDate: new Date(),
+    categories: ['Wildlife', 'Nature', 'Family Friendly', 'Day Trip', 'Conservation'],
+    itinerary: [
+      {
+        day: 1,
+        title: 'Mefou National Park Day Trip',
+        description: 'Your day begins with a morning pick-up from your hotel in Yaoundé for the scenic 1-hour drive to Mefou National Park. Upon arrival, you\'ll receive a briefing about the sanctuary and its conservation work. Spend the morning exploring the park with your guide, visiting different enclosures housing various primate species. Learn about their rescue stories, behavior, and the challenges of primate conservation in Cameroon. Enjoy a picnic lunch in the forest before continuing your exploration in the afternoon. The day concludes with a visit to the education center before returning to Yaoundé in the late afternoon.',
+        activities: [
+          'Guided tour of primate enclosures',
+          'Conservation education session',
+          'Nature walk through the forest',
+          'Photography opportunities',
+          'Visit to the education center'
+        ],
+        meals: ['Picnic lunch']
+      }
+    ],
+    additionalInfo: {
+      whatToBring: [
+        'Comfortable walking shoes',
+        'Light, breathable clothing',
+        'Rain jacket (in rainy season)',
+        'Sunscreen and hat',
+        'Camera (no flash photography)',
+        'Binoculars',
+        'Insect repellent'
+      ],
+      goodToKnow: [
+        'Children of all ages are welcome',
+        'The park is wheelchair accessible',
+        'Minimum age for certain activities may apply',
+        'Vegetarian meal options available with advance notice',
+        'The sanctuary operates rain or shine',
+        'All visits directly support conservation efforts'
+      ]
+    },
+    insurance: 'Travel insurance is highly recommended for all participants. While the sanctuary has safety measures in place, visitors should ensure they have appropriate medical and travel insurance coverage.'
+  },
+  {
+    title: 'Nki National Park Wilderness Expedition',
+    description: 'A true wilderness adventure in one of the most remote and untouched rainforests of Central Africa, home to forest elephants, western lowland gorillas, and a stunning array of biodiversity.',
+    destination: 'Cameroon',
+    duration: 8,
 
 async function seed(): Promise<void> {
   const client = await pool.connect();
