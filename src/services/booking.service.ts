@@ -4,6 +4,7 @@ import { IBooking, IBookingInput } from '../interfaces/booking.interface';
 // Ensure bookings table exists
 const ensureBookingsTable = async () => {
   try {
+    // Create table if it doesn't exist (includes all latest columns)
     await pool.query(`
       CREATE TABLE IF NOT EXISTS bookings (
         id SERIAL PRIMARY KEY,
@@ -24,6 +25,25 @@ const ensureBookingsTable = async () => {
         updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
       )
     `);
+
+    // Back-fill: add new columns to legacy tables if they are missing (safe idempotent)
+    const addColumnIfMissing = async (col: string, type: string) => {
+      const existsRes = await pool.query(
+        `SELECT EXISTS (
+          SELECT 1 FROM information_schema.columns
+          WHERE table_name = 'bookings' AND column_name = $1
+        ) AS exists`,
+        [col],
+      );
+      if (!existsRes.rows[0].exists) {
+        await pool.query(`ALTER TABLE bookings ADD COLUMN ${col} ${type};`);
+        console.log(`Added missing column bookings.${col}`);
+      }
+    };
+    await addColumnIfMissing('add_accommodation', 'BOOLEAN NOT NULL DEFAULT false');
+    await addColumnIfMissing('reservation_expiry', 'TIMESTAMP NULL');
+    await addColumnIfMissing('payment_id', 'VARCHAR(255) NULL');
+
     // Ensure index for idempotency checks exists
     await pool.query(`
       CREATE INDEX IF NOT EXISTS idx_bookings_idempotency ON bookings(user_id, trip_id, idempotency_key);
