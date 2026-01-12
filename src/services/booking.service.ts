@@ -82,9 +82,13 @@ export const createBooking = async (data: IBookingInput, userId: string): Promis
     // 2. Insert into bookings
     const totalPrice = parseFloat(trip.price) * numberOfParticipants;
 
-    // Normalize and validate paymentStatus
+    // Normalize and validate paymentStatus (allowed: PENDING, PAID, REFUNDED)
     const rawPaymentStatus = (data as any).paymentStatus || 'PENDING';
-    const paymentStatus = String(rawPaymentStatus).trim().toUpperCase(); // DB CHECK expects uppercase
+    let paymentStatus = String(rawPaymentStatus).trim().toUpperCase();
+    const allowedStatuses = ['PENDING', 'PAID', 'REFUNDED'];
+    if (!allowedStatuses.includes(paymentStatus)) {
+      paymentStatus = 'PENDING';
+    }
 
     // support new columns: add_accommodation, reservation_expiry, payment_id
     const insertRes = await client.query(
