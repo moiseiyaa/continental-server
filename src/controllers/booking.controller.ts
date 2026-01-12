@@ -171,7 +171,7 @@ export const finalizeBookingHandler = async (req: any, res: Response, next: Next
       addAccommodation: bookingPrefs.addAccommodation || false,
       status,
       reservationExpiry,
-      paymentStatus: 'PENDING',
+      paymentStatus: (bookingPrefs.paymentStatus || 'PENDING').toUpperCase(),
       idempotencyKey: idempotencyKey || null,
     };
 
