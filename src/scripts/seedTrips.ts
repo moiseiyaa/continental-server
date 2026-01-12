@@ -299,10 +299,10 @@ const TRIPS: TripSeed[] = [
       'Scenic hikes'
     ],
     images: [
-      '/images/trips/mount-manengouba-1.jpeg',
-      '/images/trips/mount-manengouba-2.jpeg',
-      '/images/trips/mount-manegouba-3.jpeg',
-      '/images/trips/mount-manegouba-4.jpg'
+      '/images/trips/mount-manengouba-1.jpg',
+      '/images/trips/mount-manengouba-2.jpg',
+      '/images/trips/mount-manengouba-3.jpg',
+      '/images/trips/mount-manengouba-4.jpg'
     ],
     included: [
       'Round-trip transportation from Douala',
@@ -380,8 +380,8 @@ const TRIPS: TripSeed[] = [
     ],
     images: [
       '/images/trips/jebale-island-1.webp',
-      '/images/trips/jebale-island-2.jpeg',
-      '/images/trips/jebale-island-3.jpeg'
+      '/images/trips/jebale-island-2.jpg',
+      '/images/trips/jebale-island-3.jpg'
     ],
     included: [
       'Round-trip canoe transfer to Jébalé Island',
@@ -446,7 +446,7 @@ const TRIPS: TripSeed[] = [
       'Wildlife spotting'
     ],
     images: [
-      '/images/trips/manoka-island-1.jpeg',
+      '/images/trips/manoka-island-1.jpg',
       '/images/trips/manoka-island-2.jpg',
       '/images/trips/manoka-island-3.jpg'
     ],
@@ -511,9 +511,9 @@ const TRIPS: TripSeed[] = [
       'Boat tour'
     ],
     images: [
-      '/images/trips/douala-edea-1.jpeg',
-      '/images/trips/douala-edea-2.jpeg',
-      '/images/trips/douala-edea-3.jpeg'
+      '/images/trips/douala-edea-1.jpg',
+      '/images/trips/douala-edea-2.jpg',
+      '/images/trips/douala-edea-3.jpg'
     ],
     included: [
       'Transport by motorized canoe round trip from Douala',
@@ -632,9 +632,9 @@ const TRIPS: TripSeed[] = [
       'Cultural and historical site visits'
     ],
     images: [
-      '/images/trips/douala-edea-1.jpeg',
-      '/images/trips/douala-edea-2.jpeg',
-      '/images/trips/douala-edea-3.jpeg'
+      '/images/trips/douala-edea-1.jpg',
+      '/images/trips/douala-edea-2.jpg',
+      '/images/trips/douala-edea-3.jpg'
     ],
     included: [
       'Transport by motorized canoe round trip from Douala',
