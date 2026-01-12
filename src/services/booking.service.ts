@@ -84,7 +84,7 @@ export const createBooking = async (data: IBookingInput, userId: string): Promis
 
     // Normalize and validate paymentStatus
     const rawPaymentStatus = (data as any).paymentStatus || 'PENDING';
-    const paymentStatus = String(rawPaymentStatus).toUpperCase(); // DB CHECK expects uppercase
+    const paymentStatus = String(rawPaymentStatus).trim().toUpperCase(); // DB CHECK expects uppercase
 
     // support new columns: add_accommodation, reservation_expiry, payment_id
     const insertRes = await client.query(
