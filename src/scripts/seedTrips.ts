@@ -299,10 +299,10 @@ const TRIPS: TripSeed[] = [
       'Scenic hikes'
     ],
     images: [
-      '/images/trips/mount-manengouba-1.jpg',
-      '/images/trips/mount-manengouba-2.jpg',
-      '/images/trips/mount-manengouba-3.jpg',
-      '/images/trips/mount-manengouba-4.jpg'
+      '/images/trips/mount-manengouba-1.jpeg',
+      '/images/trips/mount-manengouba-2.jpeg',
+      '/images/trips/mount-manegouba-3.jpeg',
+      '/images/trips/mount-manegouba-4.jpg'
     ],
     included: [
       'Round-trip transportation from Douala',
@@ -379,9 +379,9 @@ const TRIPS: TripSeed[] = [
       'Nature observation'
     ],
     images: [
-      '/images/trips/jebale-island-1.jpg',
-      '/images/trips/jebale-island-2.jpg',
-      '/images/trips/jebale-island-3.jpg'
+      '/images/trips/jebale-island-1.webp',
+      '/images/trips/jebale-island-2.jpeg',
+      '/images/trips/jebale-island-3.jpeg'
     ],
     included: [
       'Round-trip canoe transfer to Jébalé Island',
@@ -446,7 +446,7 @@ const TRIPS: TripSeed[] = [
       'Wildlife spotting'
     ],
     images: [
-      '/images/trips/manoka-island-1.jpg',
+      '/images/trips/manoka-island-1.jpeg',
       '/images/trips/manoka-island-2.jpg',
       '/images/trips/manoka-island-3.jpg'
     ],
@@ -511,9 +511,9 @@ const TRIPS: TripSeed[] = [
       'Boat tour'
     ],
     images: [
-      '/images/trips/douala-edea-1.jpg',
-      '/images/trips/douala-edea-2.jpg',
-      '/images/trips/douala-edea-3.jpg'
+      '/images/trips/douala-edea-1.jpeg',
+      '/images/trips/douala-edea-2.jpeg',
+      '/images/trips/douala-edea-3.jpeg'
     ],
     included: [
       'Transport by motorized canoe round trip from Douala',
@@ -632,9 +632,9 @@ const TRIPS: TripSeed[] = [
       'Cultural and historical site visits'
     ],
     images: [
-      '/images/trips/douala-edea-1.jpg',
-      '/images/trips/douala-edea-2.jpg',
-      '/images/trips/douala-edea-3.jpg'
+      '/images/trips/douala-edea-1.jpeg',
+      '/images/trips/douala-edea-2.jpeg',
+      '/images/trips/douala-edea-3.jpeg'
     ],
     included: [
       'Transport by motorized canoe round trip from Douala',
@@ -841,7 +841,7 @@ const TRIPS: TripSeed[] = [
       '/images/trips/gorilla-chimpanzee-nyungwe.jpg',
       '/images/trips/gorilla-chimpanzee-akagera.jpg',
       '/images/trips/gorilla-chimpanzee-volcanoes.jpg',
-      '/images/trips/gorilla-chimpanzee-lakekivu.jpg'
+      '/images/trips/gorilla-chimpanzee-lakekivu.jpeg'
     ],
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
@@ -1077,7 +1077,7 @@ const TRIPS: TripSeed[] = [
     ],
     images: [
       '/images/trips/cultural-gorilla-trek-hero.jpg',
-      '/images/trips/cultural-gorilla-trek-1.jpg',
+      '/images/trips/cultural-gorilla-trek-1.webp',
       '/images/trips/cultural-gorilla-trek-2.jpg',
       '/images/trips/cultural-gorilla-trek-3.jpg',
       '/images/trips/cultural-gorilla-trek-4.jpg'
@@ -1147,7 +1147,7 @@ const TRIPS: TripSeed[] = [
     images: [
       '/images/trips/gorilla-golden-monkey-hero.jpg',
       '/images/trips/gorilla-golden-monkey-1.jpg',
-      '/images/trips/gorilla-golden-monkey-2.jpg',
+      '/images/trips/gorilla-golden-monkey-2.jpeg',
       '/images/trips/gorilla-golden-monkey-3.jpg',
       '/images/trips/gorilla-golden-monkey-4.jpg'
     ],
@@ -2544,7 +2544,7 @@ const TRIPS: TripSeed[] = [
     images: [
       '/images/trips/gorilla-golden-monkey-hero.jpg',
       '/images/trips/gorilla-golden-monkey-1.jpg',
-      '/images/trips/gorilla-golden-monkey-2.jpg',
+      '/images/trips/gorilla-golden-monkey-2.jpeg',
       '/images/trips/gorilla-golden-monkey-3.jpg',
       '/images/trips/gorilla-golden-monkey-4.jpg'
     ],
