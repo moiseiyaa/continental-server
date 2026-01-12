@@ -1846,7 +1846,8 @@ const TRIPS: TripSeed[] = [
     ],
      images: [
       '/images/trips/monkey-safari-hero.jpg',
-      '/images/trips/monkey-safari-2.jpg',
+      '/images/trips/monkey-safari-1.jpg',
+      '/images/trips/monkey-safari-2.webp',
       '/images/trips/monkey-safari-3.jpg',
       '/images/trips/monkey-safari-4.jpg'
     ],
