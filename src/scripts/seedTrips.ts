@@ -1844,6 +1844,12 @@ const TRIPS: TripSeed[] = [
       'Professional guide services',
       '5-star luxury service'
     ],
+     images: [
+      '/images/trips/monkey-safari-hero.jpg',
+      '/images/trips/monkey-safari-2.jpg',
+      '/images/trips/monkey-safari-3.jpg',
+      '/images/trips/monkey-safari-4.jpg'
+    ],
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
   {
