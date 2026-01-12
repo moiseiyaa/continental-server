@@ -208,7 +208,7 @@ const TRIPS: TripSeed[] = [
     ],
     images: [
       '/images/trips/douala-city-1.webp',
-      '/images/trips/douala-city-2.jpg',
+      '/images/trips/douala-city-2.webp',
       '/images/trips/douala-city-3.jpg',
       '/images/trips/douala-city-4.jpg'
     ],
