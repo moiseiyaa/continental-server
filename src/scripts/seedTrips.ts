@@ -1424,6 +1424,13 @@ const TRIPS: TripSeed[] = [
       'Wildlife photography',
       'Professional guide services'
     ],
+    images: [
+      '/images/trips/akagera-gorilla-combo-hero.jpg',
+      '/images/trips/akagera-gorilla-combo-1.jpg',
+      '/images/trips/akagera-gorilla-combo-2.jpg',
+      '/images/trips/akagera-gorilla-combo-3.jpg',
+      '/images/trips/akagera-gorilla-combo-4.jpg'
+    ],
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
   {
@@ -2608,7 +2615,11 @@ const TRIPS: TripSeed[] = [
       'Camping in pristine rainforest',
       'Cultural immersion with Baka Pygmies'
     ],
-    images: ['/images/trips/nki-hero.jpg']
+    images: ['/images/trips/nki-hero.jpg',
+      '/images/trips/nki-1.jpg',
+    '/images/trips/nki-2.jpg',
+  '/images/trips/nki-3.jpg',
+'/images/trips/nki-4.jpg']
   }
 ];
 
