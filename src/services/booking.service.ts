@@ -43,6 +43,7 @@ const ensureBookingsTable = async () => {
     await addColumnIfMissing('add_accommodation', 'BOOLEAN NOT NULL DEFAULT false');
     await addColumnIfMissing('reservation_expiry', 'TIMESTAMP NULL');
     await addColumnIfMissing('payment_id', 'VARCHAR(255) NULL');
+    await addColumnIfMissing('idempotency_key', 'VARCHAR(255) NULL');
 
     // Ensure index for idempotency checks exists
     await pool.query(`
