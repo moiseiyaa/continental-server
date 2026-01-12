@@ -1924,6 +1924,15 @@ images: [
       'Professional guide services',
       'Gorilla family observation'
     ],
+
+     images: [
+      '/images/trips/gorilla-express-hero.jpg',
+      '/images/trips/gorilla-express-1.jpg',
+      '/images/trips/gorilla-express-2.jpg',
+      '/images/trips/gorilla-express-3.jpg',
+      '/images/trips/gorilla-express-4.jpg'
+    ],
+
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
   {
@@ -1988,6 +1997,14 @@ images: [
       'Wildlife photography',
       'Professional guide services',
       'Time-saving express option'
+    ],
+
+    images: [
+      '/images/trips/gorilla-fly-hero.jpg',
+      '/images/trips/gorilla-fly-1.jpg',
+      '/images/trips/gorilla-fly-2.jpg',
+      '/images/trips/gorilla-fly-3.jpg',
+      '/images/trips/gorilla-fly-4.jpg'
     ],
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
@@ -2182,6 +2199,15 @@ images: [
       'Professional guide services',
       'Big Five encounters'
     ],
+
+    images: [
+      '/images/trips/chimpanzee-uganda-hero.jpg',
+      '/images/trips/chimpanzee-uganda-1.jpg',
+      '/images/trips/chimpanzee-uganda-2.jpg',
+      '/images/trips/chimpanzee-uganda.jpg',
+      '/images/trips/chimpanzee-uganda-4.jpg'
+    ],
+
     insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
   {
