@@ -2798,6 +2798,108 @@ images: [
     'What to pack: Neutral-colored clothing, hat, sunscreen, binoculars, camera'
   ]
 },
+{
+  title: '3 Days 2 Nights: Serengeti Safari From Zanzibar & Balloon Safari',
+  description: 'Join our 3-day safari to Serengeti National Park which starts from Zanzibar, filled with unforgettable wildlife encounters and a unique hot air balloon experience. Discover the park\'s diverse ecosystems, observe the Big Five, and enjoy both day and night explorations in this breathtaking African wilderness.',
+  destination: 'Serengeti National Park, Tanzania',
+  duration: 3,
+  price: 2792,
+  max_participants: 12,
+  current_participants: 0,
+  status: 'active',
+  product_code: 'sgt3d2n',
+  highlights: [
+    'Hot air balloon safari over Serengeti plains',
+    'Game drives to spot the Big Five',
+    'Night game drive experience',
+    'Scenic flight from Zanzibar to Serengeti',
+    'Bush breakfast in the wild',
+    'Professional guide and open-top safari vehicle'
+  ],
+  included: [
+    'Roundtrip flight from Zanzibar to Serengeti',
+    '2 nights at Africa Safari Serengeti Ikoma (full board)',
+    'All park fees and conservation charges',
+    'Hot air balloon safari experience',
+    'Professional English-speaking guide',
+    'All game drives in 4x4 safari vehicle',
+    'Bush breakfast and picnic lunches',
+    'Night game drive experience',
+    'All airport/hotel transfers',
+    'Bottled water during game drives',
+    'All government taxes and VAT'
+  ],
+  notIncluded: [
+    'International flights to Zanzibar',
+    'Travel insurance',
+    'Alcoholic and soft drinks',
+    'Tips for guides and camp staff',
+    'Items of personal nature',
+    'Visa fees'
+  ],
+  difficulty: 'moderate',
+  rating: 5.0,
+  numReviews: 0,
+  detailed_itinerary: [
+    {
+      day: 1,
+      title: 'Arrival & Start Serengeti Safari',
+      description: 'Morning flight from Zanzibar to Serengeti followed by afternoon game drive and night safari.',
+      activities: [
+        'Hotel pick-up in Zanzibar',
+        'Flight to Seronera airstrip',
+        'Afternoon game drive',
+        'Night safari',
+        'Wildlife photography'
+      ],
+      meals: ['Lunch', 'Dinner'],
+      accommodation: 'Africa Safari Serengeti Ikoma'
+    },
+    {
+      day: 2,
+      title: 'Full-Day Serengeti Safari',
+      description: 'Full day exploring different areas of Serengeti with game drives and wildlife viewing.',
+      activities: [
+        'Morning game drive',
+        'Coffee/tea break in the bush',
+        'Picnic lunch in the wild',
+        'Afternoon game drive',
+        'Wildlife spotting',
+        'Scenic landscape viewing'
+      ],
+      meals: ['Breakfast', 'Lunch', 'Dinner'],
+      accommodation: 'Africa Safari Serengeti Ikoma'
+    },
+    {
+      day: 3,
+      title: 'Hot Air Balloon Safari & Return',
+      description: 'Early morning balloon safari followed by bush breakfast and return flight to Zanzibar.',
+      activities: [
+        'Hot air balloon safari at sunrise',
+        'Bush breakfast',
+        'Transfer to Seronera airstrip',
+        'Flight back to Zanzibar',
+        'Hotel drop-off'
+      ],
+      meals: ['Breakfast'],
+      accommodation: 'N/A'
+    }
+  ],
+  images: [
+    '/images/trips/serengeti-1.jpg',
+    '/images/trips/serengeti-2.jpg',
+    '/images/trips/serengeti-3.jpg',
+    '/images/trips/serengeti-balloon.jpg'
+  ],
+  important_notes: [
+    'Minimum age for balloon safari is 7 years',
+    'Single supplement available on request',
+    'Child rate: $1225 (ages 3-9 years)',
+    'Flight schedule subject to change based on weather conditions',
+    'What to pack: Neutral-colored clothing, hat, sunscreen, binoculars, camera',
+    'Travel insurance is highly recommended'
+  ]
+  },
   {
     title: 'Zanzibar 4 Days 3 Nights Package',
     description: 'Stress-free 4-day holiday in Zanzibar with hand-picked hotel, transfers and curated excursions: Stone Town tour, Spice farm visit, Prison Island and Mnemba dolphin & snorkeling trip.',
