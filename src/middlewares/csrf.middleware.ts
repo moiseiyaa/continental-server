@@ -18,7 +18,7 @@ export const generateCsrfToken = (req: any, res: Response, next: NextFunction) =
     res.cookie(CSRF_COOKIE_NAME, req.csrfToken, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax',
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     });
   }
