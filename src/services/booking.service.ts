@@ -45,6 +45,26 @@ const ensureBookingsTable = async () => {
     await addColumnIfMissing('payment_id', 'VARCHAR(255) NULL');
     await addColumnIfMissing('idempotency_key', 'VARCHAR(255) NULL');
 
+    // Ensure CHECK constraint on payment_status is up-to-date
+    await pool.query(`
+      DO $$
+      BEGIN
+        -- Drop old definition if it exists (case-insensitive list or wrong values)
+        IF EXISTS (
+          SELECT 1 FROM pg_constraint
+          WHERE conname = 'bookings_payment_status_check'
+            AND conrelid = 'bookings'::regclass
+        ) THEN
+          ALTER TABLE bookings DROP CONSTRAINT bookings_payment_status_check;
+        END IF;
+
+        -- Re-add with canonical allowed values (idempotent)
+        ALTER TABLE bookings
+          ADD CONSTRAINT IF NOT EXISTS bookings_payment_status_check
+          CHECK (payment_status IN ('PENDING','PAID','REFUNDED'));
+      END$$;
+    `);
+
     // Ensure index for idempotency checks exists
     await pool.query(`
       CREATE INDEX IF NOT EXISTS idx_bookings_idempotency ON bookings(user_id, trip_id, idempotency_key);
