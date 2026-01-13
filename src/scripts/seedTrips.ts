@@ -3044,7 +3044,65 @@ seed();
       reviews: 0,
       status: 'active',
           },
-  ];
+,
+  {
+    title: 'Walking and Trekking Trip on Mount Mbaminkon',
+    description: 'If you are the kind of person who loves adrenaline, vegetation and biodiversity rolled into one trek, Mount Mbaminkon on the outskirts of Yaoundé is a must-visit. Enjoy breathtaking views, rich flora and fauna, and panoramic vistas of the city and surrounding villages all in a single day.',
+    destination: 'Yaoundé, Cameroon',
+    duration: 1,
+    price: 120,
+    max_participants: 20,
+    current_participants: 0,
+    status: 'active',
+    product_code: 'mtmba',
+    highlights: [
+      'Scenic trek through lush vegetation',
+      'Chance to spot butterflies, birds, monkeys and other wildlife',
+      'Panoramic views of Yaoundé from the summit',
+      'Visit authentic Fan Béti architecture in Mbaminkon village',
+      'Celebrate with local palm wine after the hike'
+    ],
+    included: [
+      'Professional local trekking guide',
+      'Round-trip transportation from Yaoundé',
+      'Village access and mountain fees',
+      'Bottled water',
+      'Palm wine tasting',
+      'All government taxes and service charges'
+    ],
+    notIncluded: [
+      'Meals and snacks',
+      'Travel and medical insurance',
+      'Personal trekking equipment',
+      'Tips and gratuities',
+      'Items not listed as included'
+    ],
+    difficulty: 'moderate',
+    rating: 4.7,
+    numReviews: 8,
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Mount Mbaminkon Trek',
+        description: 'Morning pick-up in Yaoundé and drive (≈25 km) to Mbaminkon village. Meet the local guide and begin the ascent, learning about the flora and fauna en-route. At the summit, enjoy sweeping views of Yaoundé and nearby villages before descending. Toast with fresh palm wine in the village before returning to the city.',
+        activities: [
+          'Drive from Yaoundé to Mbaminkon village',
+          'Guided trek to the summit (3-4 hrs round-trip)',
+          'Wildlife and bird spotting',
+          'Summit photography session',
+          'Palm wine celebration with locals'
+        ],
+        meals: [],
+        accommodation: 'N/A'
+      }
+    ],
+    images: [
+      '/images/trips/mbaminkon-1.jpg',
+      '/images/trips/mbaminkon-2.jpg',
+      '/images/trips/mbaminkon-3.jpg'
+    ]
+  }
+];
 
   for (const trip of trips) {
     await Trip.updateOne({ title: trip.title }, trip, { upsert: true, strict:false });
