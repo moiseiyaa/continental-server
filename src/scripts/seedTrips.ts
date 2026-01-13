@@ -1940,10 +1940,10 @@ images: [
     ],
 
      images: [
-      '/images/trips/gorilla-express-hero.jpg',
+      '/images/trips/gorilla-express-hero.wrbp',
       '/images/trips/gorilla-express-1.jpg',
       '/images/trips/gorilla-express-2.jpg',
-      '/images/trips/gorilla-express-3.jpg',
+      '/images/trips/gorilla-express-3.webp',
       '/images/trips/gorilla-express-4.jpg'
     ],
 
