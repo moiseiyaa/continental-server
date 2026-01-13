@@ -16,7 +16,7 @@ export const generateCsrfToken = (req: any, res: Response, next: NextFunction) =
     
     // Set secure, httpOnly cookie
     res.cookie(CSRF_COOKIE_NAME, req.csrfToken, {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'lax',
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
