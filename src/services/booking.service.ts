@@ -112,7 +112,7 @@ export const createBooking = async (data: IBookingInput, userId: string): Promis
 
     // Normalize and validate paymentStatus (allowed: PENDING, PAID, REFUNDED)
     const rawPaymentStatus = (data as any).paymentStatus || 'PENDING';
-    let paymentStatus = String(rawPaymentStatus).trim().toUpperCase();
+    let paymentStatus = String(rawPaymentStatus).trim().toUpperCase().replace(/\s+/g, '');
     const allowedPaymentStatuses = ['PENDING', 'PAID', 'REFUNDED'];
     if (!allowedPaymentStatuses.includes(paymentStatus)) {
       paymentStatus = 'PENDING';
