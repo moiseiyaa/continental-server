@@ -3335,8 +3335,121 @@ images: [
     'Best time to visit: July-October for the Great Migration',
     'Children under 3 years stay free of charge'
   ],
+},
+  {
+  title: '4 Days Amboseli, Tsavo West & Tsavo East Safari to Mombasa',
+  description: 'Experience the best of Kenya\'s wildlife on this 4-day safari adventure, featuring Amboseli National Park with its iconic views of Mount Kilimanjaro, and the diverse landscapes of Tsavo West and Tsavo East National Parks. Conclude your journey with a transfer to the beautiful beaches of Mombasa, Diani, Watamu, or Malindi.',
+  destination: 'Amboseli, Tsavo West, Tsavo East, Kenya',
+  duration: 4,
+  price: 1630, // Starting price per person (based on 4 pax)
+  max_participants: 6,
+  current_participants: 0,
+  status: 'active',
+  product_code: 'ke4d',
+  highlights: [
+    'Breathtaking views of Mount Kilimanjaro in Amboseli',
+    'Visit to Mzima Springs in Tsavo West',
+    'Game drives in three different national parks',
+    'Chance to see the Big Five',
+    'Scenic landscapes and diverse wildlife',
+    'Comfortable lodge accommodations'
+  ],
+  included: [
+    '3 nights accommodation in standard lodges',
+    'All park entrance fees',
+    'Transport in 4x4 safari vehicle with pop-up roof',
+    'Professional English-speaking driver/guide',
+    'All game drives as per itinerary',
+    'Meals as specified (full board during safari)',
+    'Bottled drinking water during game drives',
+    'Return transfers to Mombasa/Diani/Watamu/Malindi'
+  ],
+  notIncluded: [
+    'International flights',
+    'Travel insurance',
+    'Visa fees',
+    'Alcoholic and soft drinks',
+    'Tips for guides and lodge staff',
+    'Personal expenses and souvenirs',
+    'Optional activities not mentioned',
+    'Accommodation in Mombasa/Diani/Watamu/Malindi'
+  ],
+  difficulty: 'moderate',
+  rating: 4.7,
+  numReviews: 0,
+  detailed_itinerary: [
+    {
+      day: 1,
+      title: 'Nairobi to Amboseli National Park',
+      description: 'Scenic drive to Amboseli with afternoon game drives and views of Mount Kilimanjaro.',
+      activities: [
+        'Pickup from Nairobi hotel/airport',
+        'Scenic drive to Amboseli (4.5 hours)',
+        'Afternoon game drive',
+        'Wildlife viewing with Kilimanjaro backdrop'
+      ],
+      meals: ['Lunch', 'Dinner'],
+      accommodation: 'Manjaro Tented Camp'
+    },
+    {
+      day: 2,
+      title: 'Amboseli to Tsavo West',
+      description: 'Morning game drive in Amboseli followed by transfer to Tsavo West National Park.',
+      activities: [
+        'Early morning game drive',
+        'Breakfast at the lodge',
+        'Transfer to Tsavo West (3 hours)',
+        'Visit Mzima Springs',
+        'Afternoon game drive'
+      ],
+      meals: ['Breakfast', 'Lunch', 'Dinner'],
+      accommodation: 'Ngulia Safari Lodge'
+    },
+    {
+      day: 3,
+      title: 'Tsavo West to Tsavo East',
+      description: 'Game drives in Tsavo West before heading to Tsavo East National Park.',
+      activities: [
+        'Early morning game drive',
+        'Breakfast at the lodge',
+        'Transfer to Tsavo East (3 hours)',
+        'Afternoon game drive',
+        'Visit to Aruba Dam'
+      ],
+      meals: ['Breakfast', 'Lunch', 'Dinner'],
+      accommodation: 'Voi Safari Lodge'
+    },
+    {
+      day: 4,
+      title: 'Tsavo East to Mombasa/Diani/Watamu',
+      description: 'Morning game drive followed by transfer to the coast.',
+      activities: [
+        'Early morning game drive',
+        'Breakfast at the lodge',
+        'Transfer to Mombasa (4 hours)',
+        'Drop-off at your coastal hotel'
+      ],
+      meals: ['Breakfast'],
+      accommodation: 'N/A'
+    }
+  ],
+  images: [
+    '/images/trips/amboseli-kilimanjaro.jpg',
+    '/images/trips/tsavo-west.jpg',
+    '/images/trips/tsavo-east.jpg',
+    '/images/trips/kenya-safari.jpg'
+  ],
+  important_notes: [
+    'Pricing per person: 1 pax $1,630 | 2 pax $1,100 | 3 pax $930 | 4+ pax $830',
+    'Single supplement available on request',
+    'What to pack: Neutral-colored clothing, hat, sunscreen, binoculars, camera',
+    'Vaccinations recommended: Yellow Fever, Malaria prophylaxis',
+    'Best time to visit: June-October and January-February for best wildlife viewing',
+    'Children rates available on request'
+  ],
 
   }
+  
 ];
 
 async function seed(): Promise<void> {
