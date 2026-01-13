@@ -82,21 +82,31 @@ export const createBooking = async (data: IBookingInput, userId: string): Promis
     // 2. Insert into bookings
     const totalPrice = parseFloat(trip.price) * numberOfParticipants;
 
+    // Normalize and validate status (allowed: PENDING, RESERVED, CONFIRMED, CANCELLED)
+    const rawStatus = (data as any).status || 'PENDING';
+    let statusValue = String(rawStatus).trim().toUpperCase();
+    const allowedBookingStatuses = ['PENDING', 'RESERVED', 'CONFIRMED', 'CANCELLED'];
+    if (!allowedBookingStatuses.includes(statusValue)) {
+      statusValue = 'PENDING';
+    }
+
     // Normalize and validate paymentStatus (allowed: PENDING, PAID, REFUNDED)
     const rawPaymentStatus = (data as any).paymentStatus || 'PENDING';
     let paymentStatus = String(rawPaymentStatus).trim().toUpperCase();
-    const allowedStatuses = ['PENDING', 'PAID', 'REFUNDED'];
-    if (!allowedStatuses.includes(paymentStatus)) {
+    const allowedPaymentStatuses = ['PENDING', 'PAID', 'REFUNDED'];
+    if (!allowedPaymentStatuses.includes(paymentStatus)) {
       paymentStatus = 'PENDING';
     }
 
+    console.log('DEBUG status value used:', statusValue);
     console.log('DEBUG paymentStatus value used:', paymentStatus);
+
     // support new columns: add_accommodation, reservation_expiry, payment_id
     const insertRes = await client.query(
       `INSERT INTO bookings (user_id, trip_id, number_of_participants, total_price, status, payment_status, booking_date, special_requests, participant_details, add_accommodation, reservation_expiry, payment_id, idempotency_key)
       VALUES ($1, $2, $3, $4, $5, $6, NOW(), $7, $8, $9, $10, $11, $12)
       RETURNING *`,
-      [userId, tripId, numberOfParticipants, totalPrice, (data as any).status || 'PENDING', paymentStatus, (data as any).specialRequests || null, JSON.stringify((data as any).participantDetails || []), (data as any).addAccommodation || false, (data as any).reservationExpiry || null, (data as any).paymentId || null, (data as any).idempotencyKey || null]
+      [userId, tripId, numberOfParticipants, totalPrice, statusValue, paymentStatus, (data as any).specialRequests || null, JSON.stringify((data as any).participantDetails || []), (data as any).addAccommodation || false, (data as any).reservationExpiry || null, (data as any).paymentId || null, (data as any).idempotencyKey || null]
     );
     // 3. Update trip participant count
     await client.query(
