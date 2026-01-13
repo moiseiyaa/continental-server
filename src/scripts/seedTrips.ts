@@ -3233,7 +3233,110 @@ images: [
     'What to pack: Swimwear, sunscreen, hat, comfortable walking shoes, camera',
     'Vaccinations recommended: Yellow Fever, Malaria prophylaxis'
   ]
-}
+},
+{
+  title: '3 Days Masai Mara Safari',
+  description: 'Experience the magic of Masai Mara with this 3-day safari adventure. Witness the Big Five, enjoy breathtaking landscapes, and immerse yourself in Maasai culture. This budget-friendly package includes comfortable accommodation, game drives, and all park fees.',
+  destination: 'Masai Mara, Kenya',
+  duration: 3,
+  price: 1100, // Starting price per person
+  max_participants: 12,
+  current_participants: 0,
+  status: 'active',
+  product_code: 'mmr3d',
+  highlights: [
+    'Game drives in search of the Big Five',
+    'Visit to a traditional Maasai village',
+    'Scenic views of the Great Rift Valley',
+    'Professional safari guide',
+    'Comfortable tented camp accommodation',
+    'All-inclusive package'
+  ],
+  included: [
+    '2 nights accommodation at Enchoro Wildlife Camp',
+    'All park entrance fees',
+    'Transport in 4x4 safari vehicle',
+    'Professional English-speaking driver/guide',
+    'All game drives as per itinerary',
+    'Meals as specified (3 meals per day)',
+    'Bottled drinking water during game drives',
+    'Maasai village visit'
+  ],
+  notIncluded: [
+    'International flights',
+    'Travel insurance',
+    'Visa fees',
+    'Alcoholic and soft drinks',
+    'Tips for guides and camp staff',
+    'Personal expenses and souvenirs',
+    'Optional activities not mentioned',
+    'Extra game drives (additional cost)'
+  ],
+  difficulty: 'moderate',
+  rating: 4.8,
+  numReviews: 0,
+  detailed_itinerary: [
+    {
+      day: 1,
+      title: 'Nairobi to Masai Mara',
+      description: 'Scenic drive from Nairobi to Masai Mara with a stop at the Great Rift Valley viewpoint.',
+      activities: [
+        'Pickup from Nairobi hotel',
+        'Scenic drive through Great Rift Valley',
+        'Photo stop at Rift Valley viewpoint',
+        'Lunch at the camp',
+        'Evening Maasai village visit',
+        'Cultural activities with Maasai community'
+      ],
+      meals: ['Lunch', 'Dinner'],
+      accommodation: 'Enchoro Wildlife Camp'
+    },
+    {
+      day: 2,
+      title: 'Full Day in Masai Mara',
+      description: 'Full day game drive in search of the Big Five and other wildlife.',
+      activities: [
+        'Early morning game drive',
+        'Picnic lunch at Mara River',
+        'Afternoon game drive',
+        'Wildlife photography',
+        'Sundowner drinks (own expense)'
+      ],
+      meals: ['Breakfast', 'Lunch', 'Dinner'],
+      accommodation: 'Enchoro Wildlife Camp'
+    },
+    {
+      day: 3,
+      title: 'Masai Mara to Nairobi',
+      description: 'Morning game drive followed by return journey to Nairobi.',
+      activities: [
+        'Early morning game drive',
+        'Breakfast at the camp',
+        'Return journey to Nairobi',
+        'Picnic lunch en route',
+        'Drop-off at your hotel'
+      ],
+      meals: ['Breakfast', 'Lunch'],
+      accommodation: 'N/A'
+    }
+  ],
+  images: [
+    '/images/trips/masaimara-1.jpg',
+    '/images/trips/masaimara-2.jpg',
+    '/images/trips/masaimara-3.jpg',
+    '/images/trips/masaimara-4.jpg'
+  ],
+  important_notes: [
+    'Starting price is $1100 per person (based on double occupancy)',
+    'Single supplement available on request',
+    'Optional evening game drive available at extra cost: $100 (Jan-Jun) or $200 (Jul-Dec)',
+    'What to pack: Neutral-colored clothing, hat, sunscreen, binoculars, camera',
+    'Vaccinations recommended: Yellow Fever, Malaria prophylaxis',
+    'Best time to visit: July-October for the Great Migration',
+    'Children under 3 years stay free of charge'
+  ],
+
+  }
 ];
 
 async function seed(): Promise<void> {
