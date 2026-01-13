@@ -90,6 +90,7 @@ export const createBooking = async (data: IBookingInput, userId: string): Promis
       paymentStatus = 'PENDING';
     }
 
+    console.log('DEBUG paymentStatus value used:', paymentStatus);
     // support new columns: add_accommodation, reservation_expiry, payment_id
     const insertRes = await client.query(
       `INSERT INTO bookings (user_id, trip_id, number_of_participants, total_price, status, payment_status, booking_date, special_requests, participant_details, add_accommodation, reservation_expiry, payment_id, idempotency_key)
