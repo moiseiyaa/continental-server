@@ -2700,34 +2700,88 @@ images: [
       'Guided walking tour of the sanctuary',
       'Bottled water',
       'All government taxes and service charges'
-    ],
+    ]
   },
   {
-    title: 'Nki National Park Wilderness Expedition',
-    description: 'A true wilderness adventure in one of the most remote and untouched rainforests of Central Africa, home to forest elephants, western lowland gorillas, and a stunning array of biodiversity.',
-    destination: 'Cameroon',
-    duration: 8,
-    price: 0,
-    max_participants: 12,
+    title: 'Zanzibar 4 Days 3 Nights Package',
+    description: 'Stress-free 4-day holiday in Zanzibar with hand-picked hotel, transfers and curated excursions: Stone Town tour, Spice farm visit, Prison Island and Mnemba dolphin & snorkeling trip.',
+    destination: 'Zanzibar, Tanzania',
+    duration: 4,
+    price: 890,
+    max_participants: 30,
     current_participants: 0,
     status: 'active',
+    product_code: 'znz4d3n',
+    highlights: [
+      'Stone Town UNESCO heritage tour',
+      'Spice farm tasting experience',
+      'Giant Aldabra tortoises at Prison Island',
+      'Swim with dolphins near Mnemba Atoll',
+      'Snorkeling vibrant coral reefs',
+      'Daily breakfast & dinner included'
+    ],
+    included: [
+      '3-night accommodation (3★/4★/5★ option)',
+      'Return airport ↔ hotel transfers',
+      'Breakfast & dinner daily',
+      'Transport during listed excursions',
+      'Entrance fees to sites & parks',
+      'Professional English-speaking driver/guide',
+      'Drinking water on excursions',
+      'Local SIM card',
+      'All taxes and VAT'
+    ],
+    notIncluded: [
+      'International flights',
+      'Travel & medical insurance',
+      'Lunches and extra drinks',
+      'Personal expenses & souvenirs',
+      'Tips and gratuities'
+    ],
+    difficulty: 'easy',
+    rating: 4.8,
+    numReviews: 24,
     detailed_itinerary: [
       {
         day: 1,
-        title: 'Arrival and Transfer to Park',
-        description: 'Arrive at the park entrance, meet your guides, and transfer to the base camp.',
-        activities: ['Arrival', 'Orientation', 'Camp setup'],
-        meals: ['Lunch', 'Dinner'],
-        accommodation: 'Base Camp'
+        title: 'Arrival – Transfer to Hotel',
+        description: 'Meet & greet at Zanzibar airport. Private transfer to beach hotel. Rest of the day at leisure.',
+        activities: ['Private airport transfer', 'Hotel check-in & relaxation'],
+        meals: ['Dinner'],
+        accommodation: 'Beach resort in Zanzibar'
+      },
+      {
+        day: 2,
+        title: 'Stone Town • Spice Farm • Prison Island',
+        description: 'Guided Stone Town walking tour, aromatic Spice Farm visit with local lunch, and boat trip to Prison Island to see giant tortoises.',
+        activities: ['Stone Town heritage tour', 'Spice tasting & lunch', 'Boat to Prison Island', 'Giant tortoise sanctuary'],
+        meals: ['Breakfast', 'Dinner'],
+        accommodation: 'Beach resort in Zanzibar'
+      },
+      {
+        day: 3,
+        title: 'Mnemba Dolphins & Snorkeling (Half-Day)',
+        description: 'Morning speed-boat to Mnemba Atoll: swim with dolphins responsibly and snorkel colourful reefs. Afternoon free.',
+        activities: ['Dolphin spotting', 'Snorkeling gear provided', 'Relax on Matemwe beach'],
+        meals: ['Breakfast', 'Dinner'],
+        accommodation: 'Beach resort in Zanzibar'
+      },
+      {
+        day: 4,
+        title: 'Departure – Transfer to Airport',
+        description: 'Check-out and private transfer to the airport according to flight schedule.',
+        activities: ['Hotel check-out', 'Private airport transfer'],
+        meals: ['Breakfast'],
+        accommodation: 'N/A'
       }
     ],
-    activities: ['Wildlife viewing', 'Jungle trekking', 'Bird watching', 'Camping'],
     images: [
-      '/images/trips/rainforest-1.jpg',
-      '/images/trips/rainforest-2.jpg',
-      '/images/trips/rainforest-3.jpg'
-    ],
-    insurance: 'Travel insurance is mandatory for this expedition. Please ensure your insurance covers medical evacuation from remote areas.'
+      '/images/trips/zanzibar-hero.jpg',
+      '/images/trips/zanzibar-1.jpg',
+      '/images/trips/zanzibar-2.jpg',
+      '/images/trips/zanzibar-3.jpg',
+      '/images'
+    ]
   }
 ];
 
