@@ -3093,7 +3093,147 @@ images: [
       '/images/trips/zanzibar-3.jpg',
       '/images'
     ]
-  }
+  },
+  {
+  title: 'Zanzibar 6 Days 5 Nights Package',
+  description: 'Experience the best of Zanzibar with this comprehensive 6-day package including beach relaxation, cultural tours, and water activities. Enjoy the perfect blend of adventure and relaxation with visits to Stone Town, Spice Farms, Prison Island, and Mnemba Atoll for dolphin swimming and snorkeling.',
+  destination: 'Zanzibar, Tanzania',
+  duration: 6,
+  price: 1250, // Base price, can be adjusted based on hotel category
+  max_participants: 20,
+  current_participants: 0,
+  status: 'active',
+  product_code: 'znz6d5n',
+  highlights: [
+    'Full-day Safari Blue trip with snorkeling',
+    'Stone Town UNESCO heritage tour',
+    'Spice farm tasting experience',
+    'Giant Aldabra tortoises at Prison Island',
+    'Dolphin swimming near Mnemba Atoll',
+    'Relaxing beach days'
+  ],
+  included: [
+    '5-night accommodation (3★/4★/5★ option)',
+    'Return airport transfers',
+    'Breakfast & dinner daily',
+    'Full-day Safari Blue trip with lunch',
+    'Stone Town & Spice Farm tour with lunch',
+    'Prison Island visit',
+    'Half-day dolphin & snorkeling trip',
+    'Transport during all excursions',
+    'Entrance fees to all sites & parks',
+    'Professional English-speaking guide',
+    'Drinking water during excursions',
+    'Local SIM card',
+    'All government taxes and VAT'
+  ],
+  notIncluded: [
+    'International flights',
+    'Travel insurance',
+    'Lunch on non-excursion days',
+    'Alcoholic and soft drinks',
+    'Tips for guides and hotel staff',
+    'Personal expenses and souvenirs',
+    'Optional activities not mentioned'
+  ],
+  difficulty: 'easy',
+  rating: 4.9,
+  numReviews: 0,
+  detailed_itinerary: [
+    {
+      day: 1,
+      title: 'Arrival in Zanzibar',
+      description: 'Welcome to Zanzibar! Upon arrival at Zanzibar International Airport, you\'ll be greeted by our driver and transferred to your hotel.',
+      activities: [
+        'Airport meet and greet',
+        'Hotel transfer',
+        'Check-in and orientation',
+        'Beach relaxation'
+      ],
+      meals: ['Dinner'],
+      accommodation: 'Beachfront hotel in Zanzibar'
+    },
+    {
+      day: 2,
+      title: 'Full-Day Safari Blue Trip',
+      description: 'Full day sailing and snorkeling adventure in the beautiful waters of Menai Bay.',
+      activities: [
+        'Sailing to Kwale Island',
+        'Snorkeling in coral reefs',
+        'Sandbank relaxation',
+        'Seafood barbecue lunch',
+        'Exotic fruit tasting'
+      ],
+      meals: ['Breakfast', 'Lunch', 'Dinner'],
+      accommodation: 'Beachfront hotel in Zanzibar'
+    },
+    {
+      day: 3,
+      title: 'Free Day at Leisure',
+      description: 'Enjoy a relaxing day at your own pace. Optional activities can be arranged.',
+      activities: [
+        'Beach relaxation',
+        'Hotel facilities',
+        'Optional activities (at extra cost)'
+      ],
+      meals: ['Breakfast', 'Dinner'],
+      accommodation: 'Beachfront hotel in Zanzibar'
+    },
+    {
+      day: 4,
+      title: 'Stone Town & Spice Farm Tour',
+      description: 'Explore the cultural heart of Zanzibar with visits to Stone Town and a spice farm.',
+      activities: [
+        'Stone Town walking tour',
+        'Spice farm visit and tasting',
+        'Traditional Swahili lunch',
+        'Prison Island visit',
+        'Giant tortoise encounter'
+      ],
+      meals: ['Breakfast', 'Lunch', 'Dinner'],
+      accommodation: 'Beachfront hotel in Zanzibar'
+    },
+    {
+      day: 5,
+      title: 'Mnemba Dolphin & Snorkeling',
+      description: 'Half-day excursion to swim with dolphins and explore coral reefs.',
+      activities: [
+        'Dolphin swimming',
+        'Snorkeling at Mnemba Atoll',
+        'Marine life viewing',
+        'Beach time at Matemwe'
+      ],
+      meals: ['Breakfast', 'Dinner'],
+      accommodation: 'Beachfront hotel in Zanzibar'
+    },
+    {
+      day: 6,
+      title: 'Departure',
+      description: 'Transfer to Zanzibar International Airport for your departure flight.',
+      activities: [
+        'Hotel check-out',
+        'Airport transfer',
+        'Flight check-in'
+      ],
+      meals: ['Breakfast'],
+      accommodation: 'N/A'
+    }
+  ],
+  images: [
+    '/images/trips/zanzibar-beach-1.jpg',
+    '/images/trips/zanzibar-stone-town.jpg',
+    '/images/trips/zanzibar-dolphins.jpg',
+    '/images/trips/zanzibar-spice-farm.jpg'
+  ],
+  important_notes: [
+    'Hotel categories available: 3★, 4★, or 5★ (prices vary)',
+    'Child rates available (ages 3-9)',
+    'Single supplement available on request',
+    'Minimum age for dolphin swimming: 6 years',
+    'What to pack: Swimwear, sunscreen, hat, comfortable walking shoes, camera',
+    'Vaccinations recommended: Yellow Fever, Malaria prophylaxis'
+  ]
+}
 ];
 
 async function seed(): Promise<void> {
