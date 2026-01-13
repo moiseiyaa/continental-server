@@ -2901,6 +2901,119 @@ images: [
   ]
   },
   {
+  title: '4 Days Tanzania Safari: Ngorongoro Crater & Tarangire National Park',
+  description: 'Experience the best of Tanzania\'s wildlife with our 4-day safari. Explore Tarangire National Park, famous for its massive elephant herds and ancient baobab trees, and the Ngorongoro Crater, a UNESCO World Heritage Site teeming with diverse wildlife including the rare black rhino. This private safari offers a flexible, personalized experience with your own safari vehicle and local English-speaking guide.',
+  destination: 'Tarangire & Ngorongoro, Tanzania',
+  duration: 4,
+  price: 1550, // Price per adult for 2 people
+  max_participants: 6,
+  current_participants: 0,
+  status: 'active',
+  product_code: 'tza4d',
+  highlights: [
+    'Game drives in Tarangire National Park',
+    'Full-day exploration of Ngorongoro Crater',
+    'Chance to see the Big Five',
+    'Private safari vehicle with pop-up roof',
+    'Professional English-speaking guide',
+    'Stunning landscapes and photography opportunities'
+  ],
+  included: [
+    'All park fees and conservation charges',
+    '3 nights accommodation (lodge or camping option)',
+    'Professional English-speaking safari guide',
+    'Private 4x4 safari vehicle with pop-up roof',
+    'All game drives and activities as per itinerary',
+    'Meals as specified (full board during safari)',
+    'Bottled water during game drives',
+    'All government taxes and VAT',
+    'Airport transfers (Kilimanjaro International Airport)'
+  ],
+  notIncluded: [
+    'International flights',
+    'Tanzania visa fees',
+    'Travel insurance',
+    'Alcoholic and soft drinks',
+    'Tips for guides and camp staff',
+    'Personal expenses and souvenirs',
+    'Optional activities not mentioned in the itinerary'
+  ],
+  difficulty: 'moderate',
+  rating: 5.0,
+  numReviews: 0,
+  detailed_itinerary: [
+    {
+      day: 1,
+      title: 'Arrival in Tanzania',
+      description: 'Welcome to Tanzania! Upon arrival at Kilimanjaro International Airport, you\'ll be greeted by your private guide and transferred to your hotel in Arusha.',
+      activities: [
+        'Airport meet and greet',
+        'Transfer to Arusha',
+        'Hotel check-in',
+        'Safari briefing'
+      ],
+      meals: ['Dinner'],
+      accommodation: 'Lodge in Arusha'
+    },
+    {
+      day: 2,
+      title: 'Tarangire National Park',
+      description: 'Full day exploring Tarangire National Park, famous for its massive elephant herds and ancient baobab trees.',
+      activities: [
+        'Morning game drive',
+        'Wildlife viewing at Tarangire River',
+        'Picnic lunch in the bush',
+        'Afternoon game drive',
+        'Sunset photography'
+      ],
+      meals: ['Breakfast', 'Lunch', 'Dinner'],
+      accommodation: 'Lodge/Camp near Tarangire'
+    },
+    {
+      day: 3,
+      title: 'Ngorongoro Crater',
+      description: 'Full day exploring the Ngorongoro Crater, a UNESCO World Heritage Site and one of Africa\'s greatest wildlife havens.',
+      activities: [
+        'Descend into the crater',
+        'Game drive in search of the Big Five',
+        'Picnic lunch at the crater floor',
+        'Wildlife photography',
+        'Ascend from the crater in the evening'
+      ],
+      meals: ['Breakfast', 'Lunch', 'Dinner'],
+      accommodation: 'Lodge/Camp near Ngorongoro'
+    },
+    {
+      day: 4,
+      title: 'Departure',
+      description: 'Transfer back to Kilimanjaro International Airport for your departure flight or extend your trip to Zanzibar.',
+      activities: [
+        'Breakfast at the lodge',
+        'Scenic drive back to Arusha',
+        'Optional cultural tour (time permitting)',
+        'Airport transfer'
+      ],
+      meals: ['Breakfast'],
+      accommodation: 'N/A'
+    }
+  ],
+  images: [
+    '/images/trips/ngorongoro-1.jpg',
+    '/images/trips/tarangire-1.jpg',
+    '/images/trips/ngorongoro-2.jpg',
+    '/images/trips/tarangire-2.jpg'
+  ],
+  important_notes: [
+    'Child rate: $1010 (ages 3-9 years)',
+    'Camping option available at $1150 per adult, $930 per child',
+    'Single supplement available on request',
+    'Group discounts available for 3+ people',
+    'Extend your trip with a Zanzibar beach getaway',
+    'Travel insurance is highly recommended',
+    'Vaccinations recommended: Yellow Fever, Malaria prophylaxis'
+  ]
+  },
+  {
     title: 'Zanzibar 4 Days 3 Nights Package',
     description: 'Stress-free 4-day holiday in Zanzibar with hand-picked hotel, transfers and curated excursions: Stone Town tour, Spice farm visit, Prison Island and Mnemba dolphin & snorkeling trip.',
     destination: 'Zanzibar, Tanzania',
