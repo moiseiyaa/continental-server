@@ -3636,6 +3636,93 @@ images: [
       'Recommended tipping: USD 5–10 per person per day',
       'Passport must be valid for at least 6 months'
     ]
+  },
+  {
+    title: '2 Days White Desert Tour from Cairo: Camping & 4×4 Safari Adventure',
+    description: 'Immerse yourself in the wild beauty of Egypt’s Western Desert on this 2-day adventure from Cairo. Explore the volcanic Black Desert, the sparkling Crystal Mountain and the surreal chalk formations of the White Desert before camping under a canopy of stars.',
+    destination: 'Bahariya Oasis & White Desert, Egypt',
+    duration: 2,
+    price: 320, // Starting price per person
+    max_participants: 12,
+    current_participants: 0,
+    status: 'active',
+    product_code: 'egywd2d',
+    highlights: [
+      'Volcanic landscapes of the Black Desert',
+      'Crystal Mountain quartz ridge',
+      'Sandboarding in Valley of Agabat',
+      'Chalk formations of the White Desert',
+      'Authentic Bedouin camping & stargazing',
+      'Sunrise photo session in the desert'
+    ],
+    included: [
+      'Hotel pick-up & drop-off in Cairo',
+      'Transfers Cairo–Bahariya–Cairo by private A/C vehicle',
+      'Desert transfers by private 4×4 land cruiser',
+      '1 night Bedouin desert camping (tents & gear)',
+      'Meals: Day 1 – Lunch & Dinner; Day 2 – Breakfast',
+      'Bottled water & juice',
+      'English-speaking desert guide/driver',
+      'All taxes & service charges'
+    ],
+    notIncluded: [
+      'Extras not mentioned in the itinerary',
+      'Entrance fees to sites (if applicable)',
+      'Tipping',
+      'Personal expenses & souvenirs',
+      'Travel insurance'
+    ],
+    difficulty: 'easy',
+    rating: 4.8,
+    numReviews: 0,
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Cairo ➔ Bahariya Oasis ➔ White Desert',
+        description: 'Morning drive from Cairo, lunch in Al-Bawaiti then 4×4 safari through Black Desert, Crystal Mountain & Agabat Valley before setting up camp.',
+        activities: [
+          '07:00 pick-up from Cairo hotel',
+          '5-hour drive to Bahariya Oasis',
+          'Lunch in Al-Bawaiti',
+          '4×4 exploration of Black Desert',
+          'Swim at El Haize spring',
+          'Visit Crystal Mountain',
+          'Sandboarding on dunes',
+          'Old White Desert formations (Mushroom, Sphinx, Chicken)',
+          'Bedouin dinner & campfire',
+          'Overnight camping under stars'
+        ],
+        meals: ['Lunch', 'Dinner'],
+        accommodation: 'White Desert Camp'
+      },
+      {
+        day: 2,
+        title: 'White Desert ➔ Bahariya ➔ Cairo',
+        description: 'Sunrise, breakfast, more formations then return to Cairo.',
+        activities: [
+          'Sunrise photo session',
+          'Ice Cream Valley & Palm Tree formations',
+          'Dip in hot spring',
+          'Return 4×4 to Bahariya',
+          'Drive back to Cairo – drop-off around 17:00'
+        ],
+        meals: ['Breakfast'],
+        accommodation: 'N/A'
+      }
+    ],
+    images: [
+      '/images/trips/white-desert-1.jpg',
+      '/images/trips/white-desert-2.jpg',
+      '/images/trips/black-desert.jpg',
+      '/images/trips/crystal-mountain.jpg'
+    ],
+    important_notes: [
+      'Bring warm clothing: desert nights can be cold',
+      'Wear closed shoes suitable for sand',
+      'Bathrooms are basic while camping',
+      'Itinerary may vary due to desert conditions',
+      'Vegetarian meals available on request'
+    ]
   }
 ];
 
