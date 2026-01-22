@@ -3448,8 +3448,195 @@ images: [
     'Children rates available on request'
   ],
 
+  },
+  {
+    title: 'Egypt Budget Travel Packages | 10 Days Egypt Tour',
+    description: 'See the best of Egypt without breaking the bank with this carefully curated 10-day budget itinerary covering Cairo, Aswan, Luxor and Hurghada. Experience ancient wonders, vibrant culture and Red Sea relaxation—all at an unbeatable price.',
+    destination: 'Cairo, Aswan, Luxor, Hurghada, Egypt',
+    duration: 10,
+    price: 950, // Starting price per person (double occupancy)
+    max_participants: 16,
+    current_participants: 0,
+    status: 'active',
+    product_code: 'egy10d',
+    highlights: [
+      'Giza Pyramids & Sphinx',
+      'Grand Egyptian Museum',
+      'Citadel of Saladin & Coptic Cairo',
+      'Philae Temple & High Dam',
+      'Abu Simbel Temples',
+      'Valley of the Kings & Karnak Temple',
+      'Relaxing Red Sea stay in Hurghada',
+      'Budget-friendly overnight trains & buses'
+    ],
+    included: [
+      'Pickup & drop-off at Cairo International Airport',
+      '3 nights in Cairo B&B hotel',
+      '1 night in Aswan B&B hotel',
+      '2 nights in Luxor B&B hotel',
+      '2 nights in Hurghada B&B hotel',
+      'VIP seating train tickets (Cairo–Aswan & Luxor–Cairo)',
+      'Train ticket Aswan–Luxor',
+      'Tourist bus tickets (Luxor–Hurghada & Hurghada–Cairo)',
+      'Private sightseeing tours with English-speaking Egyptologist guide',
+      'All transfers by air-conditioned vehicle',
+      'Bottled water during excursions',
+      'All taxes & service charge'
+    ],
+    notIncluded: [
+      'International airfare',
+      'Entry visa to Egypt',
+      'Entrance fees to sightseeing locations',
+      'Optional tours (e.g., Hot Air Balloon, Giftun Island snorkeling)',
+      'Tipping',
+      'Travel insurance',
+      'Meals not specified',
+      'Personal expenses & souvenirs'
+    ],
+    difficulty: 'easy',
+    rating: 4.9,
+    numReviews: 0,
+    detailed_itinerary: [
+      {
+        day: 1,
+        title: 'Arrival in Cairo',
+        description: 'Meet-and-greet at Cairo Airport and transfer to hotel.',
+        activities: [
+          'Airport assistance & transfer',
+          'Hotel check-in',
+          'Free time to rest'
+        ],
+        meals: [],
+        accommodation: 'Cairo B&B Hotel'
+      },
+      {
+        day: 2,
+        title: 'Giza Pyramids & Grand Egyptian Museum',
+        description: 'Full-day tour of the pyramids, Sphinx and the new Grand Egyptian Museum.',
+        activities: [
+          'Great Pyramid of Cheops',
+          'Pyramids of Chephren & Mycerinus',
+          'Sphinx photo stop',
+          'Guided visit to Grand Egyptian Museum'
+        ],
+        meals: ['Breakfast'],
+        accommodation: 'Cairo B&B Hotel'
+      },
+      {
+        day: 3,
+        title: 'Cairo City Tour & Overnight Train',
+        description: 'Citadel, Coptic Cairo and Khan El Khalili bazaar before boarding overnight train to Aswan.',
+        activities: [
+          'Citadel of Saladin & Mohamed Ali Mosque',
+          'Hanging Church & Ben Ezra Synagogue',
+          'Shopping at Khan El Khalili',
+          'Night VIP seating train to Aswan'
+        ],
+        meals: ['Breakfast'],
+        accommodation: 'Overnight Train (seated)'
+      },
+      {
+        day: 4,
+        title: 'Aswan – Philae Temple & High Dam',
+        description: 'Morning arrival and sightseeing in Aswan.',
+        activities: [
+          'Hotel check-in',
+          'Motorboat ride to Philae Temple',
+          'Visit High Dam'
+        ],
+        meals: ['Breakfast'],
+        accommodation: 'Aswan B&B Hotel'
+      },
+      {
+        day: 5,
+        title: 'Abu Simbel & Train to Luxor',
+        description: 'Early excursion to Abu Simbel then afternoon train to Luxor.',
+        activities: [
+          '3-hour drive to Abu Simbel',
+          'Guided visit to Great & Small Temples',
+          'Return to Aswan',
+          'Train to Luxor'
+        ],
+        meals: ['Breakfast'],
+        accommodation: 'Luxor B&B Hotel'
+      },
+      {
+        day: 6,
+        title: 'Luxor East & West Banks',
+        description: 'Comprehensive tour of Luxor’s highlights.',
+        activities: [
+          'Valley of the Kings',
+          'Temple of Queen Hatshepsut',
+          'Colossi of Memnon',
+          'Karnak Temple',
+          'Luxor Temple'
+        ],
+        meals: ['Breakfast'],
+        accommodation: 'Luxor B&B Hotel'
+      },
+      {
+        day: 7,
+        title: 'Bus to Hurghada',
+        description: 'Morning bus ride to Hurghada and beach leisure.',
+        activities: [
+          'Transfer to bus station',
+          'AC tourist bus to Hurghada',
+          'Hotel check-in',
+          'Free afternoon at the beach'
+        ],
+        meals: ['Breakfast'],
+        accommodation: 'Hurghada B&B Hotel'
+      },
+      {
+        day: 8,
+        title: 'Free Day in Hurghada',
+        description: 'Enjoy the Red Sea resort or optional snorkeling/desert safari.',
+        activities: [
+          'Relax on the beach',
+          'Optional Giftun Island snorkeling',
+          'Optional Bedouin desert safari'
+        ],
+        meals: ['Breakfast'],
+        accommodation: 'Hurghada B&B Hotel'
+      },
+      {
+        day: 9,
+        title: 'Return to Cairo',
+        description: 'Bus back to Cairo, evening at leisure.',
+        activities: [
+          'Bus Hurghada–Cairo',
+          'Hotel check-in',
+          'Optional Nile dinner cruise'
+        ],
+        meals: ['Breakfast'],
+        accommodation: 'Cairo B&B Hotel'
+      },
+      {
+        day: 10,
+        title: 'Departure from Cairo',
+        description: 'Transfer to Cairo International Airport for departure.',
+        activities: [
+          'Hotel checkout',
+          'Airport transfer'
+        ],
+        meals: ['Breakfast'],
+        accommodation: 'N/A'
+      }
+    ],
+    images: [
+      '/images/trips/egypt-pyramids.jpg',
+      '/images/trips/abu-simbel.jpg',
+      '/images/trips/luxor-temple.jpg',
+      '/images/trips/hurghada-beach.jpg'
+    ],
+    important_notes: [
+      'Budget package: accommodation in clean B&B hotels',
+      'Entrance fees are NOT included – pay only for the sites you choose',
+      'Optional upgrades/tours available on request',
+      'Recommended tipping: USD 5–10 per person per day',
+      'Passport must be valid for at least 6 months'
+    ]
   }
-  
 ];
 
 async function seed(): Promise<void> {
