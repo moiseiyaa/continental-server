@@ -184,7 +184,7 @@ export const getAllTrips = async (
       COUNT(*) OVER() as total_count
     FROM trips 
     ${whereSQL} 
-    ORDER BY created_at DESC 
+    ORDER BY COALESCE(updated_at, created_at) DESC 
     LIMIT $${params.length + 1} 
     OFFSET $${params.length + 2}
   `;
@@ -270,7 +270,7 @@ export const searchTrips = async (searchTerm: string): Promise<Trip[]> => {
        OR destination ILIKE $1 
        OR description ILIKE $1
      )
-     ORDER BY created_at DESC
+     ORDER BY COALESCE(updated_at, created_at) DESC
      LIMIT 50`,
     [`%${searchTerm}%`]
   );
@@ -283,7 +283,7 @@ export const getTripsByDestination = async (destination: string): Promise<Trip[]
     `SELECT * FROM trips 
      WHERE status = 'active' 
      AND destination ILIKE $1 
-     ORDER BY created_at DESC`,
+     ORDER BY COALESCE(updated_at, created_at) DESC`,
     [`%${destination}%`]
   );
   return rows.map(mapTrip);
