@@ -147,7 +147,7 @@ export const getAllTrips = async (
   const offset = (page - 1) * limit;
 
   // Build dynamic WHERE clause
-  const clauses: string[] = ["status = 'active'"];
+  const clauses: string[] = ["(status = 'active' OR status IS NULL)"];
   const params: any[] = [];
 
   if (filters.destination) {
@@ -296,7 +296,7 @@ export const updateTripParticipants = async (tripId: string, increment: number):
      SET current_participants = current_participants + $1,
          updated_at = CURRENT_TIMESTAMP
      WHERE id = $2 
-     AND status = 'active'
+     AND (status = 'active' OR status IS NULL)
      RETURNING *`,
     [increment, tripId]
   );
