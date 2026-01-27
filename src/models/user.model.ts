@@ -1,127 +1,142 @@
-import { model, Schema, Document } from 'mongoose';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
-import { IUser } from '../interfaces/user.interface';
+import { pool } from '../config/db';
 import { JWT_SECRET, JWT_EXPIRE } from '../config/env';
 
-const UserSchema = new Schema<IUser>(
-  {
-    name: {
-      type: String,
-      required: [true, 'Please add a name'],
-      trim: true,
-      maxlength: [50, 'Name cannot be more than 50 characters'],
-    },
-    email: {
-      type: String,
-      required: [true, 'Please add an email'],
-      unique: true,
-      match: [
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/,
-        'Please add a valid email',
-      ],
-    },
-    password: {
-      type: String,
-      required: [true, 'Please add a password'],
-      minlength: 6,
-      select: false,
-    },
-    role: {
-      type: String,
-      enum: ['user', 'admin'],
-      default: 'user',
-    },
-    resetPasswordToken: String,
-    resetPasswordExpire: Date,
-    emailVerified: {
-      type: Boolean,
-      default: false,
-    },
-    emailVerificationToken: String,
-    emailVerificationExpire: Date,
-    refreshTokenHash: String,
-    refreshTokenExpire: Date,
-    isActive: {
-      type: Boolean,
-      default: true,
-    },
-  },
-  { timestamps: true }
-);
+interface UserRow {
+  id: number;
+  name: string;
+  email: string;
+  password: string;
+  role: string;
+  reset_password_token?: string;
+  reset_password_expire?: Date;
+  email_verified: boolean;
+  email_verification_token?: string;
+  email_verification_expire?: Date;
+  refresh_token_hash?: string;
+  refresh_token_expire?: Date;
+  is_active: boolean;
+  created_at: Date;
+  updated_at: Date;
+}
 
-// Import the UserRole from interfaces
-import { UserRole } from '../interfaces/user.interface';
+export default class User {
+  id?: number;
+  name!: string;
+  email!: string;
+  password!: string;
+  role!: string;
+  emailVerified!: boolean;
+  refreshTokenHash?: string;
+  refreshTokenExpire?: Date;
 
-// Sign JWT and return
-UserSchema.methods.getSignedJwtToken = function (): string {
-  const payload = { id: this._id.toString() };
-  const secret = JWT_SECRET;
-  const options: jwt.SignOptions = {
-  expiresIn: JWT_EXPIRE as jwt.SignOptions['expiresIn'],
-};
-  return jwt.sign(payload, secret, options);
-};
+  constructor(row?: Partial<UserRow>) {
+    if (row) {
+      this.id = row.id;
+      this.name = row.name || '';
+      this.email = row.email || '';
+      this.password = row.password || '';
+      this.role = row.role || 'user';
+      this.emailVerified = row.email_verified || false;
+      this.refreshTokenHash = row.refresh_token_hash;
+      this.refreshTokenExpire = row.refresh_token_expire;
+      // Store snake_case fields for save method
+      (this as any).reset_password_token = row.reset_password_token;
+      (this as any).reset_password_expire = row.reset_password_expire;
+      (this as any).email_verification_token = row.email_verification_token;
+      (this as any).email_verification_expire = row.email_verification_expire;
+    }
+  }
 
-// Match user entered password to hashed password in database
-UserSchema.methods.matchPassword = async function (
-  enteredPassword: string
-): Promise<boolean> {
-  return await bcrypt.compare(enteredPassword, this.password);
-};
+  // ---------- Static helpers (simulate Mongoose static methods) ----------
+  static async findOne(filter: { email?: string }): Promise<User | null> {
+    if (!filter.email) return null;
+    const { rows } = await pool.query('SELECT * FROM users WHERE email = $1 LIMIT 1', [filter.email]);
+    return rows.length ? new User(rows[0] as UserRow) : null;
+  }
 
-// Generate and hash password token
-UserSchema.methods.getResetPasswordToken = function (): string {
-  // Generate token
-  const resetToken = crypto.randomBytes(20).toString('hex');
+  static async findById(id: string): Promise<User | null> {
+    const { rows } = await pool.query('SELECT * FROM users WHERE id = $1 LIMIT 1', [id]);
+    return rows.length ? new User(rows[0] as UserRow) : null;
+  }
 
-  // Hash token and set to resetPasswordToken field
-  this.resetPasswordToken = crypto
-    .createHash('sha256')
-    .update(resetToken)
-    .digest('hex');
+  static async create(data: Partial<UserRow>): Promise<User> {
+    const { name, email, password, role = 'user' } = data;
+    const { rows } = await pool.query(
+      'INSERT INTO users (name, email, password, role, email_verified) VALUES ($1,$2,$3,$4,false) RETURNING *',
+      [name, email, password, role]
+    );
+    return new User(rows[0] as UserRow);
+  }
 
-  // Set expire (10 minutes)
-  this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+  // ---------- Instance helpers (simulate schema methods) ----------
+  get _id() {
+    return this.id?.toString();
+  }
 
-  return resetToken;
-};
+  getSignedJwtToken(): string {
+    return jwt.sign({ id: this.id?.toString() }, JWT_SECRET as string, { expiresIn: JWT_EXPIRE } as any);
+  }
 
-// Generate email verification token
-UserSchema.methods.getEmailVerificationToken = function (): string {
-  // Generate token
-  const verificationToken = crypto.randomBytes(20).toString('hex');
+  async getRefreshToken(): Promise<string> {
+    // Generate refresh token (longer expiry - 7 days)
+    const refreshToken = jwt.sign(
+      { id: this.id?.toString(), type: 'refresh' },
+      JWT_SECRET as string,
+      { expiresIn: '7d' } as any
+    );
 
-  // Hash token and set to emailVerificationToken field
-  this.emailVerificationToken = crypto
-    .createHash('sha256')
-    .update(verificationToken)
-    .digest('hex');
+    // Hash the refresh token and store it
+    const refreshTokenHash = crypto
+      .createHash('sha256')
+      .update(refreshToken)
+      .digest('hex');
 
-  // Set expire (24 hours)
-  this.emailVerificationExpire = Date.now() + 24 * 60 * 60 * 1000;
+    // Set expiration (7 days from now)
+    const refreshTokenExpire = new Date(Date.now() + 7 * 24 * 60 * 60 * 1000);
 
-  return verificationToken;
-};
+    // Update user instance
+    this.refreshTokenHash = refreshTokenHash;
+    this.refreshTokenExpire = refreshTokenExpire;
 
-// Generate refresh token (longer expiry for token rotation)
-UserSchema.methods.getRefreshToken = function (): string {
-  const refreshToken = jwt.sign(
-    { id: this._id.toString(), type: 'refresh' },
-    JWT_SECRET,
-    { expiresIn: '30d' }
-  );
+    // Save to database
+    await this.save();
 
-  // Hash and store in database for validation
-  this.refreshTokenHash = crypto
-    .createHash('sha256')
-    .update(refreshToken)
-    .digest('hex');
+    return refreshToken;
+  }
 
-  this.refreshTokenExpire = Date.now() + 30 * 24 * 60 * 60 * 1000; // 30 days
+  async matchPassword(entered: string): Promise<boolean> {
+    return bcrypt.compare(entered, this.password);
+  }
 
-  return refreshToken;
-};
+  getResetPasswordToken(): string {
+    const resetToken = crypto.randomBytes(20).toString('hex');
+    this.updateFields({ reset_password_token: crypto.createHash('sha256').update(resetToken).digest('hex'), reset_password_expire: new Date(Date.now() + 10*60*1000) });
+    return resetToken;
+  }
 
-export default model<IUser>('User', UserSchema);
+  async save(): Promise<void> {
+    if (!this.id) return;
+    await pool.query(
+      'UPDATE users SET name=$1, email=$2, password=$3, role=$4, email_verified=$5, refresh_token_hash=$6, refresh_token_expire=$7, reset_password_token=$8, reset_password_expire=$9, updated_at=NOW() WHERE id=$10',
+      [
+        this.name,
+        this.email,
+        this.password,
+        this.role,
+        this.emailVerified,
+        this.refreshTokenHash,
+        this.refreshTokenExpire,
+        (this as any).reset_password_token,
+        (this as any).reset_password_expire,
+        this.id,
+      ]
+    );
+  }
+
+  private updateFields(fields: Record<string, any>) {
+    Object.assign(this, fields);
+  }
+}

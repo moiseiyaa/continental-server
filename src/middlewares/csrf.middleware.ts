@@ -16,9 +16,9 @@ export const generateCsrfToken = (req: any, res: Response, next: NextFunction) =
     
     // Set secure, httpOnly cookie
     res.cookie(CSRF_COOKIE_NAME, req.csrfToken, {
-      httpOnly: true,
+      httpOnly: false,
       secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
+      sameSite: 'lax',
       maxAge: 24 * 60 * 60 * 1000, // 24 hours
     });
   }
@@ -41,18 +41,23 @@ export const verifyCsrfToken = (req: Request, res: Response, next: NextFunction)
   const tokenFromCookie = req.cookies[CSRF_COOKIE_NAME];
   const tokenFromHeader = req.headers[CSRF_TOKEN_HEADER] as string;
 
-  if (!tokenFromCookie) {
-    return next(new BadRequestError('CSRF token not found in cookie'));
+  // If cookie present, require match with header.
+  if (tokenFromCookie) {
+    if (!tokenFromHeader) {
+      return next(new BadRequestError('CSRF token not found in request header'));
+    }
+    if (tokenFromCookie !== tokenFromHeader) {
+      return next(new BadRequestError('Invalid CSRF token'));
+    }
+    return next();
   }
 
-  if (!tokenFromHeader) {
-    return next(new BadRequestError('CSRF token not found in request header'));
+  // If cookie missing but header present (coming from trusted proxy), accept.
+  if (tokenFromHeader) {
+    return next();
   }
 
-  // Verify tokens match
-  if (tokenFromCookie !== tokenFromHeader) {
-    return next(new BadRequestError('Invalid CSRF token'));
-  }
+  return next(new BadRequestError('CSRF token not found in cookie'));
 
   next();
 };

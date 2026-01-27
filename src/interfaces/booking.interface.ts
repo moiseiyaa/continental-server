@@ -1,32 +1,60 @@
-import { Document } from 'mongoose';
+export enum BookingStatus {
+  PENDING = 'PENDING',
+  RESERVED = 'RESERVED',
+  CONFIRMED = 'CONFIRMED',
+  CANCELLED = 'CANCELLED',
+}
 
-export interface IBooking extends Document {
-  user: string;
-  trip: string;
-  numberOfParticipants: number;
+export enum PaymentStatus {
+  PENDING = 'PENDING',
+  PAID = 'PAID',
+  REFUNDED = 'REFUNDED',
+}
+
+export interface BookingParticipant {
+  name: string;
+  email: string;
+  phone: string;
+  age?: number;
+}
+
+export interface IBooking {
+  // New canonical fields
+  id: string;
+  userId: string;
+  tripId: string;
+  guests: number;
   totalPrice: number;
-  status: 'pending' | 'confirmed' | 'cancelled' | 'completed';
-  paymentStatus: 'pending' | 'paid' | 'refunded';
-  bookingDate: Date;
-  specialRequests?: string;
-  participantDetails: {
-    name: string;
-    email: string;
-    phone: string;
-    age?: number;
-  }[];
+  status: BookingStatus;
+  addAccommodation: boolean;
+  reservationExpiry?: Date;
+  paymentId?: string;
+  paymentStatus: PaymentStatus;
+  participants: BookingParticipant[];
   createdAt: Date;
-  updatedAt: Date;
+  updatedAt?: Date;
+
+  // Legacy fields (kept for backward compatibility)
+  _id?: string;
+  user?: any;
+  trip?: any;
+  numberOfParticipants?: number;
+  paymentStatusLegacy?: string;
+  participantDetails?: BookingParticipant[];
+  bookingDate?: Date;
 }
 
 export interface IBookingInput {
-  trip: string;
-  numberOfParticipants: number;
+  // New canonical fields
+  tripId?: string;
+  guests?: number;
+  participants?: BookingParticipant[];
+  addAccommodation?: boolean;
   specialRequests?: string;
-  participantDetails: {
-    name: string;
-    email: string;
-    phone: string;
-    age?: number;
-  }[];
+
+  // Legacy fields (for older callers)
+  trip?: string;
+  numberOfParticipants?: number;
+  participantDetails?: BookingParticipant[];
 }
+

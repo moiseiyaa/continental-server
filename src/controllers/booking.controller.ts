@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
+
 import {
   createBooking,
   getUserBookings,
@@ -10,10 +11,16 @@ import {
   cancelBooking,
   deleteBooking,
 } from '../services/booking.service';
+
+import { verifyPayment } from '../services/payment.service';
+
 import {
   notifyBookingConfirmation,
   notifyBookingCancellation,
 } from '../services/notification.service';
+
+import { sendBookingConfirmation } from '../services/email.service';
+
 import { IBookingInput } from '../interfaces/booking.interface';
 
 // @desc    Create a new booking
@@ -27,25 +34,183 @@ export const createBookingHandler = async (req: any, res: Response, next: NextFu
     }
 
     const bookingData: IBookingInput = req.body;
-    const booking = await createBooking(bookingData, req.user.id);
+    const paymentInfo = req.body.payment;
 
-    // Send booking confirmation notification
+    // Validate required fields
+    if (!bookingData.trip) {
+      return res.status(400).json({ message: 'Trip ID is required.' });
+    }
+    if (!bookingData.numberOfParticipants || bookingData.numberOfParticipants < 1) {
+      return res.status(400).json({ message: 'Number of participants must be at least 1.' });
+    }
+    if (!bookingData.participantDetails || bookingData.participantDetails.length === 0) {
+      return res.status(400).json({ message: 'At least one participant is required.' });
+    }
+
+    // Validate participant details
+    for (let i = 0; i < bookingData.participantDetails.length; i++) {
+      const p = bookingData.participantDetails[i];
+      if (!p.name || !p.name.trim()) {
+        return res.status(400).json({ message: `Participant ${i + 1}: Name is required.` });
+      }
+      if (!p.email || !p.email.trim()) {
+        return res.status(400).json({ message: `Participant ${i + 1}: Email is required.` });
+      }
+      if (!p.phone || !p.phone.trim()) {
+        return res.status(400).json({ message: `Participant ${i + 1}: Phone is required.` });
+      }
+      // Basic email validation
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRegex.test(p.email)) {
+        return res.status(400).json({ message: `Participant ${i + 1}: Invalid email address.` });
+      }
+    }
+
+    // Step 1: Handle user or guest
+    let userId;
+    let userEmail = req.user?.email;
+    let userName = req.user?.name || 'Traveler';
+    
+    if (req.user && req.user.id) {
+      userId = req.user.id;
+    } else if (bookingData.participantDetails && bookingData.participantDetails.length > 0) {
+      // GUEST: use first participant email and name
+      userEmail = bookingData.participantDetails[0].email;
+      userName = bookingData.participantDetails[0].name || 'Traveler';
+      userId = null; // In a real implementation, save the result user id
+    } else {
+      return res.status(400).json({ message: 'User email is required for booking.' });
+    }
+    // Step 2: Take payment (mock - always success for now)
+    // Integrate with Stripe or payment gateway here if paymentInfo exists
+    if (paymentInfo) {
+      // Example stub: if (!paymentInfo.cardNumber) ...
+      // Simulate payment succeeded
+    } else {
+      // Optionally, you could require payment for bookings
+    }
+    // Step 3: Create booking (use userId or fallback to mock id: 0 for guests)
+    const booking = await createBooking(bookingData, userId || 0);
+    if (!booking) {
+      return res.status(500).json({ message: 'Failed to create booking' });
+    }
+    // Send booking confirmation notification & email if email known
     try {
       const tripId = booking.trip as any;
-      // Assuming trip has a title field, adjust as needed based on your Trip schema
       const tripTitle = (tripId && tripId.title) || 'Your Booked Trip';
-      await notifyBookingConfirmation(req.user.id, tripTitle, (booking._id as any).toString());
+      const bookingId = (booking as any)._id?.toString() || '';
+      if (bookingId && userEmail) {
+        // Do not fail booking if these fail
+        await notifyBookingConfirmation(userId, tripTitle, bookingId).catch(() => {});
+        await sendBookingConfirmation(userEmail, userName, {
+          bookingId: bookingId,
+          tourName: tripTitle,
+          date: booking.bookingDate ? new Date(booking.bookingDate).toISOString().substring(0,10) : new Date().toISOString().substring(0,10),
+          travelers: booking.numberOfParticipants || 1,
+          totalAmount: booking.totalPrice || 0,
+        }).catch(() => {});
+      }
     } catch (notificationError) {
       // Log notification error but don't fail the booking creation
       console.error('Failed to send booking confirmation notification:', notificationError);
     }
-
     res.status(201).json({
       success: true,
       data: booking,
     });
   } catch (error: any) {
     next(error);
+  }
+};
+
+// @desc    Finalize booking (creates/updates ghost user, booking, and sends magic link)
+// @route   POST /api/bookings/finalize
+// @access  Public
+export const finalizeBookingHandler = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const { user: userData, booking: bookingPrefs } = req.body;
+    const idempotencyKey = req.headers['idempotency-key'] as string;
+    
+    if (!userData || !userData.email) {
+      return res.status(400).json({ success: false, message: 'User email is required' });
+    }
+
+    // 1. Create or find ghost user
+    const { createOrFindGhostUser } = await import('../services/user.service');
+    const user = await createOrFindGhostUser(userData.email, userData.fullName, userData.phone, userData.country);
+    if (!user) throw new Error('Failed to create/find user');
+
+    const userId = String((user as any).id || (user as any)._id || 0);
+    const tripId = bookingPrefs.tripId || bookingPrefs.trip;
+
+    // 2. Check for duplicate booking (NEW: idempotency check)
+    if (idempotencyKey) {
+      const { checkDuplicateBooking } = await import('../services/booking.service');
+      const duplicate = await checkDuplicateBooking(userId, tripId, idempotencyKey);
+      if (duplicate.exists) {
+        return res.status(409).json({
+          success: false,
+          message: 'Booking already exists',
+          bookingId: duplicate.bookingId,
+        });
+      }
+    }
+
+    // 3. Create booking with RESERVED or PENDING status
+    const { createBooking } = await import('../services/booking.service');
+    const { createMagicLink } = await import('../services/magiclink.service');
+
+    const bookingType = bookingPrefs?.selectedPaymentType === 'RESERVE' ? 'RESERVE' : 'PAY_NOW';
+    const status = bookingType === 'RESERVE' ? 'RESERVED' : 'PENDING';
+    const reservationExpiry = bookingType === 'RESERVE' ? new Date(Date.now() + 48 * 60 * 60 * 1000) : null;
+
+    const bookingInput: any = {
+      tripId: bookingPrefs.tripId || bookingPrefs.trip,
+      guests: bookingPrefs.guests || bookingPrefs.numberOfParticipants || 1,
+      participantDetails: bookingPrefs.participants || bookingPrefs.participantDetails || [],
+      addAccommodation: bookingPrefs.addAccommodation || false,
+      status,
+      reservationExpiry,
+      paymentStatus: (bookingPrefs.paymentStatus || 'PENDING').toUpperCase(),
+      idempotencyKey: idempotencyKey || null,
+    };
+
+    const createdBooking = await createBooking(bookingInput, userId);
+
+    // 4. Create magic link BEFORE sending response (so it's in inbox when UI loads)
+    const magic = await createMagicLink(Number((user as any).id || (user as any)._id || 0));
+    const frontend = process.env.FRONTEND_URL || 'http://localhost:3000';
+    const magicLinkUrl = `${frontend}/auth/verify?token=${magic.token}&booking=${(createdBooking as any).id || (createdBooking as any)._id}`;
+
+    // 5. Email the magic link asynchronously (don't block response)
+    const { sendEmail } = await import('../services/email.service');
+    sendEmail({
+      to: userData.email,
+      subject: 'Access your booking confirmation',
+      html: `
+        <p>Hello ${(userData.fullName || 'Traveler').split(' ')[0]},</p>
+        <p>Your booking is confirmed! Access your dashboard anytime with this secure link:</p>
+        <p><a href="${magicLinkUrl}" style="color: #2563eb; font-weight: bold;">${magicLinkUrl}</a></p>
+        <p style="color: #666; font-size: 12px;">This link expires in 24 hours and works without a password.</p>
+      `,
+    }).catch((err) => console.error('Magic link email failed (non-blocking):', err));
+
+    // 6. Return success with SuccessHub data
+    res.status(201).json({
+      success: true,
+      booking: {
+        id: (createdBooking as any).id || (createdBooking as any)._id,
+        status: status,
+      },
+      user: {
+        name: userData.fullName || 'Traveler',
+      },
+      bookingType,
+      magicLink: magic.token,
+      magicLinkUrl,
+    });
+  } catch (err) {
+    next(err);
   }
 };
 
@@ -264,3 +429,46 @@ export const deleteBookingHandler = async (req: Request, res: Response, next: Ne
     next(error);
   }
 };
+
+// @desc    Process booking with optional direct payment verification
+// @route   POST /api/bookings/process
+// @access  Private (expects auth or guest flow)
+export const processBookingHandler = async (req: any, res: Response, next: NextFunction) => {
+  const { userData, tourId, paymentIntentId, isDirectPayment } = req.body;
+  // userData: { id?, email?, guests? }
+  try {
+    // Create booking as PENDING inside createBooking (which is transactional)
+    const bookingInput = {
+      trip: tourId || req.body.trip || req.body.tripId,
+      numberOfParticipants: (userData && userData.guests) || req.body.numberOfParticipants || 1,
+      participantDetails: req.body.participantDetails || [],
+      specialRequests: req.body.specialRequests || null,
+    };
+
+    const userId = (req.user && req.user.id) || (userData && userData.id) || 0;
+    const booking = await createBooking(bookingInput as any, userId || 0);
+
+    if (!booking) return res.status(500).json({ success: false, message: 'Failed to create booking' });
+
+    // If direct payment requested, verify payment and update booking statuses in service
+    if (isDirectPayment) {
+      const ok = await verifyPayment(paymentIntentId);
+      if (!ok) {
+        // mark payment as pending and return failure
+        await updatePaymentStatus((booking as any).id || (booking as any)._id, 'pending');
+        return res.status(400).json({ success: false, message: 'Payment verification failed' });
+      }
+      // mark as paid and confirmed
+      await updatePaymentStatus((booking as any).id || (booking as any)._id, 'paid');
+      await updateBookingStatus((booking as any).id || (booking as any)._id, 'confirmed');
+    } else {
+      // Reserve only
+      await updateBookingStatus((booking as any).id || (booking as any)._id, 'pending');
+      await updatePaymentStatus((booking as any).id || (booking as any)._id, 'pending');
+    }
+
+    return res.status(200).json({ success: true, booking });
+  } catch (err) {
+    next(err);
+  }
+}

@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from 'express';
 import { register, login, getMe, forgotPassword, resetPassword, verifyEmail, refreshAccessToken } from '../services/auth.service';
+import { findMagicLink, markMagicLinkUsed } from '../services/magiclink.service';
+import User from '../models/user.model';
 import { IUserInput } from '../interfaces';
 import { sendTokenResponse, UnauthorizedError } from '../utils/apiResponse';
 import jwt from 'jsonwebtoken';
@@ -20,13 +22,13 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
     
     // Send simple token response
     res.status(201).json({
-      success: true,
-      token,
-      user: {
-        id: user._id,
-        name: user.name,
-        email: user.email,
-        role: user.role
+        success: true,
+        token,
+        user: {
+          id: user.id,
+          name: user.name,
+          email: user.email,
+          role: user.role
       }
     });
   } catch (error: any) {
@@ -88,7 +90,7 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
     console.log('Login successful for user:', user.email);
     
     // Use sendTokenResponse to create both access and refresh tokens
-    sendTokenResponse(user, 200, res);
+    await sendTokenResponse(user, 200, res);
   } catch (error: any) {
     console.error('Login error:', error.message);
     next(error);
@@ -180,6 +182,46 @@ export const verifyEmailHandler = async (req: Request, res: Response, next: Next
   }
 };
 
+// @desc    Verify magic link token and set auth cookie, then redirect
+// @route   GET /api/auth/verify
+// @access  Public
+export const verifyMagicLinkHandler = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    const token = (req.query.token as string) || req.body.token;
+    const bookingId = (req.query.booking as string) || req.body.booking;
+    if (!token) return res.status(400).send('Missing token');
+
+    const record = await findMagicLink(token);
+    if (!record) return res.status(400).send('Invalid link');
+    if (record.used) return res.status(400).send('Link already used');
+    const expiresAt = new Date(record.expires_at || record.expiresAt);
+    if (expiresAt.getTime() < Date.now()) return res.status(400).send('Link expired');
+
+    // mark used
+    await markMagicLinkUsed(token);
+
+    // find user and create JWT
+    const user = await User.findById(String(record.user_id || record.userId));
+    if (!user) return res.status(404).send('User not found');
+    const jwtToken = user.getSignedJwtToken();
+    res.cookie('token', jwtToken, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === 'production',
+      sameSite: 'strict',
+      expires: new Date(Date.now() + 24 * 60 * 60 * 1000),
+    });
+
+    // redirect to dashboard booking page if booking id provided
+    // Frontend user dashboard is at /user/dashboard, not /dashboard
+    const redirectTo = bookingId 
+      ? `${process.env.FRONTEND_URL || 'http://localhost:3000'}/user/dashboard` 
+      : `${process.env.FRONTEND_URL || 'http://localhost:3000'}/user/dashboard`;
+    return res.redirect(302, redirectTo);
+  } catch (err) {
+    next(err);
+  }
+};
+
 // @desc    Refresh access token
 // @route   POST /api/auth/refresh-token
 // @access  Public
@@ -198,7 +240,12 @@ export const refreshTokenHandler = async (req: Request, res: Response, next: Nex
     }
 
     // Send new access token (without including new refresh token in response body)
-    res.cookie('token', user.getSignedJwtToken(), {
+    const token = user.getSignedJwtToken?.();
+    if (!token) {
+      return next(new UnauthorizedError('Failed to generate token'));
+    }
+    
+    res.cookie('token', token, {
       httpOnly: true,
       secure: process.env.NODE_ENV === 'production',
       sameSite: 'strict',
@@ -207,7 +254,7 @@ export const refreshTokenHandler = async (req: Request, res: Response, next: Nex
 
     res.status(200).json({
       success: true,
-      token: user.getSignedJwtToken(),
+      token,
       message: 'Token refreshed successfully',
     });
   } catch (error: any) {

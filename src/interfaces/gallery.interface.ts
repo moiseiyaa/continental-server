@@ -1,6 +1,5 @@
-import { Document } from 'mongoose';
-
-export interface IGallery extends Document {
+export interface IGallery {
+  _id?: string;
   trip: string;
   title: string;
   description?: string;

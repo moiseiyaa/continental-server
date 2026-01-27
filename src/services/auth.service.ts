@@ -1,5 +1,6 @@
 import { IUser, IUserInput } from '../interfaces';
 import User from '../models/user.model';
+import { pool } from '../config/db';
 import { JWT_SECRET, JWT_EXPIRE, FRONTEND_URL } from '../config/env';
 import jwt from 'jsonwebtoken';
 import { sendVerificationEmail, sendPasswordResetEmail, sendWelcomeEmail } from './email.service';
@@ -44,8 +45,8 @@ export const register = async (userData: IUserInput): Promise<{ user: IUser; tok
     
     // Skip email verification for now - mark as verified
     user.emailVerified = true;
-    user.emailVerificationToken = undefined;
-    user.emailVerificationExpire = undefined;
+    (user as any).email_verification_token = null;
+    (user as any).email_verification_expire = null;
     await user.save();
     console.log('Auth service: Email verification skipped, user marked as verified');
     
@@ -64,7 +65,7 @@ export const register = async (userData: IUserInput): Promise<{ user: IUser; tok
     }
     
     console.log('Auth service: Registration completed successfully');
-    return { user, token };
+    return { user: user as unknown as IUser, token };
     
   } catch (error: any) {
     console.error('Auth service: Registration failed:', {
@@ -100,8 +101,8 @@ export const login = async (email: string, password: string): Promise<{ user: IU
     // Normalize email to lowercase
     email = email.toLowerCase();
     
-    // Check if user exists
-    const user = await User.findOne({ email }).select('+password');
+    // Check if user exists (password is always included in PostgreSQL model)
+    const user = await User.findOne({ email });
     
     if (!user) {
       console.log('Login service: User not found');
@@ -120,7 +121,7 @@ export const login = async (email: string, password: string): Promise<{ user: IU
     const token = user.getSignedJwtToken();
     console.log('Login service: Login successful');
     
-    return { user, token };
+    return { user: user as unknown as IUser, token };
   } catch (error: any) {
     console.error('Login service error:', error.message);
     throw error;
@@ -128,7 +129,11 @@ export const login = async (email: string, password: string): Promise<{ user: IU
 };
 
 export const getMe = async (userId: string): Promise<IUser | null> => {
-  return await User.findById(userId).select('-password');
+  const user = await User.findById(userId);
+  if (!user) return null;
+  // Return user without password (password field is not included in response)
+  const { password, ...userWithoutPassword } = user as any;
+  return userWithoutPassword as IUser;
 };
 
 export const forgotPassword = async (email: string): Promise<string> => {
@@ -147,8 +152,8 @@ export const forgotPassword = async (email: string): Promise<string> => {
   try {
     await sendPasswordResetEmail(user.email, resetToken, FRONTEND_URL);
   } catch (error) {
-    user.resetPasswordToken = undefined;
-    user.resetPasswordExpire = undefined;
+    (user as any).reset_password_token = null;
+    (user as any).reset_password_expire = null;
     await user.save();
     throw new Error('Email could not be sent');
   }
@@ -163,22 +168,24 @@ export const resetPassword = async (resetToken: string, newPassword: string): Pr
     .update(resetToken)
     .digest('hex');
 
-  const user = await User.findOne({
-    resetPasswordToken: hashedToken,
-    resetPasswordExpire: { $gt: Date.now() },
-  });
+  const { rows } = await pool.query(
+    'SELECT * FROM users WHERE reset_password_token = $1 AND reset_password_expire > NOW()',
+    [hashedToken]
+  );
+  const user = rows.length ? new User(rows[0]) : null;
 
   if (!user) {
     throw new Error('Invalid or expired reset token');
   }
 
-  // Set new password
-  user.password = newPassword;
-  user.resetPasswordToken = undefined;
-  user.resetPasswordExpire = undefined;
-  await user.save();
+  // Hash new password
+  const salt = await bcrypt.genSalt(10);
+  user.password = await bcrypt.hash(newPassword, salt);
+  (user as any).reset_password_token = null;
+    (user as any).reset_password_expire = null;
+    await user.save();
 
-  return user;
+  return user as unknown as IUser;
 };
 
 export const verifyEmail = async (verificationToken: string): Promise<IUser> => {
@@ -188,10 +195,11 @@ export const verifyEmail = async (verificationToken: string): Promise<IUser> => 
     .update(verificationToken)
     .digest('hex');
 
-  const user = await User.findOne({
-    emailVerificationToken: hashedToken,
-    emailVerificationExpire: { $gt: Date.now() },
-  });
+  const { rows } = await pool.query(
+    'SELECT * FROM users WHERE email_verification_token = $1 AND email_verification_expire > NOW()',
+    [hashedToken]
+  );
+  const user = rows.length ? new User(rows[0]) : null;
 
   if (!user) {
     throw new Error('Invalid or expired verification token');
@@ -199,11 +207,11 @@ export const verifyEmail = async (verificationToken: string): Promise<IUser> => 
 
   // Mark email as verified
   user.emailVerified = true;
-  user.emailVerificationToken = undefined;
-  user.emailVerificationExpire = undefined;
-  await user.save();
+    (user as any).email_verification_token = null;
+    (user as any).email_verification_expire = null;
+    await user.save();
 
-  return user;
+  return user as unknown as IUser;
 };
 export const refreshAccessToken = async (refreshToken: string): Promise<IUser | null> => {
   try {
@@ -235,7 +243,7 @@ export const refreshAccessToken = async (refreshToken: string): Promise<IUser | 
       throw new Error('Invalid refresh token');
     }
 
-    return user;
+    return user as unknown as IUser;
   } catch (error: any) {
     console.error('Refresh token validation error:', error.message);
     return null;

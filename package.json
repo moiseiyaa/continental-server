@@ -12,6 +12,10 @@
     "build": "tsc",
     "lint": "eslint . --ext .ts",
     "lint:fix": "eslint . --ext .ts --fix",
+    "seed:trips": "ts-node src/scripts/seedTrips.ts",
+    "seed:blogs": "ts-node src/scripts/seedBlogs.ts",
+    "seed:users": "ts-node src/scripts/seedUsers.ts",
+    "create:bookings-table": "ts-node src/scripts/createBookingsTable.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
@@ -19,7 +23,10 @@
   "license": "ISC",
   "type": "commonjs",
   "dependencies": {
+    "@sendgrid/mail": "^8.1.6",
+    "@types/pg": "^8.16.0",
     "bcryptjs": "^3.0.3",
+    "cheerio": "^1.2.0",
     "cloudinary": "^2.8.0",
     "compression": "^1.8.1",
     "cookie-parser": "^1.4.7",
@@ -29,10 +36,11 @@
     "express-validator": "^7.3.1",
     "helmet": "^8.1.0",
     "jsonwebtoken": "^9.0.3",
-    "mongoose": "^9.0.1",
     "morgan": "^1.10.1",
     "multer": "^2.0.2",
-    "nodemailer": "^7.0.11",
+    "nodemailer": "^7.0.12",
+    "pg": "^8.16.3",
+    "stripe": "^20.1.2",
     "winston": "^3.19.0"
   },
   "devDependencies": {

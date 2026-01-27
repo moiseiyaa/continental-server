@@ -27,13 +27,19 @@ export const uploadImageHandler = async (req: any, res: Response, next: NextFunc
       });
     }
 
-    const galleryData: IGalleryInput = {
-      trip: req.body.trip,
-      title: req.body.title,
-      description: req.body.description,
-    };
+      // Generate imageUrl and publicId from file (in production, would use Cloudinary)
+      const imageUrl = req.file.path || `/uploads/${req.file.filename}`;
+      const publicId = req.file.filename || `gallery_${Date.now()}`;
 
-    const gallery = await uploadImage(req.file, galleryData, req.user.id);
+      const galleryData = {
+        trip: parseInt(req.body.trip),
+        title: req.body.title,
+        description: req.body.description,
+        imageUrl,
+        publicId
+      } as IGalleryInput & { imageUrl: string; publicId: string; trip: number };
+
+      const gallery = await uploadImage(req.file, galleryData, req.user.id);
 
     res.status(201).json({
       success: true,
@@ -48,8 +54,8 @@ export const uploadImageHandler = async (req: any, res: Response, next: NextFunc
 // @route   GET /api/gallery/trip/:tripId
 // @access  Public
 export const getGalleryByTripHandler = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const gallery = await getGalleryByTrip(req.params.tripId);
+    try {
+      const gallery = await getGalleryByTrip(parseInt(req.params.tripId));
 
     res.status(200).json({
       success: true,
@@ -89,8 +95,8 @@ export const getAllGalleryHandler = async (req: Request, res: Response, next: Ne
 // @route   GET /api/gallery/:id
 // @access  Public
 export const getImageByIdHandler = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const image = await getImageById(req.params.id);
+    try {
+      const image = await getImageById(parseInt(req.params.id));
 
     if (!image) {
       return res.status(404).json({

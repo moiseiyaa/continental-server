@@ -1,114 +1,87 @@
+import { pool } from '../config/db';
 import { INewsletter, INewsletterInput } from '../interfaces/newsletter.interface';
-import Newsletter from '../models/newsletter.model';
 import { sendEmail } from './email.service';
 
+export const subscribe = async (data: INewsletterInput): Promise<INewsletter> => {
+  const { email, name } = data;
+  const { rows } = await pool.query(
+    `INSERT INTO newsletter (email, name, is_active, created_at, updated_at) VALUES ($1, $2, true, NOW(), NOW()) ON CONFLICT (email) DO UPDATE SET is_active = true, updated_at = NOW(), unsubscribed_at = NULL RETURNING *`,
+    [email.toLowerCase(), name || null]
+  );
+  return rows[0] as INewsletter;
+};
+
+export const unsubscribe = async (email: string): Promise<INewsletter | null> => {
+  const { rows } = await pool.query(
+    `UPDATE newsletter SET is_active = false, unsubscribed_at = NOW(), updated_at = NOW() WHERE email = $1 RETURNING *`,
+    [email.toLowerCase()]
+  );
+  return rows.length ? (rows[0] as INewsletter) : null;
+};
+
+export const getSubscriber = async (email: string): Promise<INewsletter | null> => {
+  const { rows } = await pool.query('SELECT * FROM newsletter WHERE email = $1', [email.toLowerCase()]);
+  return rows.length ? (rows[0] as INewsletter) : null;
+};
+
+export const getAllSubscribers = async (page = 1, limit = 20, activeOnly = false): Promise<{ subscribers: INewsletter[], total: number, pages: number }> => {
+  const offset = (page - 1) * limit;
+  const whereClause = activeOnly ? 'WHERE is_active = true' : '';
+  const { rows } = await pool.query(
+    `SELECT *, COUNT(*) OVER() as total_count FROM newsletter ${whereClause} ORDER BY created_at DESC LIMIT $1 OFFSET $2`,
+    [limit, offset]
+  );
+  const total = rows.length ? Number(rows[0].total_count) : 0;
+  const subscribers = rows.map(({ total_count, ...n }) => n as INewsletter);
+  return { subscribers, total, pages: Math.ceil(total / limit) };
+};
+
 export const subscribeToNewsletter = async (data: INewsletterInput): Promise<INewsletter> => {
-  // Check if already subscribed
-  const existing = await Newsletter.findOne({ email: data.email });
-  if (existing) {
-    if (existing.isActive) {
-      throw new Error('Email already subscribed to newsletter');
-    }
-    // Reactivate if previously unsubscribed
-    existing.isActive = true;
-    existing.unsubscribedAt = null;
-    return await existing.save();
-  }
-
-  const subscriber = await Newsletter.create(data);
-
-  // Send welcome email
-  try {
-    await sendEmail({
-      email: data.email,
-      subject: 'Welcome to Continental Travels & Tours Newsletter',
-      message: `Hi ${data.name || 'there'},\n\nThank you for subscribing to our newsletter. You'll now receive updates about our latest tours, special offers, and travel tips.\n\nBest regards,\nContinental Travels & Tours Team`,
-    });
-  } catch (error) {
-    console.error('Error sending welcome email:', error);
-  }
-
-  return subscriber;
+  return subscribe(data);
 };
 
 export const unsubscribeFromNewsletter = async (email: string): Promise<INewsletter | null> => {
-  return await Newsletter.findOneAndUpdate(
-    { email },
-    {
-      isActive: false,
-      unsubscribedAt: new Date(),
-    },
-    { new: true }
-  );
+  return unsubscribe(email);
 };
 
 export const getNewsletterSubscriber = async (email: string): Promise<INewsletter | null> => {
-  return await Newsletter.findOne({ email });
-};
-
-export const getAllSubscribers = async (
-  page: number = 1,
-  limit: number = 10,
-  activeOnly: boolean = true
-): Promise<{ subscribers: INewsletter[]; total: number; pages: number }> => {
-  const skip = (page - 1) * limit;
-  const query: any = {};
-
-  if (activeOnly) {
-    query.isActive = true;
-  }
-
-  const total = await Newsletter.countDocuments(query);
-  const subscribers = await Newsletter.find(query)
-    .skip(skip)
-    .limit(limit)
-    .sort({ createdAt: -1 });
-
-  return {
-    subscribers,
-    total,
-    pages: Math.ceil(total / limit),
-  };
+  return getSubscriber(email);
 };
 
 export const deleteSubscriber = async (email: string): Promise<INewsletter | null> => {
-  return await Newsletter.findOneAndDelete({ email });
+  const subscriber = await getSubscriber(email);
+  if (!subscriber) return null;
+  
+  await pool.query('DELETE FROM newsletter WHERE email = $1', [email.toLowerCase()]);
+  return subscriber;
 };
 
 export const getNewsletterStats = async (): Promise<any> => {
-  const total = await Newsletter.countDocuments();
-  const active = await Newsletter.countDocuments({ isActive: true });
-  const unsubscribed = await Newsletter.countDocuments({ isActive: false });
-
+  const { rows } = await pool.query(
+    `SELECT COUNT(*) as total, COUNT(CASE WHEN is_active = true THEN 1 END) as active, COUNT(CASE WHEN is_active = false THEN 1 END) as inactive FROM newsletter`
+  );
   return {
-    total,
-    active,
-    unsubscribed,
-    unsubscribeRate: total > 0 ? ((unsubscribed / total) * 100).toFixed(2) : 0,
+    total: Number(rows[0].total),
+    active: Number(rows[0].active),
+    inactive: Number(rows[0].inactive)
   };
 };
 
-export const sendNewsletterEmail = async (
-  subject: string,
-  message: string
-): Promise<{ sent: number; failed: number }> => {
-  const subscribers = await Newsletter.find({ isActive: true });
-  let sent = 0;
-  let failed = 0;
-
-  for (const subscriber of subscribers) {
-    try {
-      await sendEmail({
-        email: subscriber.email,
-        subject,
-        message,
-      });
-      sent++;
-    } catch (error) {
-      console.error(`Failed to send email to ${subscriber.email}:`, error);
-      failed++;
-    }
-  }
-
-  return { sent, failed };
+export const sendNewsletterEmail = async (subject: string, message: string): Promise<any> => {
+  const { rows } = await pool.query('SELECT email FROM newsletter WHERE is_active = true');
+  const emails = rows.map((row: any) => row.email);
+  
+  const results = await Promise.allSettled(
+    emails.map(email => sendEmail({ to: email, subject, html: message }))
+  );
+  
+  const successful = results.filter(r => r.status === 'fulfilled').length;
+  const failed = results.filter(r => r.status === 'rejected').length;
+  
+  return {
+    total: emails.length,
+    successful,
+    failed,
+    message: `Newsletter sent to ${successful} out of ${emails.length} subscribers`
+  };
 };

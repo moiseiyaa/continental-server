@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import { registerUser, loginUser, getCurrentUser, forgotPasswordHandler, resetPasswordHandler, verifyEmailHandler, logoutUser, refreshTokenHandler } from '../controllers/auth.controller';
+import { registerUser, loginUser, getCurrentUser, forgotPasswordHandler, resetPasswordHandler, verifyEmailHandler, logoutUser, refreshTokenHandler, verifyMagicLinkHandler } from '../controllers/auth.controller';
 import { protect } from '../middlewares/auth.middleware';
 import { authRateLimiter, passwordResetLimiter } from '../middlewares/rateLimiter.middleware';
 import { validate } from '../middleware/validateRequest';
@@ -43,6 +43,9 @@ router.post('/refresh-token', refreshTokenHandler);// @route   POST /api/auth/lo
 // @desc    Logout user & clear token
 // @access  Private
 router.post('/logout', protect, logoutUser);
+
+// Magic link verification (redirects to frontend dashboard)
+router.get('/verify', verifyMagicLinkHandler);
 
 
 // @route   POST /api/auth/forgot-password

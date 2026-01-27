@@ -43,7 +43,7 @@ export const getReviewsByTripHandler = async (req: Request, res: Response, next:
     const page = req.query.page ? parseInt(req.query.page as string) : 1;
     const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
 
-    const result = await getReviewsByTrip(req.params.tripId, page, limit);
+    const result = await getReviewsByTrip(parseInt(req.params.tripId), page, limit);
 
     res.status(200).json({
       success: true,
@@ -66,7 +66,7 @@ export const getReviewsByTripHandler = async (req: Request, res: Response, next:
 // @access  Public
 export const getReviewByIdHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const review = await getReviewById(req.params.id);
+    const review = await getReviewById(parseInt(req.params.id));
 
     if (!review) {
       return res.status(404).json({
@@ -113,8 +113,8 @@ export const getAllReviewsHandler = async (req: Request, res: Response, next: Ne
 // @route   GET /api/reviews/user/my-reviews
 // @access  Private
 export const getUserReviewsHandler = async (req: any, res: Response, next: NextFunction) => {
-  try {
-    const reviews = await getUserReviews(req.user.id);
+    try {
+      const reviews = await getUserReviews(parseInt(req.user.id));
 
     res.status(200).json({
       success: true,
@@ -135,7 +135,7 @@ export const updateReviewHandler = async (req: Request, res: Response, next: Nex
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const review = await updateReview(req.params.id, req.body);
+    const review = await updateReview(parseInt(req.params.id), req.body);
 
     if (!review) {
       return res.status(404).json({
@@ -158,7 +158,7 @@ export const updateReviewHandler = async (req: Request, res: Response, next: Nex
 // @access  Private
 export const deleteReviewHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const review = await deleteReview(req.params.id);
+    const review = await deleteReview(parseInt(req.params.id));
 
     if (!review) {
       return res.status(404).json({
@@ -181,7 +181,7 @@ export const deleteReviewHandler = async (req: Request, res: Response, next: Nex
 // @access  Public
 export const markReviewHelpfulHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const review = await markHelpful(req.params.id);
+    const review = await markHelpful(parseInt(req.params.id));
 
     if (!review) {
       return res.status(404).json({
@@ -203,8 +203,8 @@ export const markReviewHelpfulHandler = async (req: Request, res: Response, next
 // @route   GET /api/reviews/stats/:tripId
 // @access  Public
 export const getReviewStatsHandler = async (req: Request, res: Response, next: NextFunction) => {
-  try {
-    const stats = await getReviewStats(req.params.tripId);
+    try {
+      const stats = await getReviewStats(parseInt(req.params.tripId));
 
     res.status(200).json({
       success: true,

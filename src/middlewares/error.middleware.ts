@@ -24,22 +24,42 @@ export const errorHandler = (
     );
   }
 
-  // Mongoose bad ObjectId
-  if (err.name === 'CastError') {
-    const message = `Resource not found with id of ${err.value}`;
+  // PostgreSQL invalid input syntax (equivalent to Mongoose CastError)
+  if (err.name === 'CastError' || err.code === '22P02') {
+    const message = `Resource not found with invalid id`;
     error = new ApiError(message, 404);
   }
 
-  // Mongoose duplicate key
-  if (err.code === 11000) {
-    const message = 'Duplicate field value entered';
+  // PostgreSQL unique violation (equivalent to Mongoose duplicate key)
+  if (err.code === '23505' || err.code === 11000) {
+    const message = err.detail || 'Duplicate field value entered';
     error = new ApiError(message, 400);
-    logSecurityEvent('Duplicate Entry Attempt', (req as any).user?.id, { field: Object.keys(err.keyValue)[0] });
+    logSecurityEvent('Duplicate Entry Attempt', (req as any).user?.id, { 
+      detail: err.detail || 'unknown field' 
+    });
   }
 
-  // Mongoose validation error
+  // PostgreSQL foreign key violation
+  if (err.code === '23503') {
+    const message = 'Referenced record does not exist';
+    error = new ApiError(message, 400);
+  }
+
+  // PostgreSQL not null violation
+  if (err.code === '23502') {
+    const message = `Required field missing: ${err.column || 'unknown'}`;
+    error = new ApiError(message, 400);
+  }
+
+  // PostgreSQL check constraint violation
+  if (err.code === '23514') {
+    const message = 'Data validation failed';
+    error = new ApiError(message, 400);
+  }
+
+  // Legacy Mongoose validation error (for backward compatibility)
   if (err.name === 'ValidationError') {
-    const message = Object.values(err.errors).map((val: any) => val.message).join(', ');
+    const message = Object.values(err.errors || {}).map((val: any) => val.message).join(', ') || err.message;
     error = new ApiError(message, 400);
   }
 
