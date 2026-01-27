@@ -220,11 +220,11 @@ export const updateTrip = async (tripId: string, tripData: Partial<ITripInput>):
   const allowedFields = [
     'title', 'description', 'destination', 'duration', 'price',
     'maxParticipants', 'startDate', 'endDate', 'itinerary',
-    'images', 'highlights', 'included', 'notIncluded', 'difficulty'
+    'images', 'highlights', 'included', 'notIncluded', 'difficulty', 'status'
   ];
 
   for (const [key, value] of Object.entries(tripData)) {
-    if (allowedFields.includes(key) && value !== undefined) {
+    if (allowedFields.includes(key) && value !== undefined && value !== '') {
       const dbKey = key === 'maxParticipants' ? 'max_participants' :
                    key === 'startDate' ? 'start_date' :
                    key === 'endDate' ? 'end_date' :
