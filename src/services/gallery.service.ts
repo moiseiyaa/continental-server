@@ -47,7 +47,7 @@ export const deleteGalleryImage = async (id: number): Promise<IGallery | null> =
 };
 
 // UPLOAD image (alias for createGallery)
-export const uploadImage = async (file: any, data: IGalleryInput & { imageUrl: string; publicId: string; trip: number }, userId: number): Promise<IGallery> => {
+export const uploadImage = async (data: IGalleryInput & { imageUrl: string; publicId: string; trip: number }, userId: number): Promise<IGallery> => {
   return createGallery(userId, data);
 };
 

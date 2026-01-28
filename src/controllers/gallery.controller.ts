@@ -27,9 +27,15 @@ export const uploadImageHandler = async (req: any, res: Response, next: NextFunc
       });
     }
 
-      // Generate imageUrl and publicId from file (in production, would use Cloudinary)
-      const imageUrl = req.file.path || `/uploads/${req.file.filename}`;
-      const publicId = req.file.filename || `gallery_${Date.now()}`;
+      // Get the Cloudinary URL from the request body (sent by frontend)
+      const { imageUrl, publicId } = req.body;
+      
+      if (!imageUrl || !publicId) {
+        return res.status(400).json({
+          success: false,
+          message: 'Missing Cloudinary URL or public ID',
+        });
+      }
 
       const galleryData = {
         trip: parseInt(req.body.trip),
@@ -39,7 +45,7 @@ export const uploadImageHandler = async (req: any, res: Response, next: NextFunc
         publicId
       } as IGalleryInput & { imageUrl: string; publicId: string; trip: number };
 
-      const gallery = await uploadImage(req.file, galleryData, req.user.id);
+      const gallery = await uploadImage(galleryData, req.user.id);
 
     res.status(201).json({
       success: true,

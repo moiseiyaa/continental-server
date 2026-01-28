@@ -30,12 +30,21 @@ export interface ITripInput {
   duration: number;
   price: number;
   maxParticipants: number;
+  currentParticipants?: number;
   startDate: Date;
   endDate: Date;
   itinerary?: string[];
+  detailedItinerary?: any;
   images?: string[];
   highlights?: string[];
   included?: string[];
   notIncluded?: string[];
+  activities?: string[];
+  insurance?: string;
   difficulty?: 'easy' | 'moderate' | 'hard';
+  rating?: number;
+  reviews?: number;
+  status?: 'active' | 'inactive' | 'cancelled';
+  packagePlan?: string;
+  mostPopular?: boolean;
 }

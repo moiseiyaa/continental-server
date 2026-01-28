@@ -219,8 +219,11 @@ export const updateTrip = async (tripId: string, tripData: Partial<ITripInput>):
 
   const allowedFields = [
     'title', 'description', 'destination', 'duration', 'price',
-    'maxParticipants', 'startDate', 'endDate', 'itinerary',
-    'images', 'highlights', 'included', 'notIncluded', 'difficulty', 'status'
+    'maxParticipants', 'currentParticipants', 'startDate', 'endDate', 
+    'itinerary', 'detailedItinerary', 'images', 'highlights', 
+    'included', 'notIncluded', 'activities', 'insurance',
+    'difficulty', 'rating', 'reviews', 'status',
+    'packagePlan', 'mostPopular'
   ];
 
   for (const [key, value] of Object.entries(tripData)) {
