@@ -17,20 +17,12 @@ const USERS: UserSeed[] = [
   {
     name: 'Admin User',
     email: 'admin@continental.com',
-    password: 'Admin@123', // Will be hashed before insertion
+    password: 'Admin@123',
     role: 'admin',
     email_verified: true,
     is_active: true,
   },
-  {
-    name: 'Test Admin',
-    email: 'testadmin@continental.com',
-    password: 'TestAdmin@123',
-    role: 'admin',
-    email_verified: true,
-    is_active: true,
-  },
-];
+  ];
 
 async function seed(): Promise<void> {
   const client = await pool.connect();

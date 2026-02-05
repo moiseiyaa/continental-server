@@ -28,6 +28,8 @@ router.use('/contacts', contactRoutes);
 router.use('/newsletter', newsletterRoutes);
 router.use('/notifications', notificationRoutes);
 router.use('/blogs', blogRoutes);
+// Admin routes
+router.use('/admin', adminRoutes);
 router.use('/payments', paymentRoutes);
 router.use('/seo-metadata', seoMetadataRoutes);
 router.use('/seo-robots', require('./robots.routes').default);
