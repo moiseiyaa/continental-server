@@ -125,7 +125,7 @@ export const getAllUsersHandler = async (req: Request, res: Response, next: Next
 // @access  Private/Admin
 export const getUserByIdHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await getUserById(req.params.id);
+    const user = await getUserById(String(req.params.id));
 
     if (!user) {
       return res.status(404).json({
@@ -157,7 +157,7 @@ export const updateUserRoleHandler = async (req: Request, res: Response, next: N
       });
     }
 
-    const user = await updateUserRole(req.params.id, role);
+    const user = await updateUserRole(String(req.params.id), role);
 
     if (!user) {
       return res.status(404).json({
@@ -181,7 +181,7 @@ export const updateUserRoleHandler = async (req: Request, res: Response, next: N
 // @access  Private/Admin
 export const deactivateUserHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await deactivateUser(req.params.id);
+    const user = await deactivateUser(String(req.params.id));
 
     if (!user) {
       return res.status(404).json({
@@ -205,7 +205,7 @@ export const deactivateUserHandler = async (req: Request, res: Response, next: N
 // @access  Private/Admin
 export const reactivateUserHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const user = await reactivateUser(req.params.id);
+    const user = await reactivateUser(String(req.params.id));
 
     if (!user) {
       return res.status(404).json({

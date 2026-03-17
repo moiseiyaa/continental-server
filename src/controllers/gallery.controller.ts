@@ -130,7 +130,7 @@ export const updateImageHandler = async (req: Request, res: Response, next: Next
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const image = await updateImage(req.params.id, req.body);
+    const image = await updateImage(String(req.params.id), req.body);
 
     if (!image) {
       return res.status(404).json({
@@ -153,7 +153,7 @@ export const updateImageHandler = async (req: Request, res: Response, next: Next
 // @access  Private/Admin
 export const deleteImageHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const image = await deleteImage(req.params.id);
+    const image = await deleteImage(String(req.params.id));
 
     if (!image) {
       return res.status(404).json({

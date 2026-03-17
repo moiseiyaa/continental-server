@@ -8,7 +8,7 @@ const getStripe = () => {
     throw new Error('STRIPE_SECRET_KEY is not configured. Please set it in your environment variables.');
   }
   return new Stripe(apiKey, {
-    apiVersion: '2025-12-15.clover',
+    apiVersion: '2025-12-15.clover' as any,
   });
 };
 
@@ -59,7 +59,7 @@ export const verifyPaymentHandler = async (req: Request, res: Response, next: Ne
     }
 
     const stripe = getStripe();
-    const paymentIntent = await stripe.paymentIntents.retrieve(id);
+    const paymentIntent = await stripe.paymentIntents.retrieve(String(id));
 
     res.status(200).json({
       success: true,

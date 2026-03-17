@@ -3,7 +3,7 @@ import { pool } from '../config/db'
 async function createTestData() {
   try {
     console.log('Creating test SEO data...')
-    
+  
     const testData = [
       {
         page_url: '/about',
@@ -15,6 +15,7 @@ async function createTestData() {
         og_image: 'https://continental-travels.com/images/about-og.jpg'
       },
       {
+      
         page_url: '/contact',
         title: 'Contact Continental Travels & Tours',
         description: 'Get in touch with Continental Travels & Tours for your next African adventure. Contact us for bookings and inquiries.',

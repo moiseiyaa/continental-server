@@ -54,7 +54,7 @@ export const getNotifications = async (req: any, res: Response, next: NextFuncti
  */
 export const markAsRead = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const notification = await markNotificationAsRead(parseInt(req.params.id));
+      const notification = await markNotificationAsRead(parseInt(String(req.params.id)));
 
     if (!notification) {
       return res.status(404).json({
@@ -95,7 +95,7 @@ export const markAllAsRead = async (req: any, res: Response, next: NextFunction)
  */
 export const deleteNotificationHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const notification = await deleteNotification(parseInt(req.params.id));
+    const notification = await deleteNotification(parseInt(String(req.params.id)));
 
     if (!notification) {
       return res.status(404).json({

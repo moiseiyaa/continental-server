@@ -7,7 +7,7 @@ const getStripe = () => {
     throw new Error('STRIPE_SECRET_KEY is not configured. Please set it in your environment variables.');
   }
   return new Stripe(apiKey, {
-    apiVersion: '2025-12-15.clover',
+    apiVersion: '2025-12-15.clover' as any,
   });
 };
 

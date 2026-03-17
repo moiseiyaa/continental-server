@@ -142,7 +142,7 @@ export const updateBlogHandler = async (req: any, res: Response, next: NextFunct
 // @access  Private/Admin
 export const deleteBlogHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const blog = await deleteBlog(req.params.id);
+    const blog = await deleteBlog(String(req.params.id));
 
     if (!blog) {
       return res.status(404).json({

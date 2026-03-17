@@ -4,10 +4,10 @@ export interface SeoMetadataRow {
   id: number
   page_url: string
   title: string | null
-  description: text | null
+  description: string | null
   canonical_url: string | null
   og_title: string | null
-  og_description: text | null
+  og_description: string | null
   og_image: string | null
   keywords: string[] | null
   include_in_sitemap: boolean

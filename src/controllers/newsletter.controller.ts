@@ -71,7 +71,7 @@ export const unsubscribeHandler = async (req: Request, res: Response, next: Next
 // @access  Private/Admin
 export const getSubscriberHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const subscriber = await getNewsletterSubscriber(req.params.email);
+    const subscriber = await getNewsletterSubscriber(String(req.params.email));
 
     if (!subscriber) {
       return res.status(404).json({
@@ -120,7 +120,7 @@ export const getAllSubscribersHandler = async (req: Request, res: Response, next
 // @access  Private/Admin
 export const deleteSubscriberHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const subscriber = await deleteSubscriber(req.params.email);
+    const subscriber = await deleteSubscriber(String(req.params.email));
 
     if (!subscriber) {
       return res.status(404).json({

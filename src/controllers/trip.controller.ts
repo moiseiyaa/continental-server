@@ -72,7 +72,7 @@ export const getAllTripsHandler = async (req: Request, res: Response, next: Next
 // @access  Public
 export const getTripByIdHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const trip = await getTripById(req.params.id);
+    const trip = await getTripById(String(req.params.id));
 
     if (!trip) {
       return res.status(404).json({
@@ -100,7 +100,7 @@ export const updateTripHandler = async (req: any, res: Response, next: NextFunct
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const trip = await updateTrip(req.params.id, req.body);
+    const trip = await updateTrip(String(req.params.id), req.body);
 
     if (!trip) {
       return res.status(404).json({
@@ -123,7 +123,7 @@ export const updateTripHandler = async (req: any, res: Response, next: NextFunct
 // @access  Private/Admin
 export const deleteTripHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const trip = await deleteTrip(req.params.id);
+    const trip = await deleteTrip(String(req.params.id));
 
     if (!trip) {
       return res.status(404).json({

@@ -39,7 +39,7 @@ export const createContactHandler = async (req: Request, res: Response, next: Ne
 // @access  Private/Admin
 export const getContactByIdHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const contact = await getContactById(req.params.id);
+    const contact = await getContactById(String(req.params.id));
 
     if (!contact) {
       return res.status(404).json({
@@ -97,7 +97,7 @@ export const updateContactStatusHandler = async (req: Request, res: Response, ne
       });
     }
 
-    const contact = await updateContactStatus(req.params.id, status);
+    const contact = await updateContactStatus(String(req.params.id), status);
 
     if (!contact) {
       return res.status(404).json({
@@ -150,7 +150,7 @@ export const respondToContactHandler = async (req: any, res: Response, next: Nex
 // @access  Private/Admin
 export const deleteContactHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const contact = await deleteContact(req.params.id);
+    const contact = await deleteContact(String(req.params.id));
 
     if (!contact) {
       return res.status(404).json({

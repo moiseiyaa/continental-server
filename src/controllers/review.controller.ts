@@ -66,7 +66,7 @@ export const getReviewsByTripHandler = async (req: Request, res: Response, next:
 // @access  Public
 export const getReviewByIdHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const review = await getReviewById(parseInt(req.params.id));
+    const review = await getReviewById(parseInt(String(req.params.id)));
 
     if (!review) {
       return res.status(404).json({
@@ -135,7 +135,7 @@ export const updateReviewHandler = async (req: Request, res: Response, next: Nex
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const review = await updateReview(parseInt(req.params.id), req.body);
+    const review = await updateReview(parseInt(String(req.params.id)), req.body);
 
     if (!review) {
       return res.status(404).json({
@@ -158,7 +158,7 @@ export const updateReviewHandler = async (req: Request, res: Response, next: Nex
 // @access  Private
 export const deleteReviewHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const review = await deleteReview(parseInt(req.params.id));
+    const review = await deleteReview(parseInt(String(req.params.id)));
 
     if (!review) {
       return res.status(404).json({
@@ -181,7 +181,7 @@ export const deleteReviewHandler = async (req: Request, res: Response, next: Nex
 // @access  Public
 export const markReviewHelpfulHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const review = await markHelpful(parseInt(req.params.id));
+    const review = await markHelpful(parseInt(String(req.params.id)));
 
     if (!review) {
       return res.status(404).json({

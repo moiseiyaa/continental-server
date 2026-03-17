@@ -306,7 +306,7 @@ export const updateBookingStatusHandler = async (req: Request, res: Response, ne
       });
     }
 
-    const booking = await updateBookingStatus(req.params.id, status);
+    const booking = await updateBookingStatus(String(req.params.id), status);
 
     if (!booking) {
       return res.status(404).json({
@@ -338,7 +338,7 @@ export const updatePaymentStatusHandler = async (req: Request, res: Response, ne
       });
     }
 
-    const booking = await updatePaymentStatus(req.params.id, paymentStatus);
+    const booking = await updatePaymentStatus(String(req.params.id), paymentStatus);
 
     if (!booking) {
       return res.status(404).json({
@@ -412,7 +412,7 @@ export const cancelBookingHandler = async (req: any, res: Response, next: NextFu
 // @access  Private/Admin
 export const deleteBookingHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const booking = await deleteBooking(req.params.id);
+    const booking = await deleteBooking(String(req.params.id));
 
     if (!booking) {
       return res.status(404).json({

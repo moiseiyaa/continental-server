@@ -23,6 +23,6 @@ export const createOrUpdateMetadata = async (req: Request, res: Response) => {
 
 export const deleteMetadata = async (req: Request, res: Response) => {
   const { id } = req.params
-  await SeoMetadata.delete(id)
+  await SeoMetadata.delete(String(id))
   res.json({ success: true })
 }
