@@ -1,6 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
-import { getMe } from '../services/auth.service';
+import { getMe } from '../../services/auth.service';
 
 // @desc    Get user profile
 // @route   GET /api/users/profile

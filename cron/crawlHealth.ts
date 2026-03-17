@@ -1,7 +1,7 @@
 import axios from 'axios'
 import cheerio from 'cheerio'
-import SeoMetadata from '../src/models/seoMetadata.model'
-import CrawlIssue from '../src/models/crawlIssue.model'
+import SeoMetadata from '../../frontend/src/models/seoMetadata.model'
+import CrawlIssue from '../../frontend/src/models/crawlIssue.model'
 
 async function scan() {
   const metas = await SeoMetadata.findAll()

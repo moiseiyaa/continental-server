@@ -1,5 +1,5 @@
-import { IUser, IUserInput } from '../interfaces';
-import User from '../models/user.model';
+import { IUser, IUserInput } from '../server/interfaces';
+import User from '../server/models/user.model';
 import { JWT_SECRET, JWT_EXPIRE } from '../config/env';
 import jwt from 'jsonwebtoken';
 
