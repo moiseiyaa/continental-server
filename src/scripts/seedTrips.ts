@@ -1105,10 +1105,10 @@ const TRIPS: TripSeed[] = [
   },
   {
     title: '5 Days Gorilla Trek Rwanda',
-    description: 'Experience one of Africa\'s most extraordinary wildlife journeys on this 5 Days Gorilla Trek Rwanda safari, featuring double gorilla trekking, golden monkey encounters, and cultural immersion in Volcanoes National Park.',
+    description: 'Experience one of Africa\'s most extraordinary wildlife journeys on this 5 Days Gorilla Trek Rwanda safari, a carefully designed primate adventure that takes you deep into the breathtaking landscapes of Volcanoes National Park. This package is ideal for travelers who want a more immersive and relaxed experience in Rwanda, with the rare opportunity to enjoy two gorilla trekking experiences, a golden monkey encounter, and a cultural visit to the famous Gorilla Guardians Village.',
     destination: 'Volcanoes National Park',
     duration: 5,
-    price: 4500,
+    price: 2985,
     max_participants: 6,
     current_participants: 0,
     status: 'active',
@@ -1118,130 +1118,112 @@ const TRIPS: TripSeed[] = [
         title: 'Arrival in Kigali',
         description: 'Upon arrival at Kigali International Airport, you will be warmly welcomed by your professional Rwanda Safaris guide, who will brief you about your upcoming 5-day Rwanda gorilla safari. Depending on your arrival time, you will either be transferred directly to your hotel for relaxation, dinner, and overnight stay, or enjoy an optional short Kigali city orientation tour if time allows.',
         activities: [
-          'Airport welcome and briefing',
-          'Optional Kigali city orientation tour',
+          'Airport pickup and transfer',
+          'Kigali city orientation tour (optional)',
           'Hotel check-in and relaxation',
-          'Dinner at luxury hotel'
+          'Welcome dinner',
+          'Guide briefing about safari'
         ],
         meals: ['Dinner'],
-        accommodation: 'Kigali Serena Hotel (or similar luxury hotel in Kigali)'
+        accommodation: 'Kigali Serena Hotel or similar luxury hotel'
       },
       {
         day: 2,
         title: 'Kigali City Tour and Transfer to Volcanoes National Park',
-        description: 'After breakfast at your hotel, you will meet your guide for a guided Kigali city tour, offering a deeper understanding of Rwanda\'s history, culture, and modern identity. The tour may include Kigali Genocide Memorial Centre, main city markets, Presidential Palace Museum, and local artisan shops. After lunch, depart for Volcanoes National Park in northern Rwanda (2.5-3 hour scenic drive through rolling hills, rural villages, and tea plantations).',
+        description: 'After breakfast at your hotel, you will meet your guide for a guided Kigali city tour, offering a deeper understanding of Rwanda\'s history, culture, and modern identity. Your city tour may include: Kigali Genocide Memorial Centre, Main city markets, Presidential Palace Museum, Local artisan and craft shops, and Other notable sites based on your interests and available time. After the city tour, you will stop for lunch at a selected restaurant before departing for Volcanoes National Park in northern Rwanda. The journey from Kigali to Volcanoes National Park takes approximately 2.5 to 3 hours, passing through rolling hills, rural villages, tea plantations, and spectacular mountain scenery. This scenic drive gives you a true sense of why Rwanda is famously called "The Land of a Thousand Hills." Upon arrival in the park area, you will check in at your lodge and have time to relax in your room or enjoy the beautiful hotel gardens. An early night is recommended in preparation for your first Gorilla trek the following morning.',
         activities: [
-          'Kigali Genocide Memorial Centre visit',
-          'City markets exploration',
+          'Kigali city tour',
+          'Genocide Memorial visit',
           'Presidential Palace Museum',
-          'Local artisan and craft shops',
-          'Scenic drive to Volcanoes National Park',
-          'Mountain scenery photography'
+          'Local craft markets',
+          'Scenic transfer to Volcanoes NP',
+          'Cultural immersion'
         ],
         meals: ['Breakfast', 'Lunch', 'Dinner'],
-        accommodation: 'Five Volcanoes Boutique Hotel (or similar)'
+        accommodation: 'Five Volcanoes Boutique Hotel or similar'
       },
       {
         day: 3,
         title: 'First Gorilla Trekking Experience and Gorilla Guardians Village Visit',
-        description: 'After an early breakfast, transfer to Volcanoes National Park headquarters in Kinigi for the official gorilla trekking briefing (7:00 AM). Park rangers will explain gorilla trekking rules, safety guidelines, and assign you to a gorilla family based on fitness level and group size. The trek can take 2-6 hours depending on gorilla location. Once located, enjoy one full hour observing mountain gorillas in their natural habitat. After the trek, return to lodge for lunch and rest. In the afternoon, visit Gorilla Guardians Village (formerly Iby\'Iwacu Cultural Village) for traditional Rwandan dance performances, cultural storytelling, and community interaction.',
+        description: 'Today is one of the most exciting days of your safari. After an early breakfast, you will be transferred to the Volcanoes National Park headquarters in Kinigi for the official gorilla trekking briefing, which usually begins at 7:00 AM. During the briefing, park rangers will explain: gorilla trekking rules and safety guidelines, what to expect during the trek, how gorilla families are assigned, and appropriate behavior around gorillas. Volcanoes National Park is home to several habituated mountain gorilla families, and you will be assigned a group based on your physical fitness level, group size, and current location of gorilla family on that particular day. After the briefing, you will enter the forest with experienced park rangers and trackers. The gorilla trek can take anywhere from 2 to 6 hours, depending on the location of the gorilla family on that particular day. Once the gorillas are located, you will be allowed one full hour to observe them in their natural habitat. This is a truly unforgettable wildlife encounter and one of the most sought-after experiences in Africa. Important Gorilla Trekking Guidelines: Remain calm and quiet at all times, Follow your ranger\'s instructions carefully, Avoid sudden movements, Keep a respectful distance, Do not attempt to touch the gorillas, Flash photography is not allowed. After the trek, you will return to the starting point where your guide will be waiting to transfer you back to the lodge for lunch and some time to rest. Later in the afternoon, you will visit the Gorilla Guardians Village, formerly known as Iby\'Iwacu Cultural Village. This cultural center was originally established as a community-based initiative to help former poachers transition into sustainable tourism livelihoods. Today, it has become one of Rwanda\'s leading cultural tourism attractions. What to Expect at Gorilla Guardians Village: Traditional Rwandan dance and drumming performances, Cultural storytelling, Community interaction, Traditional architecture and lifestyle demonstrations, and Opportunity to participate in local activities. This experience offers a meaningful cultural complement to your Gorilla trek.',
         activities: [
-          'Gorilla trekking briefing at Kinigi headquarters',
-          'Mountain gorilla trekking (2-6 hours)',
-          'One hour gorilla observation in natural habitat',
-          'Wildlife photography with gorillas',
-          'Gorilla Guardians Village cultural experience',
+          'Gorilla trekking briefing',
+          'Mountain Gorilla Trekking in bamboo forests',
+          'Mountain Gorilla encounters',
+          'Forest exploration',
+          'Wildlife photography',
+          'Professional guide services',
+          'Gorilla Guardians Village visit',
           'Traditional Rwandan dance performances',
-          'Cultural storytelling and community interaction'
+          'Cultural storytelling',
+          'Community interaction'
         ],
         meals: ['Breakfast', 'Lunch', 'Dinner'],
-        accommodation: 'Five Volcanoes Boutique Hotel (or similar)'
+        accommodation: 'Five Volcanoes Boutique Hotel or similar'
       },
       {
         day: 4,
         title: 'Second Gorilla Trekking Experience and Twin Lakes Excursion',
-        description: 'After breakfast, return to the park headquarters for your second gorilla trekking experience. This second trek gives you another rare chance to encounter mountain gorillas, observe different family dynamics, and enjoy a deeper appreciation of the park\'s ecosystem. You may be assigned a different gorilla family and can hire a porter for assistance. After the one-hour observation period, return to lodge for lunch. In the afternoon, enjoy a scenic excursion to the beautiful Twin Lakes of Burera and Ruhondo, located near the foothills of the Virunga Mountains. Activities include scenic sightseeing, photography, nature walks, bird watching, and relaxation by the lakeshore.',
+        description: 'After breakfast, you will return to the park headquarters for your second gorilla trekking experience. This second trek gives you another rare chance to encounter mountain gorillas, observe different family dynamics, and enjoy a deeper appreciation of the park\'s ecosystem. Just like the previous day, you will attend another morning briefing and may be assigned a different gorilla family. You may hire a porter if you would like assistance carrying your backpack or camera equipment. Note: Hiring a porter is highly recommended, especially if you are carrying heavy gear or prefer extra support on steep trails. After the trek and your one-hour observation period, you will return to the starting point where your guide will transfer you back for lunch and refreshments. In the afternoon, you will enjoy a scenic excursion to the beautiful Twin Lakes of Burera and Ruhondo, located near the foothills of the Virunga Mountains. These lakes are among the most picturesque natural attractions in northern Rwanda and offer a peaceful contrast to the intensity of Gorilla trekking. Activities at the Twin Lakes May Include: Scenic sightseeing, Photography, Nature walks, Canoeing (optional, if arranged), Bird watching, Community encounters, and Relaxation by the lakeshore. The views of the lakes framed by rolling hills and volcanic peaks make this one of the most memorable scenic experiences in the region.',
         activities: [
-          'Second mountain gorilla trekking experience',
-          'Different gorilla family encounter',
-          'Wildlife photography and observation',
-          'Scenic excursion to Twin Lakes (Burera & Ruhondo)',
-          'Lakeside photography and nature walks',
-          'Bird watching and relaxation',
-          'Mountain and lake landscape views'
+          'Second gorilla trekking experience',
+          'Mountain Gorilla Trekking',
+          'Gorilla family encounters',
+          'Forest exploration',
+          'Wildlife photography',
+          'Visit Twin Lakes (Burera & Ruhondo)',
+          'Scenic lake views',
+          'Nature walks',
+          'Bird watching'
         ],
         meals: ['Breakfast', 'Lunch', 'Dinner'],
-        accommodation: 'Five Volcanoes Boutique Hotel (or similar)'
+        accommodation: 'Five Volcanoes Boutique Hotel or similar'
       },
       {
         day: 5,
         title: 'Golden Monkey Tracking and Return to Kigali',
-        description: 'After breakfast, head back into Volcanoes National Park for your final primate experience: Golden Monkey Tracking. Golden monkeys are known for their striking golden-orange fur, playful nature, and quick movement through bamboo forests. This experience gives you the chance to observe these beautiful primates as they move through the forest canopy. Once the golden monkey experience is complete, return to the lodge for lunch, check out, and begin your drive back to Kigali. Upon arrival in Kigali, you will be transferred to Kigali International Airport for your departure flight or to your hotel if extending your stay.',
+        description: 'After breakfast, you will head back into Volcanoes National Park for your final primate experience: Golden Monkey Tracking. Golden monkeys are among the most charming and lively primates in the Virunga ecosystem. They are known for their striking golden-orange fur, their playful nature, their quick movement through bamboo forests, and their social behavior in family groups. This experience gives you a chance to observe these beautiful primates as they move through the forest canopy and lower vegetation. After the Trek: Once the golden monkey experience is complete, you will return to the lodge, enjoy lunch, check out from the lodge, and begin your drive back to Kigali. Upon arrival in Kigali, you will be transferred to Kigali International Airport for your departure flight, or to your hotel/residence if you are extending your stay in Rwanda.',
         activities: [
-          'Golden monkey tracking in bamboo forests',
-          'Primate observation and photography',
-          'Forest canopy exploration',
-          'Scenic drive back to Kigali',
-          'Airport transfer for departure'
+          'Golden Monkey Tracking',
+          'Golden monkey encounters',
+          'Bamboo forest exploration',
+          'Primate encounters',
+          'Return to Kigali',
+          'Airport transfer'
         ],
         meals: ['Breakfast', 'Lunch'],
-        accommodation: 'N/A (Departure)'
+        accommodation: 'N/A (Return to Kigali)'
       }
     ],
     activities: [
-      '2 Gorilla Trekking Experiences',
+      'Kigali city tour',
+      'Genocide Memorial visit',
+      'Double Gorilla Trekking Experiences',
       'Golden Monkey Tracking',
-      'Kigali City Tour',
-      'Gorilla Guardians Village Visit',
-      'Twin Lakes Excursion (Lake Burera & Lake Ruhondo)',
-      'Cultural performances and storytelling',
-      'Mountain gorilla photography',
-      'Wildlife and landscape photography',
-      'Scenic drives through Rwanda',
-      'Professional English-speaking guide services'
+      'Gorilla Guardians Village visit',
+      'Twin Lakes excursion (Lake Burera & Lake Ruhondo)',
+      'Cultural experiences',
+      'Wildlife photography',
+      'Professional guide services'
     ],
     highlights: [
       'Double Gorilla Trekking Experience',
-      'Golden Monkey Tracking in Virunga Mountains',
-      'Kigali Cultural and Historical Tour',
-      'Gorilla Guardians Village Cultural Experience',
+      'Golden Monkey Tracking',
+      'Gorilla Guardians Village Cultural Visit',
       'Twin Lakes Scenic Excursion',
-      'Luxury Accommodation in Kigali and Volcanoes NP',
-      'Private Transport with Professional Guide',
-      'All Permits and Fees Included'
-    ],
-    included: [
-      '2 Gorilla trekking permits',
-      '1 Golden monkey tracking experience',
-      'Visit to Gorilla Guardians Village',
-      'Excursion to Lake Burera and Lake Ruhondo',
-      '4 nights\' accommodation in luxury hotels',
-      'Private ground transportation throughout safari',
-      'Professional English-speaking driver-guide',
-      'Kigali city tour with entrance fees',
-      'Airport pick-up and drop-off',
-      'Meals as indicated in itinerary',
-      'Bottled drinking water during transfers',
-      'All park entrance fees and permits'
-    ],
-    notIncluded: [
-      'International flights',
-      'Rwanda visa fees (if applicable)',
-      'Travel insurance',
-      'Alcoholic beverages',
-      'Tips and gratuities',
-      'Personal expenses (laundry, souvenirs, phone bills)',
-      'Optional activities not mentioned in itinerary',
-      'Porter fees during gorilla trekking (optional but recommended)'
+      'Kigali City Cultural Tour',
+      'Volcanoes National Park Adventure',
+      'Professional English-Speaking Guide',
+      'Luxury Mountain Lodge Accommodation'
     ],
     images: [
-      '/images/trips/5-days-gorilla-trek-hero.jpg',
-      '/images/trips/5-days-gorilla-trek-1.jpg',
-      '/images/trips/5-days-gorilla-trek-2.jpg',
-      '/images/trips/5-days-gorilla-trek-3.jpg',
-      '/images/trips/5-days-gorilla-trek-4.jpg'
+      '/images/trips/gorilla-trek-rwanda-hero.jpg',
+      '/images/trips/gorilla-trek-rwanda-1.jpg',
+      '/images/trips/gorilla-trek-rwanda-2.jpg',
+      '/images/trips/gorilla-trek-rwanda-3.jpg',
+      '/images/trips/gorilla-trek-rwanda-4.jpg'
     ],
-    insurance: 'Comprehensive travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
+    insurance: 'Travel insurance provided by Akagera Aviator. Coverage includes medical emergencies, trip cancellation, and personal accident protection up to $50,000. Insurance certificate will be provided upon booking confirmation.'
   },
   {
     title: '4 Days Akagera Safari & Gorilla Trekking',
