@@ -1108,7 +1108,7 @@ const TRIPS: TripSeed[] = [
     description: 'Experience one of Africa\'s most extraordinary wildlife journeys on this 5 Days Gorilla Trek Rwanda safari, a carefully designed primate adventure that takes you deep into the breathtaking landscapes of Volcanoes National Park. This package is ideal for travelers who want a more immersive and relaxed experience in Rwanda, with the rare opportunity to enjoy two gorilla trekking experiences, a golden monkey encounter, and a cultural visit to the famous Gorilla Guardians Village.',
     destination: 'Volcanoes National Park',
     duration: 5,
-    price: 2985,
+    price:  5,190,
     max_participants: 6,
     current_participants: 0,
     status: 'active',
