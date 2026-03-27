@@ -61,7 +61,7 @@ export const uploadImageHandler = async (req: any, res: Response, next: NextFunc
 // @access  Public
 export const getGalleryByTripHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const gallery = await getGalleryByTrip(parseInt(req.params.tripId));
+      const gallery = await getGalleryByTrip(parseInt(req.params.tripId as string));
 
     res.status(200).json({
       success: true,
@@ -102,7 +102,7 @@ export const getAllGalleryHandler = async (req: Request, res: Response, next: Ne
 // @access  Public
 export const getImageByIdHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const image = await getImageById(parseInt(req.params.id));
+      const image = await getImageById(parseInt(req.params.id as string));
 
     if (!image) {
       return res.status(404).json({

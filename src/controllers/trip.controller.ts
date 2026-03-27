@@ -146,7 +146,7 @@ export const deleteTripHandler = async (req: Request, res: Response, next: NextF
 // @access  Public
 export const searchTripsHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const trips = await searchTrips(req.params.searchTerm);
+    const trips = await searchTrips(req.params.searchTerm as string);
 
     res.status(200).json({
       success: true,
@@ -162,7 +162,7 @@ export const searchTripsHandler = async (req: Request, res: Response, next: Next
 // @access  Public
 export const getTripsByDestinationHandler = async (req: Request, res: Response, next: NextFunction) => {
   try {
-    const trips = await getTripsByDestination(req.params.destination);
+    const trips = await getTripsByDestination(req.params.destination as string);
 
     res.status(200).json({
       success: true,

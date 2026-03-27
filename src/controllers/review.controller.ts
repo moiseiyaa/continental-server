@@ -43,7 +43,7 @@ export const getReviewsByTripHandler = async (req: Request, res: Response, next:
     const page = req.query.page ? parseInt(req.query.page as string) : 1;
     const limit = req.query.limit ? parseInt(req.query.limit as string) : 10;
 
-    const result = await getReviewsByTrip(parseInt(req.params.tripId), page, limit);
+    const result = await getReviewsByTrip(parseInt(req.params.tripId as string), page, limit);
 
     res.status(200).json({
       success: true,
@@ -204,7 +204,7 @@ export const markReviewHelpfulHandler = async (req: Request, res: Response, next
 // @access  Public
 export const getReviewStatsHandler = async (req: Request, res: Response, next: NextFunction) => {
     try {
-      const stats = await getReviewStats(parseInt(req.params.tripId));
+      const stats = await getReviewStats(parseInt(req.params.tripId as string));
 
     res.status(200).json({
       success: true,
