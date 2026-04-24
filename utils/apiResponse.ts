@@ -2,13 +2,15 @@ import { Response } from 'express';
 import { JWT_COOKIE_EXPIRE, NODE_ENV } from '../config/env';
 
 // Get token from model, create cookie and send response
-export const sendTokenResponse = (user: any, statusCode: number, res: Response) => {
+export const sendTokenResponse = (user: any, statusCode: number, res: Response, rememberMe: boolean = false) => {
   // Create token
   const token = user.getSignedJwtToken();
 
+  // Set cookie expiry: 30 days if rememberMe, otherwise 7 days
+  const cookieExpireDays = rememberMe ? 30 : 7;
   const options = {
     expires: new Date(
-      Date.now() + JWT_COOKIE_EXPIRE * 24 * 60 * 60 * 1000
+      Date.now() + cookieExpireDays * 24 * 60 * 60 * 1000
     ),
     httpOnly: true,
     secure: NODE_ENV === 'production',

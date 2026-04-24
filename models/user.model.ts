@@ -56,10 +56,10 @@ UserSchema.pre('save', async function (next: any) {
 });
 
 // Sign JWT and return
-UserSchema.methods.getSignedJwtToken = function (): string {
+UserSchema.methods.getSignedJwtToken = function (expiresIn?: string): string {
   const payload = { id: this._id.toString() };
   const secret = JWT_SECRET;
-  const options: jwt.SignOptions = { expiresIn: '30d' };
+  const options: jwt.SignOptions = { expiresIn: expiresIn || JWT_EXPIRE };
   return jwt.sign(payload, secret, options);
 };
 

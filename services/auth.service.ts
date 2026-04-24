@@ -9,7 +9,7 @@ export const register = async (userData: IUserInput): Promise<{ user: IUser; tok
   return { user, token };
 };
 
-export const login = async (email: string, password: string): Promise<{ user: IUser; token: string }> => {
+export const login = async (email: string, password: string, rememberMe: boolean = false): Promise<{ user: IUser; token: string }> => {
   // Check if user exists
   const user = await User.findOne({ email }).select('+password');
   if (!user) {
@@ -22,7 +22,8 @@ export const login = async (email: string, password: string): Promise<{ user: IU
     throw new Error('Invalid credentials');
   }
 
-  const token = user.getSignedJwtToken();
+  // Generate token with extended expiry if rememberMe is true
+  const token = user.getSignedJwtToken(rememberMe ? '30d' : undefined);
   return { user, token };
 };
 

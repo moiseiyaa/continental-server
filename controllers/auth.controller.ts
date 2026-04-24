@@ -17,7 +17,7 @@ export const registerUser = async (req: Request, res: Response, next: NextFuncti
     const { name, email, password, role }: IUserInput = req.body;
     const { user, token } = await register({ name, email, password, role });
     
-    sendTokenResponse(user, 201, res);
+    sendTokenResponse(user, 201, res, false);
   } catch (error: any) {
     next(error);
   }
@@ -33,10 +33,10 @@ export const loginUser = async (req: Request, res: Response, next: NextFunction)
       return res.status(400).json({ errors: errors.array() });
     }
 
-    const { email, password } = req.body;
-    const { user, token } = await login(email, password);
+    const { email, password, rememberMe } = req.body;
+    const { user, token } = await login(email, password, rememberMe);
     
-    sendTokenResponse(user, 200, res);
+    sendTokenResponse(user, 200, res, rememberMe);
   } catch (error: any) {
     next(error);
   }
